@@ -63,7 +63,7 @@ export default function MotionWrapper({
       transition={{
         duration,
         delay,
-        ease: [0.25, 0.1, 0.25, 1], // Smooth cubic bezier
+        ease: 'easeOut',
       }}
       className={className}
     >
@@ -124,7 +124,7 @@ export function StaggerItem({
       y: 0,
       transition: {
         duration: 0.5,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: 'easeOut' as const,
       },
     },
   };
@@ -157,7 +157,7 @@ export function TextReveal({
       transition={{
         duration: 0.8,
         delay,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: 'easeOut',
       }}
       className={className}
     >
