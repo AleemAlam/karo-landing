@@ -177,5 +177,36 @@
   "home": {
     "welcome": "Witamy w Fovea Blue",
     "comingSoon": "Treść strony docelowej już wkrótce..."
+  },
+  "calculator": {
+    "title": "Kalkulator kosztów migreny",
+    "columnCategory": "Kategoria kosztów (A)",
+    "columnDescription": "Jednostka / Opis (B)",
+    "columnYourData": "Twoje dane (C)",
+    "columnCost": "Koszt (PLN) (D)",
+    "placeholder": "Wpisz kwotę",
+    "frequencyLabel": "Częstotliwość",
+    "frequencyDesc": "Ile dni migrenowych masz w miesiącu?",
+    "workFullTimeLabel": "Praca (Etat)",
+    "workFullTimeDesc": "Strata na L4 (20% dniówki)",
+    "workB2BLabel": "Praca (B2B/UoD)",
+    "workB2BDesc": "Twoja pełna dniówka (jeśli nie pracujesz)",
+    "freelanceLabel": "Freelance",
+    "freelanceDesc": "Dodatkowe zarobki (stawka godzinowa x liczba godzin)",
+    "medicinesLabel": "Leki i suplementy",
+    "medicinesDesc": "Koszt tabletek i środków na latak",
+    "lostPleasuresLabel": "Utracone przyjemności",
+    "lostPleasuresDesc": "Bilety, paliwo, wyjścia (strata)",
+    "cost1DayLabel": "KOSZT 1 DNIA",
+    "cost1DayDesc": "Twoje całkowite straty za 1 dzień bólu",
+    "monthlyCostLabel": "KOSZT MIESIĘCZNY",
+    "monthlyCostDesc": "Całkowite straty miesięczne",
+    "annualCostLabel": "KOSZT ROCZNY",
+    "annualCostDesc": "Ile pieniędzy tracisz w ciągu roku?",
+    "investmentLabel": "Inwestycja",
+    "investmentDesc": "Okulary Fovea Blue",
+    "returnLabel": "ZWROT",
+    "returnDesc": "Ta inwestycja zwróci się w:",
+    "migraineDays": "dni migrenowych"
   }
 }

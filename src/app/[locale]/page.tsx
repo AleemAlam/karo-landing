@@ -10,6 +10,7 @@ import ProgramDetailsSection from "@/components/ProgramDetailsSection";
 import PricingCTASection from "@/components/PricingCTASection";
 import LimitedSpotsSection from "@/components/LimitedSpotsSection";
 import FAQSection from "@/components/FAQSection";
+import MigraineCostCalculator from "@/components/MigraineCostCalculator";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
       <PricingCTASection />
       <LimitedSpotsSection />
       <FAQSection />
+      <MigraineCostCalculator />
       <Footer />
     </div>
   );

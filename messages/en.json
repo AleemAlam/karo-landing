@@ -177,5 +177,36 @@
   "home": {
     "welcome": "Welcome to Fovea Blue",
     "comingSoon": "Landing page content coming soon..."
+  },
+  "calculator": {
+    "title": "Migraine Cost Calculator",
+    "columnCategory": "Cost category (A)",
+    "columnDescription": "Unit / Description (B)",
+    "columnYourData": "Your data (C)",
+    "columnCost": "Cost (PLN) (D)",
+    "placeholder": "Enter the amount",
+    "frequencyLabel": "Frequency",
+    "frequencyDesc": "How many migraine days do you have per month?",
+    "workFullTimeLabel": "Work (Full-time)",
+    "workFullTimeDesc": "Loss on L4 (20% of daily wage)",
+    "workB2BLabel": "Work (B2B/UoD)",
+    "workB2BDesc": "Your full day's pay (if you don't work)",
+    "freelanceLabel": "Freelance",
+    "freelanceDesc": "Additional earnings (hour rate x number of hours)",
+    "medicinesLabel": "Medicines and supplements",
+    "medicinesDesc": "The cost of tablets and aids for latak",
+    "lostPleasuresLabel": "Lost pleasures",
+    "lostPleasuresDesc": "Tickets, fuel, exits (loss)",
+    "cost1DayLabel": "COST 1 DAY",
+    "cost1DayDesc": "Your total losses for 1 day of pain",
+    "monthlyCostLabel": "MONTHLY COST",
+    "monthlyCostDesc": "Total losses per month",
+    "annualCostLabel": "ANNUAL COST",
+    "annualCostDesc": "How much money do you lose in a year?",
+    "investmentLabel": "Investment",
+    "investmentDesc": "Fovea Blue glasses",
+    "returnLabel": "RETURN",
+    "returnDesc": "This investment will pay off in:",
+    "migraineDays": "migraine days"
   }
 }
