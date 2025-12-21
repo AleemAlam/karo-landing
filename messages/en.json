@@ -16,7 +16,11 @@
     "disclaimer": "This program is educational and does not replace professional diagnosis or treatment.",
     "giftLabel": "Migraine glasses worth up to",
     "giftValue": "497zł",
-    "giftSubtext": "as a gift"
+    "giftSubtext": "as a gift",
+    "stat1Label": "Average pain reduction",
+    "stat2Label": "Average to feel a difference",
+    "stat3Label": "Achieve symptom-free days",
+    "stat4Label": "Report better mental clarity"
   },
   "stats": {
     "stat1Label": "Average pain reduction",

@@ -100,7 +100,7 @@ export default function CreatorSection() {
             {/* Floating circular badge */}
             <FloatElement>
               <motion.div 
-                className="absolute top-[290px] right-[140px] w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
+                className="absolute -top-[410px] right-[140px] w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
                 variants={badgeVariants}
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
