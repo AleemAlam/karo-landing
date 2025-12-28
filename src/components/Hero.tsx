@@ -52,9 +52,120 @@ export default function Hero() {
     },
   };
 
+  const mobileImageVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        duration: 0.8,
+        ease: 'easeOut' as const,
+        delay: 0.2,
+      },
+    },
+  };
+
   return (
-    <section className="bg-linear-to-br from-white via-gray-50 to-orange-50/30 py-16 lg:py-20 overflow-hidden">
-      <div className="px-40 mx-auto">
+    <section className="bg-linear-to-br from-white via-gray-50 to-orange-50/30 py-8 lg:py-16 xl:py-20 overflow-hidden">
+      {/* Mobile Layout */}
+      <div className="lg:hidden px-4">
+        <motion.div
+          className="flex flex-col items-center"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Mobile Heading */}
+          <motion.h1 
+            className="text-2xl md:text-3xl font-bold text-black leading-tight text-center mb-6"
+            variants={itemVariants}
+          >
+            {t('heading1')}
+            <span className="text-gray-800">{t('heading2')}</span>
+          </motion.h1>
+
+          {/* Mobile Image Section */}
+          <motion.div 
+            className="relative w-full max-w-[320px] mx-auto mb-6"
+            variants={mobileImageVariants}
+          >
+            {/* Decorative background */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[280px] h-[280px] bg-linear-to-br from-green-100/50 to-emerald-200/30 rounded-full blur-3xl" />
+            
+            {/* Main hero image */}
+            <div className="relative z-10">
+              <Image
+                src="/hero/karo-hero.png"
+                alt="Happy customer"
+                width={320}
+                height={400}
+                className="object-cover w-full h-auto"
+                priority
+              />
+              
+              {/* Gift badge - positioned bottom right on mobile */}
+              <motion.div 
+                className="absolute bottom-4 right-0 w-[100px] h-[100px] bg-[#2B183D] rounded-full shadow-2xl flex flex-col items-center justify-center p-2 text-center z-20"
+                initial={{ scale: 0, rotate: -180 }}
+                animate={{ scale: 1, rotate: 0 }}
+                transition={{ delay: 0.6, duration: 0.6, type: 'spring', stiffness: 200 }}
+              >
+                {/* Gift icon */}
+                <Image
+                  src="/Gift-box-with-a-bow.png"
+                  alt="Gift icon"
+                  width={16}
+                  height={16}
+                  className="mb-1"
+                />
+                {/* Text content */}
+                <p className="text-white text-[9px] leading-3">{t('giftLabel')}</p>
+                <p className="text-white text-[9px]">
+                  <span className="font-extrabold">{t('giftValue')} </span>
+                  {t('giftSubtext')}
+                </p>
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Mobile Subheading */}
+          <motion.p 
+            className="text-base text-gray-600 text-center leading-relaxed mb-8 px-2"
+            variants={itemVariants}
+          >
+            {t('subheading')}
+          </motion.p>
+
+          {/* Mobile CTA Button */}
+          <motion.div variants={itemVariants} className="w-full px-4">
+            <HoverScale scale={1.02}>
+              <button className="w-full bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base group">
+                {t('ctaButton')}
+                <motion.svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                  />
+                </motion.svg>
+              </button>
+            </HoverScale>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:block px-8 xl:px-40 mx-auto">
         <div className="flex items-center">
           {/* Left Content */}
           <motion.div
@@ -199,3 +310,4 @@ export default function Hero() {
     </section>
   );
 }
+

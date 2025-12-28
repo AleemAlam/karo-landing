@@ -40,10 +40,39 @@ export default function StatsSection() {
   };
 
   return (
-    <section className="bg-[#f7f5f2] py-8">
-      <div className="px-40 mx-auto">
+    <section className="bg-white lg:bg-[#f7f5f2] py-6 lg:py-8">
+      {/* Mobile Layout - 2x2 Grid with dividers */}
+      <div className="lg:hidden px-4">
         <motion.div 
           ref={ref}
+          className="grid grid-cols-2 gap-y-4"
+          variants={containerVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
+          {stats.map((stat, index) => (
+            <motion.div 
+              key={index}
+              variants={itemVariants}
+              className={`text-center py-2 ${index % 2 === 0 ? 'border-r border-gray-200' : ''}`}
+            >
+              <motion.p 
+                className="text-2xl font-light text-gray-700 mb-1"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                transition={{ delay: 0.2 + index * 0.1, duration: 0.4, type: 'spring' }}
+              >
+                {stat.value}
+              </motion.p>
+              <p className="text-xs text-gray-500 px-2">{stat.label}</p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Desktop Layout - Horizontal Row */}
+      <div className="hidden lg:block px-8 xl:px-40 mx-auto">
+        <motion.div 
           className="flex items-center justify-between"
           variants={containerVariants}
           initial="hidden"

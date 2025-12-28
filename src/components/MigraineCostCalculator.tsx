@@ -2,40 +2,113 @@
 
 import { useState, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, Variants } from 'framer-motion';
+
+// Row variants for animations
+const rowVariants: Variants = {
+  hidden: { opacity: 0, x: -20 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const sectionHeaderVariants: Variants = {
+  hidden: { opacity: 0, y: -10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+    },
+  },
+};
 
 export default function MigraineCostCalculator() {
   const t = useTranslations('calculator');
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
-  // Input state with default values
-  const [frequency, setFrequency] = useState<number>(8);
-  const [workFullTime, setWorkFullTime] = useState<number>(120);
-  const [workB2B, setWorkB2B] = useState<number>(200);
-  const [freelance, setFreelance] = useState<number>(150);
-  const [medicines, setMedicines] = useState<number>(80);
-  const [lostPleasures, setLostPleasures] = useState<number>(100);
+  // SECTION 1: Base Data
+  const [monthlyNetSalary, setMonthlyNetSalary] = useState<number>(5000);
+  const [workDaysPerMonth, setWorkDaysPerMonth] = useState<number>(20);
 
-  // Calculations
-  const costPerDay = useMemo(() => {
-    return workFullTime + workB2B + freelance + medicines + lostPleasures;
-  }, [workFullTime, workB2B, freelance, medicines, lostPleasures]);
+  // SECTION 2: Extra Work
+  const [extraWorkHourlyRate, setExtraWorkHourlyRate] = useState<number>(50);
+  const [extraWorkHoursPerDay, setExtraWorkHoursPerDay] = useState<number>(4);
 
-  const monthlyCost = useMemo(() => {
-    return costPerDay * frequency;
-  }, [costPerDay, frequency]);
+  // SECTION 3: Time & Work Costs
+  const [migraineDaysPerMonth, setMigraineDaysPerMonth] = useState<number>(4);
+  const [sickLeaveDays, setSickLeaveDays] = useState<number>(1);
+  const [catchUpHours, setCatchUpHours] = useState<number>(0);
 
-  const annualCost = useMemo(() => {
-    return monthlyCost * 12;
-  }, [monthlyCost]);
+  // SECTION 4: Direct Expenses
+  const [emergencyExpenses, setEmergencyExpenses] = useState<number>(100);
+  const [foodDelivery, setFoodDelivery] = useState<number>(0);
+  const [coffee, setCoffee] = useState<number>(0);
+  const [taxi, setTaxi] = useState<number>(0);
+  const [snacks, setSnacks] = useState<number>(0);
+  const [acuteMedicationCost, setAcuteMedicationCost] = useState<number>(0);
+  const [prophylacticMedicationCost, setProphylacticMedicationCost] = useState<number>(0);
+  const [doctorVisitHours, setDoctorVisitHours] = useState<number>(2);
+  const [travelTimeHours, setTravelTimeHours] = useState<number>(0);
 
-  const investmentAmount = 450;
+  // SECTION 5: Emotional Costs
+  const [lostOpportunitiesCost, setLostOpportunitiesCost] = useState<number>(0);
+  const [affectedPeopleCount, setAffectedPeopleCount] = useState<number>(0);
 
-  const roi = useMemo(() => {
-    if (costPerDay === 0) return 0;
-    return investmentAmount / costPerDay;
-  }, [costPerDay]);
+  // CALCULATIONS
+  const dailyRate = useMemo(() => {
+    if (workDaysPerMonth === 0) return 0;
+    return monthlyNetSalary / workDaysPerMonth;
+  }, [monthlyNetSalary, workDaysPerMonth]);
+
+  const hourlyRate = useMemo(() => {
+    return dailyRate / 8;
+  }, [dailyRate]);
+
+  const sickLeaveIncomeLoss = useMemo(() => {
+    return dailyRate * 0.2 * sickLeaveDays;
+  }, [dailyRate, sickLeaveDays]);
+
+  const extraWorkIncomeLoss = useMemo(() => {
+    return extraWorkHourlyRate * extraWorkHoursPerDay * migraineDaysPerMonth;
+  }, [extraWorkHourlyRate, extraWorkHoursPerDay, migraineDaysPerMonth]);
+
+  const catchUpTimeCost = useMemo(() => {
+    return catchUpHours * hourlyRate;
+  }, [catchUpHours, hourlyRate]);
+
+  const totalEmergencyExpenses = useMemo(() => {
+    return emergencyExpenses + foodDelivery + coffee + taxi + snacks + acuteMedicationCost;
+  }, [emergencyExpenses, foodDelivery, coffee, taxi, snacks, acuteMedicationCost]);
+
+  const doctorTimeCost = useMemo(() => {
+    return (doctorVisitHours + travelTimeHours) * hourlyRate;
+  }, [doctorVisitHours, travelTimeHours, hourlyRate]);
+
+  const totalMonthlyCost = useMemo(() => {
+    return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost + 
+           (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost + 
+           doctorTimeCost + lostOpportunitiesCost;
+  }, [sickLeaveIncomeLoss, extraWorkIncomeLoss, catchUpTimeCost, totalEmergencyExpenses, 
+      migraineDaysPerMonth, prophylacticMedicationCost, doctorTimeCost, lostOpportunitiesCost]);
+
+  const costPerMigraineDay = useMemo(() => {
+    if (migraineDaysPerMonth === 0) return 0;
+    return totalMonthlyCost / migraineDaysPerMonth;
+  }, [totalMonthlyCost, migraineDaysPerMonth]);
+
+  const glassesPrice = 450;
+  const breakEvenDays = useMemo(() => {
+    if (costPerMigraineDay === 0) return 0;
+    return glassesPrice / costPerMigraineDay;
+  }, [costPerMigraineDay]);
 
   const handleInputChange = (setter: (value: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value) || 0;
@@ -43,7 +116,7 @@ export default function MigraineCostCalculator() {
   };
 
   const formatCurrency = (value: number) => {
-    return `${value.toLocaleString('pl-PL')} zł`;
+    return `${value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
   };
 
   const containerVariants = {
@@ -51,365 +124,457 @@ export default function MigraineCostCalculator() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: -30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut' as const,
-      },
-    },
-  };
-
-  const rowVariants = {
-    hidden: { opacity: 0, x: -20 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.4,
-        ease: 'easeOut' as const,
-      },
-    },
-  };
-
-  const resultVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut' as const,
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
       },
     },
   };
 
   return (
-    <section className="py-20 mx-20 bg-[#f5f3f0]" ref={ref}>
-      <div className="max-w-5xl mx-auto px-6">
+    <section className="py-12 lg:py-20 mx-4 lg:mx-20 bg-[#f5f3f0]" ref={ref}>
+      <div className="max-w-6xl mx-auto px-4 lg:px-6">
         {/* Title */}
         <motion.h2 
-          className="text-4xl lg:text-5xl font-bold text-center text-gray-900 mb-16"
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          variants={titleVariants}
+          className="text-3xl lg:text-5xl font-bold text-center text-gray-900 mb-8 lg:mb-16"
+          initial={{ opacity: 0, y: -30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
+          transition={{ duration: 0.6 }}
         >
           {t('title')}
         </motion.h2>
 
         {/* Table */}
         <motion.div 
-          className="bg-[#f5f3f0]"
+          className="bg-white rounded-lg shadow-sm overflow-hidden"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
           {/* Header Row */}
           <motion.div 
-            className="grid grid-cols-4 gap-4 pb-4 border-b border-gray-300"
+            className="grid grid-cols-4 gap-4 px-4 py-4 bg-gray-50 border-b border-gray-300"
             variants={rowVariants}
           >
-            <div className="text-sm font-semibold text-gray-700">{t('columnCategory')}</div>
             <div className="text-sm font-semibold text-gray-700">{t('columnDescription')}</div>
-            <div className="text-sm font-semibold text-gray-700">{t('columnYourData')}</div>
+            <div className="text-sm font-semibold text-gray-700">{t('columnNotes')}</div>
+            <div className="text-sm font-semibold text-gray-700">{t('columnValue')}</div>
             <div className="text-sm font-semibold text-gray-700">{t('columnCost')}</div>
           </motion.div>
 
-          {/* Frequency Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('frequencyLabel')}</div>
-            <div className="text-sm text-gray-500">{t('frequencyDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={frequency || ''}
-                onChange={handleInputChange(setFrequency)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={frequency || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Work Full-time Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('workFullTimeLabel')}</div>
-            <div className="text-sm text-gray-500">{t('workFullTimeDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={workFullTime || ''}
-                onChange={handleInputChange(setWorkFullTime)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={workFullTime || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Work B2B/UoD Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('workB2BLabel')}</div>
-            <div className="text-sm text-gray-500">{t('workB2BDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={workB2B || ''}
-                onChange={handleInputChange(setWorkB2B)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={workB2B || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Freelance Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('freelanceLabel')}</div>
-            <div className="text-sm text-gray-500">{t('freelanceDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={freelance || ''}
-                onChange={handleInputChange(setFreelance)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={freelance || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Medicines Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('medicinesLabel')}</div>
-            <div className="text-sm text-gray-500">{t('medicinesDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={medicines || ''}
-                onChange={handleInputChange(setMedicines)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={medicines || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Lost Pleasures Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-300"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('lostPleasuresLabel')}</div>
-            <div className="text-sm text-gray-500">{t('lostPleasuresDesc')}</div>
-            <div>
-              <input
-                type="number"
-                min="0"
-                value={lostPleasures || ''}
-                onChange={handleInputChange(setLostPleasures)}
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
-              />
-            </div>
-            <div>
-              <input
-                type="text"
-                value={lostPleasures || ''}
-                readOnly
-                placeholder={t('placeholder')}
-                className="w-full px-4 py-2.5 bg-white border border-gray-200 rounded text-sm text-gray-600"
-              />
-            </div>
-          </motion.div>
-
-          {/* Cost 1 Day Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={resultVariants}
-          >
-            <div className="font-semibold text-gray-900 uppercase text-sm">{t('cost1DayLabel')}</div>
-            <div className="text-sm text-gray-500">{t('cost1DayDesc')}</div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={costPerDay}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(costPerDay)}
+          <div className="px-4">
+            {/* SECTION 1: BASE DATA */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-0 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section1Title')}</h3>
             </motion.div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={`cost-${costPerDay}`}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(costPerDay)}
+            
+            {/* Monthly Net Salary */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('monthlyNetSalaryLabel')}</div>
+              <div className="text-sm text-gray-500">{t('monthlyNetSalaryDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={monthlyNetSalary || ''}
+                  onChange={handleInputChange(setMonthlyNetSalary)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
             </motion.div>
-          </motion.div>
 
-          {/* Monthly Cost Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={resultVariants}
-          >
-            <div className="font-semibold text-gray-900 uppercase text-sm">{t('monthlyCostLabel')}</div>
-            <div className="text-sm text-gray-500">{t('monthlyCostDesc')}</div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={monthlyCost}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(monthlyCost)}
+            {/* Work Days Per Month */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('workDaysLabel')}</div>
+              <div className="text-sm text-gray-500">{t('workDaysDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={workDaysPerMonth || ''}
+                  onChange={handleInputChange(setWorkDaysPerMonth)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">({t('workDaysNote')})</div>
             </motion.div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={`monthly-${monthlyCost}`}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(monthlyCost)}
-            </motion.div>
-          </motion.div>
 
-          {/* Annual Cost Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-300"
-            variants={resultVariants}
-          >
-            <div className="font-semibold text-gray-900 uppercase text-sm">{t('annualCostLabel')}</div>
-            <div className="text-sm text-gray-500">{t('annualCostDesc')}</div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={annualCost}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(annualCost)}
+            {/* Daily Rate (calculated) */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('dailyRateLabel')}</div>
+              <div></div>
+              <div className="font-medium text-gray-700">{formatCurrency(dailyRate)}</div>
+              <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
             </motion.div>
-            <motion.div 
-              className="font-semibold text-gray-900"
-              key={`annual-${annualCost}`}
-              initial={{ scale: 1.1, color: '#F79155' }}
-              animate={{ scale: 1, color: '#111827' }}
-              transition={{ duration: 0.3 }}
-            >
-              {formatCurrency(annualCost)}
-            </motion.div>
-          </motion.div>
 
-          {/* Investment Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-5 border-b border-gray-200"
-            variants={rowVariants}
-          >
-            <div className="font-medium text-gray-900">{t('investmentLabel')}</div>
-            <div className="text-sm text-gray-500">{t('investmentDesc')}</div>
-            <div className="font-medium text-gray-900">{formatCurrency(investmentAmount)}</div>
-            <div className="font-medium text-gray-900">{formatCurrency(investmentAmount)}</div>
-          </motion.div>
+            {/* Hourly Rate (calculated) */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('hourlyRateLabel')}</div>
+              <div></div>
+              <div className="font-medium text-gray-700">{formatCurrency(hourlyRate)}</div>
+              <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
+            </motion.div>
 
-          {/* Return Row */}
-          <motion.div 
-            className="grid grid-cols-4 gap-4 py-6"
-            variants={resultVariants}
-          >
-            <div className="font-bold text-gray-900 uppercase text-sm">{t('returnLabel')}</div>
-            <div className="text-sm text-gray-500">{t('returnDesc')}</div>
-            <motion.div 
-              className="font-bold text-2xl text-[#E8915A]"
-              key={roi}
-              initial={{ scale: 1.2 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.4, type: 'spring' }}
-            >
-              {roi.toFixed(1)} {t('migraineDays')}
+            {/* SECTION 2: EXTRA WORK */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section2Title')}</h3>
             </motion.div>
-            <motion.div 
-              className="font-bold text-2xl text-[#E8915A]"
-              key={`roi-${roi}`}
-              initial={{ scale: 1.2 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.4, type: 'spring' }}
-            >
-              {roi.toFixed(1)} {t('migraineDays')}
+
+            {/* Extra Work Hourly Rate */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('extraWorkRateLabel')}</div>
+              <div className="text-sm text-gray-500">{t('extraWorkRateDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={extraWorkHourlyRate || ''}
+                  onChange={handleInputChange(setExtraWorkHourlyRate)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
             </motion.div>
-          </motion.div>
+
+            {/* Extra Work Hours Per Day */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('extraWorkHoursLabel')}</div>
+              <div className="text-sm text-gray-500">{t('extraWorkHoursDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={extraWorkHoursPerDay || ''}
+                  onChange={handleInputChange(setExtraWorkHoursPerDay)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* SECTION 3: TIME & WORK COSTS */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section3Title')}</h3>
+            </motion.div>
+
+            {/* Migraine Days Per Month */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('migraineDaysLabel')}</div>
+              <div className="text-sm text-gray-500">{t('migraineDaysDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={migraineDaysPerMonth || ''}
+                  onChange={handleInputChange(setMigraineDaysPerMonth)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Sick Leave Days */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('sickLeaveDaysLabel')}</div>
+              <div className="text-sm text-gray-500">{t('sickLeaveDaysDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={sickLeaveDays || ''}
+                  onChange={handleInputChange(setSickLeaveDays)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-sm text-gray-600">{formatCurrency(sickLeaveIncomeLoss)}</div>
+            </motion.div>
+
+            {/* Extra Work Income Loss (calculated) */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('extraWorkLossLabel')}</div>
+              <div></div>
+              <div className="font-medium text-gray-700">{formatCurrency(extraWorkIncomeLoss)}</div>
+              <div className="text-xs text-gray-400 flex items-center">({t('extraWorkLossNote')})</div>
+            </motion.div>
+
+            {/* Catch Up Hours */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('catchUpHoursLabel')}</div>
+              <div className="text-sm text-gray-500">{t('catchUpHoursDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={catchUpHours || ''}
+                  onChange={handleInputChange(setCatchUpHours)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-sm text-gray-600">{formatCurrency(catchUpTimeCost)}</div>
+            </motion.div>
+
+            {/* SECTION 4: DIRECT EXPENSES */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section4Title')}</h3>
+            </motion.div>
+
+            {/* Emergency Expenses */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('emergencyExpensesLabel')}</div>
+              <div className="text-sm text-gray-500">{t('emergencyExpensesDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={emergencyExpenses || ''}
+                  onChange={handleInputChange(setEmergencyExpenses)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-sm text-gray-600">{formatCurrency(totalEmergencyExpenses)}</div>
+            </motion.div>
+
+            {/* Food Delivery */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('foodDeliveryLabel')}</div>
+              <div></div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={foodDelivery || ''}
+                  onChange={handleInputChange(setFoodDelivery)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Coffee */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('coffeeLabel')}</div>
+              <div></div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={coffee || ''}
+                  onChange={handleInputChange(setCoffee)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Taxi */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('taxiLabel')}</div>
+              <div></div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={taxi || ''}
+                  onChange={handleInputChange(setTaxi)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Snacks */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('snacksLabel')}</div>
+              <div></div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={snacks || ''}
+                  onChange={handleInputChange(setSnacks)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Acute Medication */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('acuteMedicationLabel')}</div>
+              <div className="text-sm text-gray-500">{t('acuteMedicationDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={acuteMedicationCost || ''}
+                  onChange={handleInputChange(setAcuteMedicationCost)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Prophylactic Medication */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('prophylacticMedicationLabel')}</div>
+              <div className="text-sm text-gray-500">{t('prophylacticMedicationDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={prophylacticMedicationCost || ''}
+                  onChange={handleInputChange(setProphylacticMedicationCost)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Doctor Visit Hours */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('doctorVisitHoursLabel')}</div>
+              <div className="text-sm text-gray-500">{t('doctorVisitHoursDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={doctorVisitHours || ''}
+                  onChange={handleInputChange(setDoctorVisitHours)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-sm text-gray-600">{formatCurrency(doctorTimeCost)}</div>
+            </motion.div>
+
+            {/* Travel Time Hours */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('travelTimeLabel')}</div>
+              <div className="text-sm text-gray-500">{t('travelTimeDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={travelTimeHours || ''}
+                  onChange={handleInputChange(setTravelTimeHours)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* SECTION 5: EMOTIONAL COSTS */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section5Title')}</h3>
+            </motion.div>
+
+            {/* Lost Opportunities */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('lostOpportunitiesLabel')}</div>
+              <div className="text-sm text-gray-500">{t('lostOpportunitiesDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={lostOpportunitiesCost || ''}
+                  onChange={handleInputChange(setLostOpportunitiesCost)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-sm text-gray-600">{formatCurrency(lostOpportunitiesCost)}</div>
+            </motion.div>
+
+            {/* Affected People Count */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('affectedPeopleLabel')}</div>
+              <div className="text-sm text-gray-500">{t('affectedPeopleDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={affectedPeopleCount || ''}
+                  onChange={handleInputChange(setAffectedPeopleCount)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div className="text-xs text-gray-400 flex items-center">({t('infoOnly')})</div>
+            </motion.div>
+
+            {/* MONTHLY SUMMARY */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('summaryTitle')}</h3>
+            </motion.div>
+
+            {/* Total Monthly Cost */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 bg-orange-50" variants={rowVariants}>
+              <div className="font-semibold text-sm uppercase text-orange-600">{t('totalMonthlyCostLabel')}</div>
+              <div></div>
+              <motion.div 
+                className="font-bold text-2xl text-orange-600"
+                key={totalMonthlyCost}
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {formatCurrency(totalMonthlyCost)}
+              </motion.div>
+              <div></div>
+            </motion.div>
+
+            {/* Cost Per Migraine Day */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('costPerDayLabel')}</div>
+              <div></div>
+              <div className="font-medium text-gray-700">{formatCurrency(costPerMigraineDay)}</div>
+              <div></div>
+            </motion.div>
+
+            {/* ROI ANALYSIS */}
+            <motion.div className="bg-gray-100 px-4 py-3 mt-6 -mx-4" variants={sectionHeaderVariants}>
+              <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('roiTitle')}</h3>
+            </motion.div>
+
+            {/* Glasses Price */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('glassesPriceLabel')}</div>
+              <div></div>
+              <div className="font-medium text-gray-700">{formatCurrency(glassesPrice)}</div>
+              <div className="text-xs text-gray-400">(PLN)</div>
+            </motion.div>
+
+            {/* Break Even Days */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 bg-green-50" variants={rowVariants}>
+              <div className="font-semibold text-green-700 text-sm">{t('breakEvenLabel')}</div>
+              <div></div>
+              <motion.div 
+                className="font-bold text-xl text-green-600"
+                key={breakEvenDays}
+                initial={{ scale: 1.1 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {breakEvenDays.toFixed(1)} {t('days')}
+              </motion.div>
+              <div className="text-xs text-green-600">({t('breakEvenNote')})</div>
+            </motion.div>
+          </div>
         </motion.div>
       </div>
     </section>
