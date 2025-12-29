@@ -201,6 +201,8 @@
     "extraWorkRateDesc": "wpisz wartość lub zostaw puste",
     "extraWorkHoursLabel": "Liczba godzin dziennie",
     "extraWorkHoursDesc": "wpisz wartość lub zostaw puste",
+    "lostMonthlyHoursLabel": "Utracone godziny miesięcznie z powodu migreny",
+    "lostMonthlyHoursDesc": "wpisz wartość lub zostaw puste",
     
     "section3Title": "SEKCJA 3: KOSZTY CZASU I PRACY",
     "migraineDaysLabel": "Liczba dni migrenowych w miesiącu",

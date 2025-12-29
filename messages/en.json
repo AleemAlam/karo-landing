@@ -205,6 +205,8 @@
     "extraWorkRateDesc": "enter value or leave empty",
     "extraWorkHoursLabel": "Hours per day",
     "extraWorkHoursDesc": "enter value or leave empty",
+    "lostMonthlyHoursLabel": "Lost monthly hours due to migraine",
+    "lostMonthlyHoursDesc": "enter value or leave empty",
     
     "section3Title": "SECTION 3: TIME & WORK COSTS",
     "migraineDaysLabel": "Migraine days per month",

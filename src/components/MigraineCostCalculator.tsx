@@ -41,6 +41,7 @@ export default function MigraineCostCalculator() {
   // SECTION 2: Extra Work
   const [extraWorkHourlyRate, setExtraWorkHourlyRate] = useState<number>(50);
   const [extraWorkHoursPerDay, setExtraWorkHoursPerDay] = useState<number>(4);
+  const [lostMonthlyHours, setLostMonthlyHours] = useState<number>(0);
 
   // SECTION 3: Time & Work Costs
   const [migraineDaysPerMonth, setMigraineDaysPerMonth] = useState<number>(4);
@@ -77,8 +78,8 @@ export default function MigraineCostCalculator() {
   }, [dailyRate, sickLeaveDays]);
 
   const extraWorkIncomeLoss = useMemo(() => {
-    return extraWorkHourlyRate * extraWorkHoursPerDay * migraineDaysPerMonth;
-  }, [extraWorkHourlyRate, extraWorkHoursPerDay, migraineDaysPerMonth]);
+    return extraWorkHourlyRate * lostMonthlyHours;
+  }, [extraWorkHourlyRate, lostMonthlyHours]);
 
   const catchUpTimeCost = useMemo(() => {
     return catchUpHours * hourlyRate;
@@ -93,11 +94,12 @@ export default function MigraineCostCalculator() {
   }, [doctorVisitHours, travelTimeHours, hourlyRate]);
 
   const totalMonthlyCost = useMemo(() => {
+    // Note: Emotional costs (Section 5) are excluded from this total
     return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost + 
            (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost + 
-           doctorTimeCost + lostOpportunitiesCost;
+           doctorTimeCost;
   }, [sickLeaveIncomeLoss, extraWorkIncomeLoss, catchUpTimeCost, totalEmergencyExpenses, 
-      migraineDaysPerMonth, prophylacticMedicationCost, doctorTimeCost, lostOpportunitiesCost]);
+      migraineDaysPerMonth, prophylacticMedicationCost, doctorTimeCost]);
 
   const costPerMigraineDay = useMemo(() => {
     if (migraineDaysPerMonth === 0) return 0;
@@ -249,6 +251,23 @@ export default function MigraineCostCalculator() {
                   min="0"
                   value={extraWorkHoursPerDay || ''}
                   onChange={handleInputChange(setExtraWorkHoursPerDay)}
+                  placeholder={t('placeholder')}
+                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                />
+              </div>
+              <div></div>
+            </motion.div>
+
+            {/* Lost Monthly Hours */}
+            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-sm">{t('lostMonthlyHoursLabel')}</div>
+              <div className="text-sm text-gray-500">{t('lostMonthlyHoursDesc')}</div>
+              <div>
+                <input
+                  type="number"
+                  min="0"
+                  value={lostMonthlyHours || ''}
+                  onChange={handleInputChange(setLostMonthlyHours)}
                   placeholder={t('placeholder')}
                   className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
                 />
