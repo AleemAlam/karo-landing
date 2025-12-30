@@ -152,9 +152,9 @@ export default function MigraineCostCalculator() {
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
-          {/* Header Row */}
+          {/* Header Row - Hidden on mobile */}
           <motion.div 
-            className="grid grid-cols-4 gap-4 px-4 py-4 bg-gray-50 border-b border-gray-300"
+            className="hidden lg:grid grid-cols-4 gap-4 px-4 py-4 bg-gray-50 border-b border-gray-300"
             variants={rowVariants}
           >
             <div className="text-sm font-semibold text-gray-700">{t('columnDescription')}</div>
@@ -170,9 +170,9 @@ export default function MigraineCostCalculator() {
             </motion.div>
             
             {/* Monthly Net Salary */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('monthlyNetSalaryLabel')}</div>
-              <div className="text-sm text-gray-500">{t('monthlyNetSalaryDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('monthlyNetSalaryLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('monthlyNetSalaryDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -180,16 +180,16 @@ export default function MigraineCostCalculator() {
                   value={monthlyNetSalary || ''}
                   onChange={handleInputChange(setMonthlyNetSalary)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
-              <div></div>
+              <div className="hidden lg:block"></div>
             </motion.div>
 
             {/* Work Days Per Month */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('workDaysLabel')}</div>
-              <div className="text-sm text-gray-500">{t('workDaysDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('workDaysLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('workDaysDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -197,23 +197,23 @@ export default function MigraineCostCalculator() {
                   value={workDaysPerMonth || ''}
                   onChange={handleInputChange(setWorkDaysPerMonth)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-xs text-gray-400 flex items-center">({t('workDaysNote')})</div>
             </motion.div>
 
             {/* Daily Rate (calculated) */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('dailyRateLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('dailyRateLabel')}</div>
               <div></div>
               <div className="font-medium text-gray-700">{formatCurrency(dailyRate)}</div>
               <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
             </motion.div>
 
             {/* Hourly Rate (calculated) */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('hourlyRateLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('hourlyRateLabel')}</div>
               <div></div>
               <div className="font-medium text-gray-700">{formatCurrency(hourlyRate)}</div>
               <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
@@ -225,9 +225,9 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Extra Work Hourly Rate */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('extraWorkRateLabel')}</div>
-              <div className="text-sm text-gray-500">{t('extraWorkRateDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkRateLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('extraWorkRateDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -235,16 +235,16 @@ export default function MigraineCostCalculator() {
                   value={extraWorkHourlyRate || ''}
                   onChange={handleInputChange(setExtraWorkHourlyRate)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Extra Work Hours Per Day */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('extraWorkHoursLabel')}</div>
-              <div className="text-sm text-gray-500">{t('extraWorkHoursDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkHoursLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('extraWorkHoursDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -252,16 +252,16 @@ export default function MigraineCostCalculator() {
                   value={extraWorkHoursPerDay || ''}
                   onChange={handleInputChange(setExtraWorkHoursPerDay)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Lost Monthly Hours */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('lostMonthlyHoursLabel')}</div>
-              <div className="text-sm text-gray-500">{t('lostMonthlyHoursDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('lostMonthlyHoursLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('lostMonthlyHoursDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -269,7 +269,7 @@ export default function MigraineCostCalculator() {
                   value={lostMonthlyHours || ''}
                   onChange={handleInputChange(setLostMonthlyHours)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
@@ -281,9 +281,9 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Migraine Days Per Month */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('migraineDaysLabel')}</div>
-              <div className="text-sm text-gray-500">{t('migraineDaysDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('migraineDaysLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('migraineDaysDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -291,16 +291,16 @@ export default function MigraineCostCalculator() {
                   value={migraineDaysPerMonth || ''}
                   onChange={handleInputChange(setMigraineDaysPerMonth)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Sick Leave Days */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('sickLeaveDaysLabel')}</div>
-              <div className="text-sm text-gray-500">{t('sickLeaveDaysDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('sickLeaveDaysLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('sickLeaveDaysDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -308,24 +308,24 @@ export default function MigraineCostCalculator() {
                   value={sickLeaveDays || ''}
                   onChange={handleInputChange(setSickLeaveDays)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-sm text-gray-600">{formatCurrency(sickLeaveIncomeLoss)}</div>
             </motion.div>
 
             {/* Extra Work Income Loss (calculated) */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('extraWorkLossLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkLossLabel')}</div>
               <div></div>
               <div className="font-medium text-gray-700">{formatCurrency(extraWorkIncomeLoss)}</div>
               <div className="text-xs text-gray-400 flex items-center">({t('extraWorkLossNote')})</div>
             </motion.div>
 
             {/* Catch Up Hours */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('catchUpHoursLabel')}</div>
-              <div className="text-sm text-gray-500">{t('catchUpHoursDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('catchUpHoursLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('catchUpHoursDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -333,7 +333,7 @@ export default function MigraineCostCalculator() {
                   value={catchUpHours || ''}
                   onChange={handleInputChange(setCatchUpHours)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-sm text-gray-600">{formatCurrency(catchUpTimeCost)}</div>
@@ -345,9 +345,9 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Emergency Expenses */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('emergencyExpensesLabel')}</div>
-              <div className="text-sm text-gray-500">{t('emergencyExpensesDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('emergencyExpensesLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('emergencyExpensesDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -355,15 +355,15 @@ export default function MigraineCostCalculator() {
                   value={emergencyExpenses || ''}
                   onChange={handleInputChange(setEmergencyExpenses)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-sm text-gray-600">{formatCurrency(totalEmergencyExpenses)}</div>
             </motion.div>
 
             {/* Food Delivery */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('foodDeliveryLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('foodDeliveryLabel')}</div>
               <div></div>
               <div>
                 <input
@@ -372,15 +372,15 @@ export default function MigraineCostCalculator() {
                   value={foodDelivery || ''}
                   onChange={handleInputChange(setFoodDelivery)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Coffee */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('coffeeLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('coffeeLabel')}</div>
               <div></div>
               <div>
                 <input
@@ -389,15 +389,15 @@ export default function MigraineCostCalculator() {
                   value={coffee || ''}
                   onChange={handleInputChange(setCoffee)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Taxi */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('taxiLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('taxiLabel')}</div>
               <div></div>
               <div>
                 <input
@@ -406,15 +406,15 @@ export default function MigraineCostCalculator() {
                   value={taxi || ''}
                   onChange={handleInputChange(setTaxi)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Snacks */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('snacksLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('snacksLabel')}</div>
               <div></div>
               <div>
                 <input
@@ -423,16 +423,16 @@ export default function MigraineCostCalculator() {
                   value={snacks || ''}
                   onChange={handleInputChange(setSnacks)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Acute Medication */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('acuteMedicationLabel')}</div>
-              <div className="text-sm text-gray-500">{t('acuteMedicationDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('acuteMedicationLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('acuteMedicationDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -440,16 +440,16 @@ export default function MigraineCostCalculator() {
                   value={acuteMedicationCost || ''}
                   onChange={handleInputChange(setAcuteMedicationCost)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Prophylactic Medication */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('prophylacticMedicationLabel')}</div>
-              <div className="text-sm text-gray-500">{t('prophylacticMedicationDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('prophylacticMedicationLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('prophylacticMedicationDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -457,16 +457,16 @@ export default function MigraineCostCalculator() {
                   value={prophylacticMedicationCost || ''}
                   onChange={handleInputChange(setProphylacticMedicationCost)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
             </motion.div>
 
             {/* Doctor Visit Hours */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('doctorVisitHoursLabel')}</div>
-              <div className="text-sm text-gray-500">{t('doctorVisitHoursDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('doctorVisitHoursLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('doctorVisitHoursDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -474,16 +474,16 @@ export default function MigraineCostCalculator() {
                   value={doctorVisitHours || ''}
                   onChange={handleInputChange(setDoctorVisitHours)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-sm text-gray-600">{formatCurrency(doctorTimeCost)}</div>
             </motion.div>
 
             {/* Travel Time Hours */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('travelTimeLabel')}</div>
-              <div className="text-sm text-gray-500">{t('travelTimeDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('travelTimeLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('travelTimeDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -491,7 +491,7 @@ export default function MigraineCostCalculator() {
                   value={travelTimeHours || ''}
                   onChange={handleInputChange(setTravelTimeHours)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div></div>
@@ -503,9 +503,9 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Lost Opportunities */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('lostOpportunitiesLabel')}</div>
-              <div className="text-sm text-gray-500">{t('lostOpportunitiesDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('lostOpportunitiesLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('lostOpportunitiesDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -513,16 +513,16 @@ export default function MigraineCostCalculator() {
                   value={lostOpportunitiesCost || ''}
                   onChange={handleInputChange(setLostOpportunitiesCost)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-sm text-gray-600">{formatCurrency(lostOpportunitiesCost)}</div>
             </motion.div>
 
             {/* Affected People Count */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('affectedPeopleLabel')}</div>
-              <div className="text-sm text-gray-500">{t('affectedPeopleDesc')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('affectedPeopleLabel')}</div>
+              <div className="hidden lg:block text-sm text-gray-500">{t('affectedPeopleDesc')}</div>
               <div>
                 <input
                   type="number"
@@ -530,7 +530,7 @@ export default function MigraineCostCalculator() {
                   value={affectedPeopleCount || ''}
                   onChange={handleInputChange(setAffectedPeopleCount)}
                   placeholder={t('placeholder')}
-                  className="w-full px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
+                  className="w-full px-2 lg:px-3 py-2 bg-white border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
                 />
               </div>
               <div className="text-xs text-gray-400 flex items-center">({t('infoOnly')})</div>
@@ -542,7 +542,7 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Total Monthly Cost */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 bg-orange-50" variants={rowVariants}>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 bg-orange-50" variants={rowVariants}>
               <div className="font-semibold text-sm uppercase text-orange-600">{t('totalMonthlyCostLabel')}</div>
               <div></div>
               <motion.div 
@@ -558,8 +558,8 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Cost Per Migraine Day */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('costPerDayLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('costPerDayLabel')}</div>
               <div></div>
               <div className="font-medium text-gray-700">{formatCurrency(costPerMigraineDay)}</div>
               <div></div>
@@ -571,15 +571,15 @@ export default function MigraineCostCalculator() {
             </motion.div>
 
             {/* Glasses Price */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 border-b border-gray-200" variants={rowVariants}>
-              <div className="font-medium text-gray-900 text-sm">{t('glassesPriceLabel')}</div>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
+              <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('glassesPriceLabel')}</div>
               <div></div>
               <div className="font-medium text-gray-700">{formatCurrency(glassesPrice)}</div>
               <div className="text-xs text-gray-400">(PLN)</div>
             </motion.div>
 
             {/* Break Even Days */}
-            <motion.div className="grid grid-cols-4 gap-4 py-4 bg-green-50" variants={rowVariants}>
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 bg-green-50" variants={rowVariants}>
               <div className="font-semibold text-green-700 text-sm">{t('breakEvenLabel')}</div>
               <div></div>
               <motion.div 

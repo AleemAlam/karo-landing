@@ -21,7 +21,91 @@ export default function PainPointsSection() {
 
   return (
     <section className="bg-white overflow-hidden">
-      <div className="px-40 mx-auto">
+      {/* Mobile Layout */}
+      <div className="lg:hidden px-4 py-8">
+        {/* First Section - Image and Content */}
+        <div className="space-y-6">
+          {/* Heading */}
+          <h2 className="text-2xl md:text-3xl font-extrabold leading-tight text-black">
+            {t('heading1')} <span className="text-orange-500">{t('heading1Highlight')}</span>
+          </h2>
+
+          {/* Image */}
+          <div className="w-full">
+            <Image
+              src="/frame-24.png"
+              alt="Woman with headache"
+              width={400}
+              height={350}
+              className="object-contain w-full h-auto"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="space-y-4">
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {t('intro')}
+            </p>
+
+            <div>
+              <p className="text-gray-700 text-sm font-medium mb-2">{t('guessWhat')}</p>
+              <ul className="space-y-2">
+                {frustrationPoints.map((point, index) => (
+                  <li key={index} className="flex items-start gap-2 text-[#565656] text-sm">
+                    <span className="text-gray-400 mt-0.5">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <p className="text-gray-800 font-semibold text-sm">{t('stillHurts')}</p>
+          </div>
+        </div>
+
+        {/* Second Section */}
+        <div className="space-y-6 mt-8">
+          {/* Heading */}
+          <h2 className="text-2xl md:text-3xl font-bold leading-tight">
+            <span className="text-black">{t('heading2Line1')}</span>
+            <br />
+            <span className="text-orange-500">{t('heading2Line2')}</span>
+          </h2>
+
+          {/* Image */}
+          <div className="w-full">
+            <Image
+              src="/frame-25.png"
+              alt="Woman frustrated with headache"
+              width={400}
+              height={200}
+              className="object-contain w-full h-auto"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="space-y-4">
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {t('description2')}
+            </p>
+
+            <div>
+              <p className="text-gray-800 font-semibold text-sm mb-2">{t('goodNewsTitle')}</p>
+              <ul className="space-y-2">
+                {goodNewsPoints.map((point, index) => (
+                  <li key={index} className="flex items-start gap-2 text-[#565656] text-sm">
+                    <span className="text-gray-400">•</span>
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:block px-40 mx-auto">
         {/* First Row - Image Left, Content Right */}
         <div className="flex items-center gap-24">
           {/* Left Image */}
@@ -103,4 +187,3 @@ export default function PainPointsSection() {
     </section>
   );
 }
-

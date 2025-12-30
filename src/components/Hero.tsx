@@ -166,10 +166,10 @@ export default function Hero() {
 
       {/* Desktop Layout */}
       <div className="hidden lg:block px-8 xl:px-40 mx-auto">
-        <div className="flex items-center">
+        <div className="flex items-center gap-8">
           {/* Left Content */}
           <motion.div
-            className="space-y-8"
+            className="space-y-8 flex-1 max-w-[55%]"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -250,7 +250,7 @@ export default function Hero() {
 
           {/* Right Content - Images */}
           <motion.div 
-            className="relative flex justify-center lg:justify-end flex-1"
+            className="relative flex justify-end flex-1 min-w-[400px] overflow-visible"
             variants={imageVariants}
             initial="hidden"
             animate="visible"

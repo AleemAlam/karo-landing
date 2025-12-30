@@ -7,21 +7,21 @@ export default function Footer() {
   const t = useTranslations('footer');
 
   return (
-    <footer className="py-12 bg-white border-t border-gray-100">
-      <div className="px-40 mx-auto text-center">
+    <footer className="py-8 lg:py-12 bg-white border-t border-gray-100">
+      <div className="px-4 lg:px-40 mx-auto text-center">
         {/* Logo */}
-        <div className="mb-6">
+        <div className="mb-4 lg:mb-6">
           <Image
             src="/fovia-logo.png"
             alt="Fovea Blue"
-            width={180}
-            height={40}
-            className="mx-auto object-contain"
+            width={140}
+            height={32}
+            className="mx-auto object-contain lg:w-[180px] lg:h-[40px]"
           />
         </div>
 
         {/* Social Icons */}
-        <div className="flex items-center justify-center gap-4 mb-6">
+        <div className="flex items-center justify-center gap-4 mb-4 lg:mb-6">
           {/* Facebook */}
           <a 
             href="https://facebook.com" 
@@ -60,7 +60,7 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <p className="text-gray-500 text-sm">
+        <p className="text-gray-500 text-xs lg:text-sm">
           {t('copyright')}
         </p>
       </div>

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
-import { FloatElement, HoverScale } from './MotionWrapper';
+import { HoverScale } from './MotionWrapper';
 
 export default function CreatorSection() {
   const t = useTranslations('creator');
@@ -61,8 +61,101 @@ export default function CreatorSection() {
   };
 
   return (
-    <section className="bg-[#f7f5f2] max-h-[678px]" ref={ref}>
-      <div className="px-40 mx-auto">
+    <section className="bg-[#f7f5f2] lg:max-h-[678px]" ref={ref}>
+      {/* Mobile Layout */}
+      <div className="lg:hidden px-4 py-12">
+        <motion.div
+          className="flex flex-col items-center"
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+          variants={containerVariants}
+        >
+          {/* Book Icon */}
+          <motion.div variants={itemVariants} className="mb-4">
+            <Image
+              src="/Open-book.png"
+              alt="Book Icon"
+              width={48}
+              height={48}
+              className="object-contain"
+            />
+          </motion.div>
+
+          {/* Heading */}
+          <motion.h2 
+            className="text-2xl md:text-3xl font-bold text-black leading-tight text-center mb-4"
+            variants={itemVariants}
+          >
+            {t('heading')} <br/><span className="text-orange-500">{t('headingHighlight')}</span>
+          </motion.h2>
+
+          {/* Subtitle */}
+          <motion.p 
+            className="text-lg font-semibold text-black text-center mb-4"
+            variants={itemVariants}
+          >
+            {t('subtitle')}
+          </motion.p>
+
+          {/* Images */}
+          <motion.div 
+            className="relative w-full max-w-[320px] mb-6"
+            variants={imageVariants}
+          >
+            <Image
+              src="/karo-1.png"
+              alt="Program creator"
+              width={320}
+              height={400}
+              className="object-contain w-full h-auto"
+            />
+            {/* Badge */}
+            <motion.div 
+              className="absolute top-4 right-4 w-[70px] h-[70px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
+              variants={badgeVariants}
+            >
+              <span className="text-gray-800 text-xs font-medium text-center leading-tight px-1 whitespace-pre-line">
+                {t('badge')}
+              </span>
+            </motion.div>
+          </motion.div>
+
+          {/* Description */}
+          <motion.p 
+            className="text-gray-600 text-sm leading-relaxed text-center mb-6"
+            variants={itemVariants}
+          >
+            {t('description')}
+          </motion.p>
+
+          {/* CTA Button */}
+          <motion.div variants={itemVariants} className="w-full">
+            <HoverScale>
+              <button className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm">
+                {t('button')}
+                <motion.svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="h-5 w-5" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor"
+                  whileHover={{ x: 5 }}
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth={2} 
+                    d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                  />
+                </motion.svg>
+              </button>
+            </HoverScale>
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden lg:block px-40 mx-auto">
         <motion.div
           className="flex items-center gap-16"
           initial="hidden"
@@ -98,18 +191,16 @@ export default function CreatorSection() {
               />
             </motion.div>
             {/* Floating circular badge */}
-            <FloatElement>
-              <motion.div 
-                className="absolute -top-[410px] right-[140px] w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
-                variants={badgeVariants}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-              >
-                <span className="text-gray-800 text-sm font-medium text-center leading-tight px-2 whitespace-pre-line">
-                  {t('badge')}
-                </span>
-              </motion.div>
-            </FloatElement>
+            <motion.div 
+              className="absolute -top-[410px] right-[140px] w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
+              variants={badgeVariants}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+            >
+              <span className="text-gray-800 text-sm font-medium text-center leading-tight px-2 whitespace-pre-line">
+                {t('badge')}
+              </span>
+            </motion.div>
           </motion.div>
 
           {/* Right Content */}

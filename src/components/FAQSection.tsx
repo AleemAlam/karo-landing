@@ -29,9 +29,71 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-20 bg-white mx-40">
-      <div className="px-20 mx-auto">
-        <div className="flex gap-20">
+    <section className="py-12 lg:py-20 bg-white mx-4 lg:mx-40">
+      <div className="px-4 lg:px-20 mx-auto">
+        {/* Mobile Layout - Stacked */}
+        <div className="lg:hidden">
+          {/* Title */}
+          <div className="mb-6 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-black leading-tight mb-2">
+              {t('title1')} {t('title2')}
+            </h2>
+            <p className="text-gray-500 text-sm">{t('subtitle')}</p>
+          </div>
+
+          {/* Accordion */}
+          <div>
+            {faqs.map((faq, index) => (
+              <div key={index} className="border-b border-gray-200">
+                <button
+                  onClick={() => toggleQuestion(index)}
+                  className="w-full py-4 flex items-start justify-between text-left cursor-pointer"
+                >
+                  <div className="flex items-start gap-3">
+                    <span className="text-orange-500 text-lg font-bold shrink-0">
+                      {openIndex === index ? '−' : '+'}
+                    </span>
+                    <span className="text-black font-medium text-sm">{faq.question}</span>
+                  </div>
+                </button>
+                
+                {/* Answer */}
+                {(openIndex === index || showAll) && (
+                  <div className="pb-4 pl-8 pr-2">
+                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Show All Link */}
+            <button
+              onClick={toggleShowAll}
+              className="mt-4 text-orange-500 font-medium flex items-center gap-2 cursor-pointer hover:text-orange-600 transition-colors text-sm"
+            >
+              {showAll ? t('collapseAll') : t('expandAll')}
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`h-4 w-4 transition-transform ${showAll ? 'rotate-90' : ''}`}
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Layout - Side by side */}
+        <div className="hidden lg:flex gap-20">
           {/* Left Side - Title */}
           <div className="w-1/3">
             <h2 className="text-4xl font-bold text-black leading-tight mb-2">
