@@ -67,9 +67,9 @@ export default function HowItWorksSection() {
 
   return (
     <section className="py-12 lg:py-20 bg-white" ref={ref}>
-      <div className="px-4 lg:px-40 mx-auto">
+      <div className="px-20 mx-auto">
         {/* Section Header */}
-        <motion.div 
+        <motion.div
           className="text-center mb-8 lg:mb-16"
           variants={headerVariants}
           initial="hidden"
@@ -84,21 +84,21 @@ export default function HowItWorksSection() {
         </motion.div>
 
         {/* Steps Grid - Single column on mobile, 3 columns on desktop */}
-        <motion.div 
+        <motion.div
           className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8 mb-8 lg:mb-12"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
           {steps.map((step, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               variants={cardVariants}
               whileHover={{ y: -10, transition: { duration: 0.3 } }}
               className="text-center"
             >
               {/* Image */}
-              <motion.div 
+              <motion.div
                 className="mb-4 lg:mb-6 overflow-hidden"
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
@@ -111,12 +111,12 @@ export default function HowItWorksSection() {
                   className="w-full h-[300px] lg:h-[450px] object-cover"
                 />
               </motion.div>
-              
+
               {/* Title */}
               <h3 className="text-xl lg:text-2xl font-bold text-black mb-2 lg:mb-4">
                 {step.title}
               </h3>
-              
+
               {/* Description */}
               <p className="text-gray-600 text-sm lg:text-[15px] leading-relaxed whitespace-pre-line">
                 {step.description}
@@ -126,7 +126,7 @@ export default function HowItWorksSection() {
         </motion.div>
 
         {/* CTA Button */}
-        <motion.div 
+        <motion.div
           className="text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
@@ -135,19 +135,19 @@ export default function HowItWorksSection() {
           <HoverScale scale={1.03}>
             <button className="w-full lg:w-auto bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 lg:px-8 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm lg:text-base">
               {t('button')}
-              <motion.svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-5 w-5" 
-                fill="none" 
-                viewBox="0 0 24 24" 
+              <motion.svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
                 whileHover={{ x: 5 }}
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </motion.svg>
             </button>

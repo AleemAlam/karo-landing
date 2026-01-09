@@ -43,7 +43,7 @@ export default function StatsSection() {
     <section className="bg-white lg:bg-[#f7f5f2] py-6 lg:py-8">
       {/* Mobile Layout - 2x2 Grid with dividers */}
       <div className="lg:hidden px-4">
-        <motion.div 
+        <motion.div
           ref={ref}
           className="grid grid-cols-2 gap-y-4"
           variants={containerVariants}
@@ -51,12 +51,12 @@ export default function StatsSection() {
           animate={isInView ? 'visible' : 'hidden'}
         >
           {stats.map((stat, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               variants={itemVariants}
               className={`text-center py-2 ${index % 2 === 0 ? 'border-r border-gray-200' : ''}`}
             >
-              <motion.p 
+              <motion.p
                 className="text-2xl font-light text-gray-700 mb-1"
                 initial={{ opacity: 0, scale: 0.5 }}
                 animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
@@ -71,21 +71,22 @@ export default function StatsSection() {
       </div>
 
       {/* Desktop Layout - Horizontal Row */}
-      <div className="hidden lg:block px-8 xl:px-40 mx-auto">
-        <motion.div 
+      <div className="hidden lg:block px-0 mx-auto">
+        <motion.div
+          ref={ref}
           className="flex items-center justify-between"
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
           {stats.map((stat, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               variants={itemVariants}
-              className="flex items-center"
+              className="flex items-center w-full"
             >
-              <div className="text-center flex-1 px-8">
-                <motion.p 
+              <div className="text-center flex-1">
+                <motion.p
                   className="text-3xl font-light text-gray-700 mb-1"
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
@@ -97,7 +98,7 @@ export default function StatsSection() {
               </div>
               {/* Divider - show for all except last item */}
               {index < stats.length - 1 && (
-                <motion.div 
+                <motion.div
                   className="h-12 w-px bg-gray-300 self-center"
                   initial={{ scaleY: 0 }}
                   animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}

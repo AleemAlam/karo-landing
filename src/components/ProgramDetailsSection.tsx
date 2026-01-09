@@ -51,11 +51,11 @@ export default function ProgramDetailsSection() {
   );
 
   return (
-    <section className="py-12 lg:py-20 bg-[#F3F3EF] mx-4 lg:mx-40">
-      <div className="px-4 lg:px-20 mx-auto">
+    <section className="py-20 bg-[#F3F3EF] mx-20">
+      <div className="px-20 mx-auto">
         {/* Section Header */}
         <div className="text-center mb-8 lg:mb-16">
-          <h2 className="text-2xl md:text-3xl lg:text-5xl font-bold text-black">
+          <h2 className="text-[42px] font-bold text-black">
             {t('heading')} <span className="text-orange-500">{t('headingHighlight')}</span> {t('headingEnd')}
           </h2>
         </div>

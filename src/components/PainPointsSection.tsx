@@ -105,9 +105,9 @@ export default function PainPointsSection() {
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden lg:block px-40 mx-auto">
+      <div className="px-20 mx-auto">
         {/* First Row - Image Left, Content Right */}
-        <div className="flex items-center gap-24">
+        <div className="flex items-center gap-10">
           {/* Left Image */}
           <div className="flex-1">
             <Image
@@ -120,8 +120,8 @@ export default function PainPointsSection() {
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 space-y-5 pt-12">
-            <h2 className="text-5xl font-extrabold leading-tight text-black lg:w-[90%]">
+          <div className="flex-1 z-10 -mt-12">
+            <h2 className="text-[40px] font-extrabold leading-tight text-black lg:w-[90%]">
               {t('heading1')} <span className="text-orange-500">{t('heading1Highlight')}</span>
             </h2>
 
@@ -149,7 +149,7 @@ export default function PainPointsSection() {
         <div className="flex items-end justify-baseline -mt-32">
           {/* Left Content */}
           <div className="flex-1 space-y-5 relative -top-[550px]">
-            <h2 className="text-5xl font-bold leading-tight min-w-[850px]">
+            <h2 className="text-[40px] font-bold leading-tight min-w-[850px]">
               <span className="text-black">{t('heading2Line1')}</span>
               <br />
               <span className="text-orange-500">{t('heading2Line2')}</span>
@@ -173,7 +173,7 @@ export default function PainPointsSection() {
           </div>
 
           {/* Right Image */}
-          <div className="shrink-0 relative -top-[80px] right-[450px]">
+          <div className="shrink-0 relative -top-[80px] right-[700px]">
             <Image
               src="/frame-25.png"
               alt="Woman frustrated with headache"

@@ -46,7 +46,7 @@
   "cta": {
     "heading": "Potrzebujesz nowego podejścia - podejścia,\nktóre rzeczywiście",
     "headingHighlight": "działa.",
-    "description": "Stworzyłam ten program dla ciebie ponieważ widzę, ile osób nie dostaje pomocy, ile osób traci czas i pieniądze na nieskuteczne leczenie. I ile osób nadal cierpi. Ten program pomógł mi zmniejszyć migreny o ponad 90%. Większość ludzi, którzy próbują tych metod odczuwa zmiany nawet w 1-2 tygodnie.",
+    "description": "Stworzyłam ten program dla ciebie ponieważ widzę, ile osób nie dostaje pomocy.\n ile osób traci czas i pieniądze na nieskuteczne leczenie. I ile osób nadal cierpi. Ten program pomógł mi zmniejszyć migreny o ponad 90%. Większość ludzi, którzy próbują tych metod odczuwa zmiany nawet w 1-2 tygodnie.",
     "guarantee": "A jeśli nie zadziała - oferuję Ci gwarancję zwrotu pieniędzy. I możesz zatrzymać prezent.",
     "button": "Jestem gotowa na życie bez bólu"
   },
@@ -185,7 +185,6 @@
     "columnValue": "Wartość",
     "columnCost": "Koszt (PLN)",
     "placeholder": "Wpisz wartość",
-    
     "section1Title": "SEKCJA 1: DANE BAZOWE",
     "monthlyNetSalaryLabel": "Miesięczne wynagrodzenie netto",
     "monthlyNetSalaryDesc": "wpisz wartość lub zostaw puste",
@@ -195,7 +194,6 @@
     "dailyRateLabel": "Stawka dzienna",
     "hourlyRateLabel": "Stawka godzinowa",
     "autoCalculated": "wyliczana automatycznie",
-    
     "section2Title": "SEKCJA 2: PRACA DODATKOWA",
     "extraWorkRateLabel": "Stawka godzinowa (praca dodatkowa)",
     "extraWorkRateDesc": "wpisz wartość lub zostaw puste",
@@ -203,7 +201,6 @@
     "extraWorkHoursDesc": "wpisz wartość lub zostaw puste",
     "lostMonthlyHoursLabel": "Utracone godziny miesięcznie z powodu migreny",
     "lostMonthlyHoursDesc": "wpisz wartość lub zostaw puste",
-    
     "section3Title": "SEKCJA 3: KOSZTY CZASU I PRACY",
     "migraineDaysLabel": "Liczba dni migrenowych w miesiącu",
     "migraineDaysDesc": "wpisz wartość lub zostaw puste",
@@ -213,7 +210,6 @@
     "extraWorkLossNote": "założenie: migrena w dzień pracy",
     "catchUpHoursLabel": "Czas na nadrabianie zaległości w pracy (h)",
     "catchUpHoursDesc": "wpisz wartość lub zostaw puste",
-    
     "section4Title": "SEKCJA 4: WYDATKI BEZPOŚREDNIE",
     "emergencyExpensesLabel": "Wydatki \"ratunkowe\" na 1 atak (suma)",
     "emergencyExpensesDesc": "wpisz wartość lub zostaw puste",
@@ -229,18 +225,15 @@
     "doctorVisitHoursDesc": "wpisz wartość lub zostaw puste",
     "travelTimeLabel": "Czas na dojazdy/wizyty (h miesięcznie)",
     "travelTimeDesc": "wpisz wartość lub zostaw puste",
-    
     "section5Title": "SEKCJA 5: KOSZTY EMOCJONALNE",
     "lostOpportunitiesLabel": "Wycena utraconych możliwości (PLN)",
     "lostOpportunitiesDesc": "wyjścia, relacje, hobby",
     "affectedPeopleLabel": "Liczba osób, na które wpływa choroba",
     "affectedPeopleDesc": "wpisz wartość lub zostaw puste",
     "infoOnly": "wynik informacyjny",
-    
     "summaryTitle": "PODSUMOWANIE MIESIĘCZNE",
     "totalMonthlyCostLabel": "CAŁKOWITY KOSZT MIGRENY",
     "costPerDayLabel": "Średni koszt jednego dnia z migreną",
-    
     "roiTitle": "ANALIZA INWESTYCJI (ROI)",
     "glassesPriceLabel": "Koszt okularów na migrenę",
     "breakEvenLabel": "Próg rentowności (liczba dni migreny)",

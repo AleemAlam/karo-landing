@@ -29,7 +29,7 @@ export default function FAQSection() {
   };
 
   return (
-    <section className="py-12 lg:py-20 bg-white mx-4 lg:mx-40">
+    <section className="py-12 lg:py-20 bg-white">
       <div className="px-4 lg:px-20 mx-auto">
         {/* Mobile Layout - Stacked */}
         <div className="lg:hidden">
@@ -56,7 +56,7 @@ export default function FAQSection() {
                     <span className="text-black font-medium text-sm">{faq.question}</span>
                   </div>
                 </button>
-                
+
                 {/* Answer */}
                 {(openIndex === index || showAll) && (
                   <div className="pb-4 pl-8 pr-2">
@@ -74,18 +74,18 @@ export default function FAQSection() {
               className="mt-4 text-orange-500 font-medium flex items-center gap-2 cursor-pointer hover:text-orange-600 transition-colors text-sm"
             >
               {showAll ? t('collapseAll') : t('expandAll')}
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 className={`h-4 w-4 transition-transform ${showAll ? 'rotate-90' : ''}`}
-                fill="none" 
-                viewBox="0 0 24 24" 
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
             </button>
@@ -119,7 +119,7 @@ export default function FAQSection() {
                     <span className="text-black font-medium">{faq.question}</span>
                   </div>
                 </button>
-                
+
                 {/* Answer */}
                 {(openIndex === index || showAll) && (
                   <div className="pb-5 pl-10 pr-4">
@@ -137,18 +137,18 @@ export default function FAQSection() {
               className="mt-6 text-orange-500 font-medium flex items-center gap-2 cursor-pointer hover:text-orange-600 transition-colors"
             >
               {showAll ? t('collapseAll') : t('expandAll')}
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
                 className={`h-4 w-4 transition-transform ${showAll ? 'rotate-90' : ''}`}
-                fill="none" 
-                viewBox="0 0 24 24" 
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
             </button>

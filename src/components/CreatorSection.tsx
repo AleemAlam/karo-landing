@@ -82,15 +82,15 @@ export default function CreatorSection() {
           </motion.div>
 
           {/* Heading */}
-          <motion.h2 
+          <motion.h2
             className="text-2xl md:text-3xl font-bold text-black leading-tight text-center mb-4"
             variants={itemVariants}
           >
-            {t('heading')} <br/><span className="text-orange-500">{t('headingHighlight')}</span>
+            {t('heading')} <br /><span className="text-orange-500">{t('headingHighlight')}</span>
           </motion.h2>
 
           {/* Subtitle */}
-          <motion.p 
+          <motion.p
             className="text-lg font-semibold text-black text-center mb-4"
             variants={itemVariants}
           >
@@ -98,7 +98,7 @@ export default function CreatorSection() {
           </motion.p>
 
           {/* Images */}
-          <motion.div 
+          <motion.div
             className="relative w-full max-w-[320px] mb-6"
             variants={imageVariants}
           >
@@ -110,7 +110,7 @@ export default function CreatorSection() {
               className="object-contain w-full h-auto"
             />
             {/* Badge */}
-            <motion.div 
+            <motion.div
               className="absolute top-4 right-4 w-[70px] h-[70px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
               variants={badgeVariants}
             >
@@ -121,7 +121,7 @@ export default function CreatorSection() {
           </motion.div>
 
           {/* Description */}
-          <motion.p 
+          <motion.p
             className="text-gray-600 text-sm leading-relaxed text-center mb-6"
             variants={itemVariants}
           >
@@ -133,19 +133,19 @@ export default function CreatorSection() {
             <HoverScale>
               <button className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm">
                 {t('button')}
-                <motion.svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className="h-5 w-5" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
+                <motion.svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   whileHover={{ x: 5 }}
                 >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth={2} 
-                    d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </motion.svg>
               </button>
@@ -155,7 +155,7 @@ export default function CreatorSection() {
       </div>
 
       {/* Desktop Layout */}
-      <div className="hidden lg:block px-40 mx-auto">
+      <div className="hidden lg:block px-20 mx-auto">
         <motion.div
           className="flex items-center gap-16"
           initial="hidden"
@@ -187,12 +187,12 @@ export default function CreatorSection() {
                 alt="Program creator"
                 width={357}
                 height={357}
-                className="object-contain absolute top-80 right-24"
+                className="object-contain absolute top-40 -right-12"
               />
             </motion.div>
             {/* Floating circular badge */}
-            <motion.div 
-              className="absolute -top-[410px] right-[140px] w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
+            <motion.div
+              className="absolute top-[120px] right-0 w-[92px] h-[92px] bg-white rounded-full shadow-xl flex items-center justify-center z-10"
               variants={badgeVariants}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
@@ -217,15 +217,15 @@ export default function CreatorSection() {
             </motion.div>
 
             {/* Heading */}
-            <motion.h2 
-              className="text-4xl lg:text-5xl font-bold text-black leading-tight"
+            <motion.h2
+              className="text-[40px] font-bold text-black leading-tight"
               variants={itemVariants}
             >
-              {t('heading')} <br/><span className="text-orange-500">{t('headingHighlight')}</span>
+              {t('heading')} <br /><span className="text-orange-500">{t('headingHighlight')}</span>
             </motion.h2>
 
             {/* Subtitle */}
-            <motion.p 
+            <motion.p
               className="text-xl font-semibold text-black"
               variants={itemVariants}
             >
@@ -233,7 +233,7 @@ export default function CreatorSection() {
             </motion.p>
 
             {/* Description */}
-            <motion.p 
+            <motion.p
               className="text-gray-600 text-[15px] leading-relaxed"
               variants={itemVariants}
             >
@@ -245,19 +245,19 @@ export default function CreatorSection() {
               <HoverScale>
                 <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-8 py-4 transition-all duration-300 inline-flex items-center gap-3 shadow-lg hover:shadow-xl cursor-pointer">
                   {t('button')}
-                  <motion.svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="h-5 w-5" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <motion.svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                     whileHover={{ x: 5 }}
                   >
-                    <path 
-                      strokeLinecap="round" 
-                      strokeLinejoin="round" 
-                      strokeWidth={2} 
-                      d="M17 8l4 4m0 0l-4 4m4-4H3" 
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
                     />
                   </motion.svg>
                 </button>

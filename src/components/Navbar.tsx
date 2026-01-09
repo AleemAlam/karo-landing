@@ -31,10 +31,10 @@ export default function Navbar() {
     <header className="w-full">
       {/* Orange accent line at the top */}
       <div className="h-2 bg-linear-to-r from-orange-400 to-orange-500" />
-      
+
       {/* Main navbar */}
       <nav className="bg-white border-b border-gray-100 shadow-sm">
-        <div className="px-40 mx-auto py-4">
+        <div className="px-20 mx-auto py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center">
@@ -63,18 +63,18 @@ export default function Navbar() {
             {/* CTA Button */}
             <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-2.5 transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md cursor-pointer">
               {t('joinButton')}
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className="h-4 w-4" 
-                fill="none" 
-                viewBox="0 0 24 24" 
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
                 stroke="currentColor"
               >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={2} 
-                  d="M9 5l7 7-7 7" 
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
                 />
               </svg>
             </button>
