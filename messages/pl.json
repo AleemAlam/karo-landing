@@ -14,9 +14,10 @@
     "benefit3": "Najlepsze okulary na migreny Fovea Blue są częścią programu!",
     "benefit4": "Nie, to nie dieta Iwa",
     "disclaimer": "Program ma charakter edukacyjny i nie zastępuje profesjonalnej diagnozy ani leczenia.",
-    "giftLabel": "Okulary przeciwmigrenowe o wartości nawet",
+    "giftLabel": "Okulary przeciwmigrenowe",
     "giftValue": "497zł",
-    "giftSubtext": "w prezencie"
+    "giftSubtext": "w prezencie",
+    "giftSubtext2": "o wartości nawet"
   },
   "stats": {
     "stat1Label": "Średnia redukcja bólu",
@@ -172,6 +173,8 @@
     "collapseAll": "Zwiń wszystkie"
   },
   "footer": {
+    "termsLink": "Regulamin",
+    "privacyLink": "Polityka prywatności",
     "copyright": "©2025 przez Foveablue. Wszelkie prawa zastrzeżone."
   },
   "home": {
@@ -239,5 +242,49 @@
     "breakEvenLabel": "Próg rentowności (liczba dni migreny)",
     "breakEvenNote": "ile dni musi zniknąć, by okulary się zwróciły",
     "days": "dni"
+  },
+  "terms": {
+    "pageTitle": "REGULAMIN ŚWIADCZENIA USŁUG ELEKTRONICZNYCH I SPRZEDAŻY KURSÓW ONLINE",
+    "backToHome": "Powrót do strony głównej",
+    "lastUpdated": "Ostatnia aktualizacja: Styczeń 2025",
+    "section1Title": "POSTANOWIENIA OGÓLNE",
+    "section1Content": "Właścicielem serwisu oraz Sprzedawcą jest FOVEA BLUE Karolina Nowak, z siedzibą przy al. Jana Pawła II 27, 00-867 Warszawa, NIP: 9512563780, REGON: 524713131.\n\nKontakt ze Sprzedawcą jest możliwy pod adresem e-mail: kontakt@foveablue.com.\n\nNiniejszy Regulamin określa zasady korzystania z serwisu, składania zamówień na cyfrowe kursy edukacyjne dotyczące migreny oraz zasady reklamacji i odstąpienia od umowy.\n\nUżytkownik zobowiązany jest do przestrzegania postanowień Regulaminu od momentu rozpoczęcia korzystania z Usług.\n\nUsługi są skierowane wyłącznie do osób pełnoletnich (powyżej 18 roku życia).",
+    "section2Title": "DEFINICJE",
+    "section2Content": "Sprzedawca – FOVEA BLUE Karolina Nowak.\n\nKlient – każda osoba fizyczna, prawna lub jednostka organizacyjna dokonująca zakupu w Serwisie.\n\nKurs – treść cyfrowa w rozumieniu przepisów prawa, będąca przedmiotem umowy sprzedaży.\n\nSerwis – strona internetowa, za pośrednictwem której prowadzona jest sprzedaż.",
+    "section3Title": "USŁUGI I REJESTRACJA",
+    "section3Content": "Sprzedawca oferuje dostęp do płatnych kursów online oraz treści edukacyjnych.\n\nKorzystanie z pełnej funkcjonalności kursu wymaga założenia Konta Użytkownika.\n\nPodczas rejestracji Klient zobowiązany jest podać prawdziwe dane osobowe.",
+    "section4Title": "SKŁADANIE ZAMÓWIEŃ I PŁATNOŚCI",
+    "section4Content": "Zamówienia można składać 24/7 przez stronę internetową.\n\nCeny podane w Serwisie są cenami brutto.\n\nDostępne metody płatności: Tpay, PayU, Karta płatnicza (Visa, Mastercard), Blik.\n\nUmowę sprzedaży uważa się za zawartą w momencie dokonania płatności przez Klienta i potwierdzenia zamówienia przez Sprzedawcę drogą mailową.\n\nDostarczenie Kursu następuje niezwłocznie po zaksięgowaniu wpłaty w formie cyfrowej (dostęp do platformy lub link do pobrania).",
+    "section5Title": "PRAWO DO ODSTĄPIENIA OD UMOWY",
+    "section5Content": "Konsument ma prawo odstąpić od umowy w terminie 14 dni bez podania przyczyny.\n\nUWAGA: Jeżeli Klient wyrazi zgodę na dostarczenie Kursu (treści cyfrowej) przed upływem terminu do odstąpienia od umowy i zostanie poinformowany o utracie tego prawa, prawo do 14-dniowego zwrotu wygasa w momencie rozpoczęcia pobierania lub uzyskania dostępu do kursu (zgodnie z art. 38 pkt 13 Ustawy o prawach konsumenta).",
+    "section6Title": "REKLAMACJE",
+    "section6Content": "Sprzedawca ma obowiązek dostarczyć treść cyfrową wolną od wad.\n\nReklamacje należy składać drogą mailową na adres: kontakt@foveablue.com.\n\nSprzedawca rozpatrzy reklamację w terminie 14 dni.",
+    "section7Title": "PRAWA AUTORSKIE I ZASADY KORZYSTANIA",
+    "section7Content": "Właścicielem wszelkich treści, materiałów wideo, tekstów i grafik jest FOVEA BLUE.\n\nKlient otrzymuje jedynie licencję na użytek osobisty. Zabrania się kopiowania, rozpowszechniania lub odsprzedaży materiałów osobom trzecim.\n\nZabrania się przesyłania treści niezgodnych z prawem, spamu oraz podejmowania prób obejścia zabezpieczeń Serwisu.\n\nKlient może zamieszczać komentarze w Serwisie pod warunkiem, że nie naruszają one dóbr osobistych innych osób ani przepisów prawa.",
+    "section8Title": "OCHRONA DANYCH OSOBOWYCH",
+    "section8Content": "Administratorem danych jest FOVEA BLUE Karolina Nowak.\n\nSzczegółowe informacje o przetwarzaniu danych (RODO) znajdują się w Polityce Prywatności dostępnej na stronie.",
+    "section9Title": "POSTANOWIENIA KOŃCOWE",
+    "section9Content": "W sprawach nieuregulowanych zastosowanie mają przepisy prawa polskiego.\n\nWszelkie spory będą rozstrzygane przez polskie sądy powszechne właściwe dla siedziby Sprzedawcy lub miejsca zamieszkania Konsumenta."
+  },
+  "privacy": {
+    "pageTitle": "POLITYKA PRYWATNOŚCI",
+    "backToHome": "Powrót do strony głównej",
+    "lastUpdated": "Ostatnia aktualizacja: Styczeń 2025",
+    "section1Title": "INFORMACJE O ADMINISTRATORZE DANYCH",
+    "section1Content": "Administratorem Twoich danych osobowych jest FOVEA BLUE Karolina Nowak, z siedzibą przy al. Jana Pawła II 27, 00-867 Warszawa, NIP: 9512563780, REGON: 524713131 (dalej jako: \"Administrator\").",
+    "section2Title": "DANE KONTAKTOWE",
+    "section2Content": "W sprawach dotyczących przetwarzania danych osobowych oraz realizacji Twoich praw, możesz skontaktować się z Administratorem pod adresem e-mail: help@foveablue.com.",
+    "section3Title": "CELE I PODSTAWY PRAWNE PRZETWARZANIA",
+    "section3Content": "Twoje dane są przetwarzane w następujących celach:\n\n• Realizacja umowy i świadczenie usług drogą elektroniczną (dostęp do kursu, obsługa konta użytkownika) – na podstawie Art. 6 ust. 1 lit. b RODO.\n\n• Wysyłka Newslettera oraz informacji marketingowych – na podstawie Twojej dobrowolnej zgody (Art. 6 ust. 1 lit. a RODO).\n\n• Obsługa płatności (procesowanie transakcji) – niezbędne do wykonania umowy.\n\n• Realizacja obowiązków prawnych (np. wystawianie faktur, przechowywanie dokumentacji księgowej) – na podstawie Art. 6 ust. 1 lit. c RODO.\n\n• Prawnie uzasadniony interes (kontakt z Klientem, obrona przed ewentualnymi roszczeniami) – na podstawie Art. 6 ust. 1 lit. f RODO.",
+    "section4Title": "ZAKRES PRZETWARZANYCH DANYCH",
+    "section4Content": "Przetwarzamy wyłącznie dane niezbędne do realizacji celów wskazanych powyżej:\n\n• Imię i nazwisko.\n\n• Adres e-mail.\n\n• W przypadku płatności: dane niezbędne do sfinalizowania transakcji (przekazywane bezpośrednio operatorom płatności).",
+    "section5Title": "ODBIORCY DANYCH I PRZEKAZYWANIE POZA EOG",
+    "section5Content": "Odbiorcy: Twoje dane mogą być przekazywane podmiotom wspierającym działalność Administratora: dostawcy hostingu (Vercel Inc.), operatorom płatności (Tpay, PayU), biuru rachunkowemu oraz dostawcom systemów mailingowych.\n\nTransfer poza EOG: Ze względu na korzystanie z infrastruktury Vercel, dane mogą być przesyłane do USA. Administrator zapewnia, że transfer odbywa się w oparciu o Standardowe Klauzule Umowne lub decyzje Komisji Europejskiej o odpowiednim stopniu ochrony (Data Privacy Framework), gwarantując bezpieczeństwo danych.",
+    "section6Title": "OKRES PRZECHOWYWANIA DANYCH",
+    "section6Content": "• Dane konta/kursu: przez czas trwania usługi oraz do przedawnienia ewentualnych roszczeń.\n\n• Newsletter: do czasu wycofania zgody lub zgłoszenia sprzeciwu.\n\n• Dane księgowe: przez okres 5 lat, zgodnie z przepisami prawa podatkowego.",
+    "section7Title": "TWOJE PRAWA",
+    "section7Content": "Masz prawo do: dostępu do swoich danych, ich sprostowania, usunięcia (\"prawo do bycia zapomnianym\"), ograniczenia przetwarzania, przenoszenia danych, wniesienia sprzeciwu oraz cofnięcia zgody w dowolnym momencie.\n\nPrzysługuje Ci również prawo wniesienia skargi do Prezesa Urzędu Ochrony Danych Osobowych (PUODO).",
+    "section8Title": "PLIKI COOKIES I ANALITYKA",
+    "section8Content": "Strona korzysta wyłącznie z niezbędnych plików cookies (sesyjnych), które służą do poprawnego działania serwisu (np. logowanie).\n\nAdministrator nie korzysta z zewnętrznych narzędzi śledzących (np. Google Analytics) ani profilowania marketingowego."
   }
 }

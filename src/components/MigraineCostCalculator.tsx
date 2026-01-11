@@ -95,11 +95,11 @@ export default function MigraineCostCalculator() {
 
   const totalMonthlyCost = useMemo(() => {
     // Note: Emotional costs (Section 5) are excluded from this total
-    return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost + 
-           (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost + 
-           doctorTimeCost;
-  }, [sickLeaveIncomeLoss, extraWorkIncomeLoss, catchUpTimeCost, totalEmergencyExpenses, 
-      migraineDaysPerMonth, prophylacticMedicationCost, doctorTimeCost]);
+    return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost +
+      (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost +
+      doctorTimeCost;
+  }, [sickLeaveIncomeLoss, extraWorkIncomeLoss, catchUpTimeCost, totalEmergencyExpenses,
+    migraineDaysPerMonth, prophylacticMedicationCost, doctorTimeCost]);
 
   const costPerMigraineDay = useMemo(() => {
     if (migraineDaysPerMonth === 0) return 0;
@@ -133,11 +133,11 @@ export default function MigraineCostCalculator() {
   };
 
   return (
-    <section className="py-12 lg:py-20 mx-4 lg:mx-20 bg-[#f5f3f0]" ref={ref}>
+    <section className="py-12 lg:py-20 lg:mx-20 bg-[#f5f3f0]" ref={ref}>
       <div className="max-w-6xl mx-auto px-4 lg:px-6">
         {/* Title */}
-        <motion.h2 
-          className="text-3xl lg:text-5xl font-bold text-center text-gray-900 mb-8 lg:mb-16"
+        <motion.h2
+          className="text-2xl lg:text-5xl font-bold text-left lg:text-center text-gray-900 mb-8 lg:mb-16"
           initial={{ opacity: 0, y: -30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 0.6 }}
@@ -146,14 +146,14 @@ export default function MigraineCostCalculator() {
         </motion.h2>
 
         {/* Table */}
-        <motion.div 
+        <motion.div
           className="bg-white rounded-lg shadow-sm overflow-hidden"
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
           variants={containerVariants}
         >
           {/* Header Row - Hidden on mobile */}
-          <motion.div 
+          <motion.div
             className="hidden lg:grid grid-cols-4 gap-4 px-4 py-4 bg-gray-50 border-b border-gray-300"
             variants={rowVariants}
           >
@@ -168,7 +168,7 @@ export default function MigraineCostCalculator() {
             <motion.div className="bg-gray-100 px-4 py-3 mt-0 -mx-4" variants={sectionHeaderVariants}>
               <h3 className="font-bold text-gray-800 uppercase text-sm tracking-wide">{t('section1Title')}</h3>
             </motion.div>
-            
+
             {/* Monthly Net Salary */}
             <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 border-b border-gray-200" variants={rowVariants}>
               <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('monthlyNetSalaryLabel')}</div>
@@ -545,7 +545,7 @@ export default function MigraineCostCalculator() {
             <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 bg-orange-50" variants={rowVariants}>
               <div className="font-semibold text-sm uppercase text-orange-600">{t('totalMonthlyCostLabel')}</div>
               <div></div>
-              <motion.div 
+              <motion.div
                 className="font-bold text-2xl text-orange-600"
                 key={totalMonthlyCost}
                 initial={{ scale: 1.1 }}
@@ -582,7 +582,7 @@ export default function MigraineCostCalculator() {
             <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-3 lg:py-4 bg-green-50" variants={rowVariants}>
               <div className="font-semibold text-green-700 text-sm">{t('breakEvenLabel')}</div>
               <div></div>
-              <motion.div 
+              <motion.div
                 className="font-bold text-xl text-green-600"
                 key={breakEvenDays}
                 initial={{ scale: 1.1 }}

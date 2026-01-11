@@ -14,9 +14,10 @@
     "benefit3": "The best Fovea Blue migraine glasses are included in the program!",
     "benefit4": "No, this is not the Iwa diet",
     "disclaimer": "This program is educational and does not replace professional diagnosis or treatment.",
-    "giftLabel": "Migraine glasses worth up to",
+    "giftLabel": "Migraine glasses",
     "giftValue": "497zł",
     "giftSubtext": "as a gift",
+    "giftSubtext2": "worth up to",
     "stat1Label": "Average pain reduction",
     "stat2Label": "Average to feel a difference",
     "stat3Label": "Achieve symptom-free days",
@@ -176,6 +177,8 @@
     "collapseAll": "Collapse all"
   },
   "footer": {
+    "termsLink": "Terms and Conditions",
+    "privacyLink": "Privacy Policy",
     "copyright": "©2025 by Foveablue. All rights reserved."
   },
   "home": {
@@ -243,5 +246,49 @@
     "breakEvenLabel": "Break-even point (migraine days)",
     "breakEvenNote": "days that must disappear for glasses to pay off",
     "days": "days"
+  },
+  "terms": {
+    "pageTitle": "TERMS AND CONDITIONS FOR ELECTRONIC SERVICES AND ONLINE COURSE SALES",
+    "backToHome": "Back to home",
+    "lastUpdated": "Last updated: January 2025",
+    "section1Title": "GENERAL PROVISIONS",
+    "section1Content": "The Service Provider and Seller is FOVEA BLUE Karolina Nowak, seated at al. Jana Pawła II 27, 00-867 Warsaw, Poland, Tax ID (NIP): 9512563780, REGON: 524713131.\n\nContact email: contact@foveablue.com.\n\nThese Terms and Conditions define the rules for using the website, placing orders for digital migraine education courses, and the rules for complaints and withdrawals.\n\nUsers are required to follow these terms from the moment they start using the Services.\n\nServices are intended for adults (18+ years old) only.",
+    "section2Title": "DEFINITIONS",
+    "section2Content": "Seller – FOVEA BLUE Karolina Nowak.\n\nCustomer – any individual or entity making a purchase.\n\nCourse – digital content being the subject of the sales agreement.\n\nService – the website through which sales are conducted.",
+    "section3Title": "SERVICES AND REGISTRATION",
+    "section3Content": "The Seller offers paid online courses and educational content.\n\nFull access to the course requires creating a User Account.\n\nDuring registration, the Customer must provide accurate personal data.",
+    "section4Title": "ORDERS AND PAYMENTS",
+    "section4Content": "Orders can be placed 24/7.\n\nPrices include all applicable taxes.\n\nPayment methods: Tpay, PayU, Credit Card (Visa, Mastercard), Blik.\n\nThe contract is concluded once the payment is made and the Seller sends a confirmation email.\n\nDelivery of the Course happens immediately after payment confirmation in digital form.",
+    "section5Title": "RIGHT OF WITHDRAWAL",
+    "section5Content": "Consumers generally have a 14-day right to withdraw from a distance contract.\n\nIMPORTANT: If the Customer consents to the delivery of the Course (digital content) before the withdrawal period expires and acknowledges the loss of this right, the 14-day refund right is waived once the content is accessed or downloaded.",
+    "section6Title": "COMPLAINTS",
+    "section6Content": "The Seller must provide content free from defects.\n\nComplaints should be sent to: contact@foveablue.com.\n\nThe Seller will respond within 14 days.",
+    "section7Title": "INTELLECTUAL PROPERTY AND RESTRICTIONS",
+    "section7Content": "All content, videos, texts, and graphics are owned by FOVEA BLUE.\n\nThe Customer is granted a limited license for personal use only. Copying, redistributing, or reselling materials is strictly prohibited.\n\nUsers are prohibited from sending illegal content, spam, or attempting to bypass security measures.\n\nUsers may post comments provided they do not violate the law or the rights of others.",
+    "section8Title": "PERSONAL DATA PROTECTION",
+    "section8Content": "The data controller is FOVEA BLUE Karolina Nowak.\n\nDetailed information regarding GDPR compliance can be found in our Privacy Policy.",
+    "section9Title": "FINAL PROVISIONS",
+    "section9Content": "These terms are governed by the laws of Poland.\n\nAny disputes shall be settled by the competent Polish courts."
+  },
+  "privacy": {
+    "pageTitle": "PRIVACY POLICY",
+    "backToHome": "Back to home",
+    "lastUpdated": "Last updated: January 2025",
+    "section1Title": "DATA CONTROLLER INFORMATION",
+    "section1Content": "The controller of your personal data is FOVEA BLUE Karolina Nowak, seated at al. Jana Pawła II 27, 00-867 Warsaw, Poland, NIP: 9512563780, REGON: 524713131 (hereinafter: \"Controller\").",
+    "section2Title": "CONTACT DETAILS",
+    "section2Content": "For any matters regarding personal data protection, you can contact the Controller via email: help@foveablue.com.",
+    "section3Title": "PURPOSES AND LEGAL BASIS FOR PROCESSING",
+    "section3Content": "Your data is processed for the following purposes:\n\n• Contract Performance and Electronic Services (access to the course, account management) – legal basis: Art. 6(1)(b) GDPR.\n\n• Newsletter Delivery and marketing information – legal basis: Your voluntary consent (Art. 6(1)(a) GDPR).\n\n• Payment Processing – necessary for contract performance.\n\n• Legal Obligations (e.g., invoicing, tax documentation storage) – legal basis: Art. 6(1)(c) GDPR.\n\n• Legitimate Interest (customer communication, defense against potential claims) – legal basis: Art. 6(1)(f) GDPR.",
+    "section4Title": "SCOPE OF COLLECTED DATA",
+    "section4Content": "We collect only the data necessary for the purposes mentioned above:\n\n• First and last name.\n\n• Email address.\n\n• For payments: data required to complete the transaction (transferred directly to payment providers).",
+    "section5Title": "DATA RECIPIENTS AND INTERNATIONAL TRANSFERS",
+    "section5Content": "Recipients: Your data may be shared with entities supporting the Controller: hosting provider (Vercel Inc.), payment operators (Tpay, PayU), accounting services, and mailing system providers.\n\nInternational Transfers: Due to the use of Vercel infrastructure, data may be transferred to the USA. The Controller ensures that such transfers are based on Standard Contractual Clauses or the EU-U.S. Data Privacy Framework, ensuring a high level of protection.",
+    "section6Title": "DATA RETENTION PERIOD",
+    "section6Content": "• Account/Course data: for the duration of the service and until the statute of limitations for claims.\n\n• Newsletter: until consent is withdrawn or an objection is filed.\n\n• Accounting data: for a period of 5 years, as required by tax law.",
+    "section7Title": "YOUR RIGHTS",
+    "section7Content": "You have the right to: access your data, rectify it, request deletion (\"right to be forgotten\"), restrict processing, data portability, object to processing, and withdraw consent at any time.\n\nYou also have the right to lodge a complaint with the President of the Personal Data Protection Office (PUODO).",
+    "section8Title": "COOKIES AND ANALYTICS",
+    "section8Content": "The website uses strictly necessary (session) cookies for the proper functioning of the service (e.g., login).\n\nThe Controller does not use third-party tracking tools (e.g., Google Analytics) or marketing profiling."
   }
 }

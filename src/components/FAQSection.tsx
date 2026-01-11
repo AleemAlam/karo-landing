@@ -34,33 +34,33 @@ export default function FAQSection() {
         {/* Mobile Layout - Stacked */}
         <div className="lg:hidden">
           {/* Title */}
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-black leading-tight mb-2">
-              {t('title1')} {t('title2')}
+          <div className="mb-6 text-left">
+            <h2 className="text-[32px] font-bold text-black leading-tight mb-2">
+              {t('title1')}<br />{t('title2')}
             </h2>
-            <p className="text-gray-500 text-sm">{t('subtitle')}</p>
+            <p className="text-orange-500 text-sm font-medium">{t('subtitle')}</p>
           </div>
 
           {/* Accordion */}
-          <div>
+          <div className="space-y-0">
             {faqs.map((faq, index) => (
-              <div key={index} className="border-b border-gray-200">
+              <div key={index} className="border-l-4 border-gray-200 pl-4 py-4">
                 <button
                   onClick={() => toggleQuestion(index)}
-                  className="w-full py-4 flex items-start justify-between text-left cursor-pointer"
+                  className="w-full flex items-start justify-between text-left cursor-pointer"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="text-orange-500 text-lg font-bold shrink-0">
+                    <span className="text-gray-400 text-lg font-bold shrink-0">
                       {openIndex === index ? '−' : '+'}
                     </span>
-                    <span className="text-black font-medium text-sm">{faq.question}</span>
+                    <span className="text-black font-semibold text-base">{faq.question}</span>
                   </div>
                 </button>
 
                 {/* Answer */}
                 {(openIndex === index || showAll) && (
-                  <div className="pb-4 pl-8 pr-2">
-                    <p className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+                  <div className="pt-3 pl-7">
+                    <p className="text-gray-600 text-sm leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -71,7 +71,7 @@ export default function FAQSection() {
             {/* Show All Link */}
             <button
               onClick={toggleShowAll}
-              className="mt-4 text-orange-500 font-medium flex items-center gap-2 cursor-pointer hover:text-orange-600 transition-colors text-sm"
+              className="mt-6 text-orange-500 font-medium flex items-center gap-2 cursor-pointer hover:text-orange-600 transition-colors text-base"
             >
               {showAll ? t('collapseAll') : t('expandAll')}
               <svg

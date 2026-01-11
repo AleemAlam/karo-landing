@@ -66,82 +66,77 @@ export default function HowItWorksSection() {
   };
 
   return (
-    <section className="py-12 lg:py-20 bg-white" ref={ref}>
-      <div className="px-20 mx-auto">
-        {/* Section Header */}
-        <motion.div
-          className="text-center mb-8 lg:mb-16"
-          variants={headerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          <h2 className="text-3xl lg:text-5xl font-bold text-black mb-3 lg:mb-4">
-            {t('heading')}
-          </h2>
-          <p className="text-gray-600 text-sm lg:text-lg">
-            {t('subheading')}
-          </p>
-        </motion.div>
+    <>
+      {/* Mobile Layout */}
+      <section className="lg:hidden py-12 bg-white" ref={ref}>
+        <div className="px-4 mx-auto">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-8"
+            variants={headerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="text-[30px] font-bold text-black mb-2">
+              {t('heading')}
+            </h2>
+            <p className="text-gray-600 font-bold text-lg leading-relaxed">
+              {t('subheading')}
+            </p>
+          </motion.div>
 
-        {/* Steps Grid - Single column on mobile, 3 columns on desktop */}
-        <motion.div
-          className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8 mb-8 lg:mb-12"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-        >
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              variants={cardVariants}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="text-center"
-            >
-              {/* Image */}
+          {/* Steps - Single column */}
+          <motion.div
+            className="space-y-8 mb-8"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            {steps.map((step, index) => (
               <motion.div
-                className="mb-4 lg:mb-6 overflow-hidden"
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
+                key={index}
+                variants={cardVariants}
+                className="text-center"
               >
-                <Image
-                  src={step.image}
-                  alt={step.title}
-                  width={450}
-                  height={450}
-                  className="w-full h-[300px] lg:h-[450px] object-cover"
-                />
+                {/* Image First */}
+                <div className="mb-4 overflow-hidden">
+                  <Image
+                    src={step.image}
+                    alt={step.title}
+                    width={450}
+                    height={300}
+                    className="w-full h-auto object-cover"
+                  />
+                </div>
+
+                {/* Title Below Image */}
+                <h3 className="text-2xl font-bold text-black mb-3">
+                  {step.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 text-sm leading-relaxed">
+                  {step.description}
+                </p>
               </motion.div>
+            ))}
+          </motion.div>
 
-              {/* Title */}
-              <h3 className="text-xl lg:text-2xl font-bold text-black mb-2 lg:mb-4">
-                {step.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-gray-600 text-sm lg:text-[15px] leading-relaxed whitespace-pre-line">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* CTA Button */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
-          <HoverScale scale={1.03}>
-            <button className="w-full lg:w-auto bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 lg:px-8 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm lg:text-base">
+          {/* CTA Button */}
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <button className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg cursor-pointer text-sm">
               {t('button')}
-              <motion.svg
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                whileHover={{ x: 5 }}
               >
                 <path
                   strokeLinecap="round"
@@ -149,11 +144,102 @@ export default function HowItWorksSection() {
                   strokeWidth={2}
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
-              </motion.svg>
+              </svg>
             </button>
-          </HoverScale>
-        </motion.div>
-      </div>
-    </section>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Desktop Layout */}
+      <section className="hidden lg:block py-20 bg-white">
+        <div className="px-20 mx-auto">
+          {/* Section Header */}
+          <motion.div
+            className="text-center mb-16"
+            variants={headerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            <h2 className="text-5xl font-bold text-black mb-4">
+              {t('heading')}
+            </h2>
+            <p className="text-gray-600 text-lg">
+              {t('subheading')}
+            </p>
+          </motion.div>
+
+          {/* Steps Grid - 3 columns */}
+          <motion.div
+            className="grid grid-cols-3 gap-8 mb-12"
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+          >
+            {steps.map((step, index) => (
+              <motion.div
+                key={index}
+                variants={cardVariants}
+                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                className="text-center"
+              >
+                {/* Image */}
+                <motion.div
+                  className="mb-6 overflow-hidden"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <Image
+                    src={step.image}
+                    alt={step.title}
+                    width={450}
+                    height={450}
+                    className="w-full h-[450px] object-cover"
+                  />
+                </motion.div>
+
+                {/* Title */}
+                <h3 className="text-2xl font-bold text-black mb-4">
+                  {step.title}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-600 text-[15px] leading-relaxed whitespace-pre-line">
+                  {step.description}
+                </p>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* CTA Button */}
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+          >
+            <HoverScale scale={1.03}>
+              <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-8 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-base">
+                {t('button')}
+                <motion.svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  whileHover={{ x: 5 }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </motion.svg>
+              </button>
+            </HoverScale>
+          </motion.div>
+        </div>
+      </section>
+    </>
   );
 }

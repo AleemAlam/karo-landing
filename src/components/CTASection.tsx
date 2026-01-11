@@ -6,20 +6,20 @@ export default function CTASection() {
   const t = useTranslations('cta');
 
   return (
-    <section className="bg-[#2B183D] py-12 lg:py-20 mx-16 -mt-8 lg:-mt-120 z-10 relative">
-      <div className="px-4 lg:px-42 mx-auto text-center">
+    <section className="bg-[#2B183D] py-12 lg:py-20 mx-0 lg:mx-16 mt-0 lg:-mt-120 z-10 relative">
+      <div className="px-6 lg:px-42 mx-auto text-center">
         {/* Main Heading */}
-        <h2 className="text-[45px] font-bold text-white mb-4 lg:mb-6 leading-tight">
+        <h2 className="text-2xl lg:text-[45px] font-bold text-white mb-4 lg:mb-6 leading-tight">
           {t('heading')} <span className="text-orange-500">{t('headingHighlight')}</span>
         </h2>
 
         {/* Description */}
-        <p className="text-gray-300 text-sm lg:text-[15px] mx-auto mb-4 lg:mb-6 leading-relaxed whitespace-pre-line">
+        <p className="text-gray-300 text-sm lg:text-[15px] mx-auto mb-6 lg:mb-6 leading-relaxed whitespace-pre-line">
           {t('description')}
         </p>
 
         {/* Guarantee Text */}
-        <p className="text-white font-semibold text-sm lg:text-[16px] mb-6 lg:mb-8">
+        <p className="text-orange-400 font-semibold text-base lg:text-[16px] mb-8 lg:mb-8 leading-relaxed">
           {t('guarantee')}
         </p>
 

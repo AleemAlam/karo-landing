@@ -32,8 +32,21 @@ export default function Navbar() {
       {/* Orange accent line at the top */}
       <div className="h-2 bg-linear-to-r from-orange-400 to-orange-500" />
 
-      {/* Main navbar */}
-      <nav className="bg-white border-b border-gray-100 shadow-sm">
+      {/* Mobile Navbar - Logo only, centered */}
+      <nav className="lg:hidden bg-white border-b border-gray-100 shadow-sm">
+        <div className="px-4 py-4 flex justify-center">
+          <Image
+            src="/fovia-logo.png"
+            alt="Fovea Blue"
+            width={120}
+            height={35}
+            priority
+          />
+        </div>
+      </nav>
+
+      {/* Desktop Navbar */}
+      <nav className="hidden lg:block bg-white border-b border-gray-100 shadow-sm">
         <div className="px-20 mx-auto py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
