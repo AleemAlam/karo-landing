@@ -249,7 +249,7 @@ export default function ProgramDetailsSection() {
                 {coaching.map((item, index) => (
                   <div key={index} className={`grid grid-cols-12 py-4 border-b border-gray-200 items-start ${index === coaching.length - 1 ? 'border-b-0' : ''}`}>
                     <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-5 h-5 bg-orange-500 rounded flex items-center justify-center">
+                      <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>
@@ -275,7 +275,7 @@ export default function ProgramDetailsSection() {
                 {tools.map((item, index) => (
                   <div key={index} className={`grid grid-cols-12 py-4 border-b border-gray-200 items-start ${index === tools.length - 1 ? 'border-b-0' : ''}`}>
                     <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-5 h-5 bg-orange-500 rounded flex items-center justify-center">
+                      <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
                         <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                         </svg>

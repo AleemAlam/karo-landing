@@ -66,9 +66,9 @@ export default function HowItWorksSection() {
   };
 
   return (
-    <>
+    <div ref={ref}>
       {/* Mobile Layout */}
-      <section className="lg:hidden py-12 bg-white" ref={ref}>
+      <section className="lg:hidden py-12 bg-white">
         <div className="px-4 mx-auto">
           {/* Section Header */}
           <motion.div
@@ -240,6 +240,6 @@ export default function HowItWorksSection() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
