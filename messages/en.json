@@ -239,6 +239,9 @@
     "affectedPeopleDesc": "enter value or leave empty",
     "infoOnly": "informational result",
     "summaryTitle": "MONTHLY SUMMARY",
+    "monthlyCostText": "Monthly migraines cost you:",
+    "glassesCostText": "Cost of PacificEyes glasses that can help prevent migraines:",
+    "roiText": "You'll achieve return on investment in:",
     "totalMonthlyCostLabel": "TOTAL MIGRAINE COST",
     "costPerDayLabel": "Average cost per migraine day",
     "roiTitle": "INVESTMENT ANALYSIS (ROI)",
@@ -290,5 +293,20 @@
     "section7Content": "You have the right to: access your data, rectify it, request deletion (\"right to be forgotten\"), restrict processing, data portability, object to processing, and withdraw consent at any time.\n\nYou also have the right to lodge a complaint with the President of the Personal Data Protection Office (PUODO).",
     "section8Title": "COOKIES AND ANALYTICS",
     "section8Content": "The website uses strictly necessary (session) cookies for the proper functioning of the service (e.g., login).\n\nThe Controller does not use third-party tracking tools (e.g., Google Analytics) or marketing profiling."
+  },
+  "buyPage": {
+    "title": "Complete Your Registration",
+    "subtitle": "Join the Founders Edition and start your journey to a migraine-free life",
+    "formTitle": "Registration Form",
+    "paymentTitle": "Complete Payment",
+    "priceNote": "Including Fovea Blue glasses worth 497 zł",
+    "payButton": "Pay with PayU",
+    "processing": "Processing...",
+    "securePayment": "Secure payment powered by PayU",
+    "guarantee": "100% Money-Back Guarantee",
+    "included1": "6-week program with 7 modules",
+    "included2": "Fovea Blue glasses with PhotoChrom",
+    "included3": "Private support community",
+    "included4": "3x group sessions with educator"
   }
 }

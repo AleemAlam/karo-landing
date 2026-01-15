@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { HoverScale } from './MotionWrapper';
+import { Link } from '@/i18n/navigation';
 
 export default function HowItWorksSection() {
   const t = useTranslations('howItWorks');
@@ -129,7 +130,7 @@ export default function HowItWorksSection() {
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ delay: 0.8, duration: 0.5 }}
           >
-            <button className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg cursor-pointer text-sm">
+            <Link href="/buy" className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg cursor-pointer text-sm">
               {t('button')}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,7 +146,7 @@ export default function HowItWorksSection() {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </button>
+            </Link>
           </motion.div>
         </div>
       </section>
@@ -218,7 +219,7 @@ export default function HowItWorksSection() {
             transition={{ delay: 0.8, duration: 0.5 }}
           >
             <HoverScale scale={1.03}>
-              <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-8 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-base">
+              <Link href="/buy" className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-8 py-4 transition-colors duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-base">
                 {t('button')}
                 <motion.svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -235,7 +236,7 @@ export default function HowItWorksSection() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </motion.svg>
-              </button>
+              </Link>
             </HoverScale>
           </motion.div>
         </div>

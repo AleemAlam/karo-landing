@@ -1,6 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function CTASection() {
   const t = useTranslations('cta');
@@ -24,7 +25,7 @@ export default function CTASection() {
         </p>
 
         {/* CTA Button */}
-        <button className="w-full lg:w-auto bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 lg:px-8 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm lg:text-base">
+        <Link href="/buy" className="w-full lg:w-auto bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 lg:px-8 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-sm lg:text-base">
           {t('button')}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +41,7 @@ export default function CTASection() {
               d="M17 8l4 4m0 0l-4 4m4-4H3"
             />
           </svg>
-        </button>
+        </Link>
       </div>
     </section>
   );

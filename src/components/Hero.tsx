@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { FloatElement, HoverScale } from './MotionWrapper';
+import { Link } from '@/i18n/navigation';
 
 export default function Hero() {
   const t = useTranslations('hero');
@@ -159,7 +160,7 @@ export default function Hero() {
           {/* Mobile CTA Button */}
           <motion.div variants={itemVariants} className="w-full px-4">
             <HoverScale scale={1.02}>
-              <button className="w-full bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base group">
+              <Link href="/buy" className="w-full bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base group">
                 {t('ctaButton')}
                 <motion.svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -177,7 +178,7 @@ export default function Hero() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </motion.svg>
-              </button>
+              </Link>
             </HoverScale>
           </motion.div>
         </motion.div>
@@ -212,7 +213,7 @@ export default function Hero() {
             {/* CTA Button */}
             <motion.div variants={itemVariants}>
               <HoverScale scale={1.03}>
-                <button className="bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-8 py-4 transition-colors duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl text-lg group">
+                <Link href="/buy" className="max-w-[400px] bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-8 py-4 transition-colors duration-300 flex items-center gap-3 shadow-lg hover:shadow-xl text-lg group">
                   {t('ctaButton')}
                   <motion.svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +231,7 @@ export default function Hero() {
                       d="M17 8l4 4m0 0l-4 4m4-4H3"
                     />
                   </motion.svg>
-                </button>
+                </Link>
               </HoverScale>
             </motion.div>
 

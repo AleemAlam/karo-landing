@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function PricingCTASection() {
   const t = useTranslations('pricingCTA');
@@ -90,7 +91,7 @@ export default function PricingCTASection() {
             </div>
 
             {/* CTA Button */}
-            <button className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg cursor-pointer mb-4 text-sm">
+            <Link href="/buy" className="w-full bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg cursor-pointer mb-4 text-sm">
               {t('button')}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +107,7 @@ export default function PricingCTASection() {
                   d="M17 8l4 4m0 0l-4 4m4-4H3"
                 />
               </svg>
-            </button>
+            </Link>
 
             {/* Disclaimer */}
             <p className="text-gray-500 text-xs">{t('disclaimer')}</p>
@@ -174,7 +175,7 @@ export default function PricingCTASection() {
               </div>
 
               {/* CTA Button */}
-              <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-10 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer mb-6 text-base">
+              <Link href="/buy" className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-10 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer mb-6 text-base">
                 {t('button')}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -190,7 +191,7 @@ export default function PricingCTASection() {
                     d="M17 8l4 4m0 0l-4 4m4-4H3"
                   />
                 </svg>
-              </button>
+              </Link>
 
               {/* Disclaimer */}
               <p className="text-gray-500 text-sm">{t('disclaimer')}</p>

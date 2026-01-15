@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 
 export default function Navbar() {
   const t = useTranslations('navbar');
@@ -74,7 +75,7 @@ export default function Navbar() {
             </div>
 
             {/* CTA Button */}
-            <button className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-2.5 transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md cursor-pointer">
+            <Link href="/buy" className="bg-[#F79155] hover:bg-orange-500 text-white font-semibold px-6 py-2.5 transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md cursor-pointer">
               {t('joinButton')}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -90,7 +91,7 @@ export default function Navbar() {
                   d="M9 5l7 7-7 7"
                 />
               </svg>
-            </button>
+            </Link>
           </div>
         </div>
       </nav>
