@@ -43,12 +43,11 @@ export default function StatsSection() {
   };
 
   return (
-    <>
+    <div ref={ref}>
       {/* Mobile Layout - 2x2 Grid */}
       <section className="lg:hidden bg-white">
         {/* Orange top border */}
         <motion.div
-          ref={ref}
           className="grid grid-cols-2"
           variants={containerVariants}
           initial="hidden"
@@ -139,21 +138,26 @@ export default function StatsSection() {
         <div className="px-0 mx-auto">
           <motion.div
             className="flex items-center justify-between"
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, margin: '-50px' }}
+            transition={{ duration: 0.5 }}
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
-                variants={itemVariants}
                 className="flex items-center w-full"
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.1 + index * 0.1, duration: 0.5 }}
               >
                 <div className="text-center flex-1">
                   <motion.p
                     className="text-3xl font-light text-gray-700 mb-1"
                     initial={{ opacity: 0, scale: 0.5 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.2 + index * 0.1, duration: 0.4, type: 'spring' }}
                   >
                     {stat.value}
@@ -165,7 +169,8 @@ export default function StatsSection() {
                   <motion.div
                     className="h-12 w-px bg-gray-300 self-center"
                     initial={{ scaleY: 0 }}
-                    animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+                    whileInView={{ scaleY: 1 }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 + index * 0.1, duration: 0.3 }}
                   />
                 )}
@@ -174,6 +179,6 @@ export default function StatsSection() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
