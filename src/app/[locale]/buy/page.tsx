@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
@@ -12,6 +12,7 @@ export default function BuyPage() {
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
     const [paymentSuccess, setPaymentSuccess] = useState(false);
+    const [formData, setFormData] = useState({ name: '', email: '' });
 
     // Check for payment success on mount
     useEffect(() => {
@@ -22,23 +23,32 @@ export default function BuyPage() {
     }, [searchParams]);
 
     const handlePayment = async () => {
+        if (!formData.name || !formData.email) {
+            alert('Please fill in all fields');
+            return;
+        }
+
         setIsLoading(true);
         try {
-            const response = await fetch('/api/payu/create-order', {
+            const response = await fetch('/api/tpay/create-transaction', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    amount: 129900, // 10.00 PLN in grosz (TEST AMOUNT)
+                    amount: 1299.00,
                     description: 'Migraine Without Secrets - Founders Edition',
+                    payer: {
+                        email: formData.email,
+                        name: formData.name,
+                    }
                 }),
             });
 
             const data = await response.json();
 
-            if (data.redirectUri) {
-                window.location.href = data.redirectUri;
+            if (data.paymentUrl) {
+                window.location.href = data.paymentUrl;
             } else {
                 console.error('Payment error:', data.error);
                 setIsLoading(false);
@@ -47,6 +57,11 @@ export default function BuyPage() {
             console.error('Payment error:', error);
             setIsLoading(false);
         }
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
     return (
@@ -136,7 +151,33 @@ export default function BuyPage() {
                                         </p>
                                     </div>
 
-                                    {/* PayU Button */}
+                                    {/* Inputs */}
+                                    <div className="mb-4 space-y-3">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('nameLabel')}</label>
+                                            <input
+                                                type="text"
+                                                name="name"
+                                                value={formData.name}
+                                                onChange={handleInputChange}
+                                                placeholder={t('namePlaceholder')}
+                                                className="w-full p-2 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-black"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">{t('emailLabel')}</label>
+                                            <input
+                                                type="email"
+                                                name="email"
+                                                value={formData.email}
+                                                onChange={handleInputChange}
+                                                placeholder={t('emailPlaceholder')}
+                                                className="w-full p-2 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-black"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Pay Button */}
                                     <button
                                         onClick={handlePayment}
                                         disabled={isLoading}
@@ -173,49 +214,40 @@ export default function BuyPage() {
                                     {/* Guaranteed Safe Checkout */}
                                     <div className="mt-6 pt-4 border-t border-gray-200">
                                         <p className="text-gray-400 text-xs uppercase tracking-wide mb-3 text-center">{t('guaranteedCheckout')}</p>
-                                        <div className="flex items-center justify-center gap-3">
+                                        <div className="flex items-center justify-center gap-2 flex-wrap">
                                             {/* Apple Pay */}
-                                            <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center min-w-[50px] h-[32px]">
-                                                <svg className="h-5" viewBox="0 0 50 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M9.36 2.88C8.76 3.6 7.86 4.14 6.96 4.08C6.84 3.18 7.26 2.22 7.8 1.56C8.4 0.84 9.36 0.36 10.14 0.3C10.24 1.24 9.9 2.16 9.36 2.88ZM10.14 4.26C8.7 4.18 7.46 5.06 6.78 5.06C6.08 5.06 5.04 4.3 3.88 4.32C2.38 4.34 1.02 5.16 0.26 6.48C-1.28 9.12 -0.18 13.02 1.32 15.18C2.02 16.24 2.86 17.42 4.02 17.38C5.14 17.34 5.56 16.64 6.92 16.64C8.28 16.64 8.66 17.38 9.84 17.36C11.04 17.34 11.76 16.28 12.46 15.22C13.26 14.02 13.58 12.86 13.6 12.8C13.58 12.78 11.1 11.86 11.08 9.02C11.06 6.62 13.04 5.48 13.14 5.42C11.98 3.7 10.18 3.52 9.6 3.46C10.14 4.26 10.14 4.26 10.14 4.26Z" fill="black" />
-                                                    <text x="15" y="13" fontSize="10" fontWeight="600" fill="black">Pay</text>
+                                            <div className="bg-black rounded px-3 py-1.5 flex items-center justify-center h-8 w-14">
+                                                <svg viewBox="0 0 38 16" className="h-4 w-auto fill-white">
+                                                    <path d="M5.895 12.876c-.722.012-1.396-.345-1.745-1.056-.25-.37-.367-.812-.338-1.26.004-1.294 1.109-2.096 3.655-2.083.003.774-.155 1.303-.503 1.954-.31.32-.705.46-1.07.445zm.308-5.32c-1.554.076-4.996.34-5.071 3.522-.05 2.147 2.016 3.013 3.56 3.013.9 0 1.905-.28 2.062-.28.158 0 .977.292 2.05.292 1.458 0 2.222-.843 3.109-2.059-.838-.456-1.381-1.3-1.427-2.27-.066-2.185 1.776-2.903 2.502-3.14-.52-2.316-2.29-2.52-2.92-2.535-1.125-.03-2.146.657-2.618.657-.52 0-1.751-.716-2.614-.716-.94-.038-2.611.584-3.413 2.128-.501.996-.703 2.766.19 4.312l4.588-2.924zm7.957 6.134h1.492v-8.73h-1.492v8.73zm2.583 0h1.492V8.583h.053c.27-.86.994-1.517 2.193-1.517.13 0 .26.01.39.03v-1.42a2.38 2.38 0 00-1.882.522c-.419.41-.663.97-.692 1.558h-.053V7.228H16.74v6.463zm5.636 0h1.493v-2.82c0-1.52.548-2.18 1.95-2.18.23 0 .42.02.58.05v-1.37a2.536 2.536 0 00-2.04.66 2.35 2.35 0 00-.63 1.35h-.05V7.227h-1.303v6.463zm5.419 0h1.492v-8.73h-1.492v8.73zm1.637-10.43a.87.87 0 101.74 0 .87.87 0 00-1.74 0zm6.183 10.603c1.78 0 2.802-.857 3.047-2.183l-1.354-.23c-.114.61-.482.97-1.46.97-1.07 0-1.86-.71-1.86-2.67 0-1.84.73-2.63 1.83-2.63 1.05 0 1.34.46 1.45.98l1.32-.26c-.22-1.22-1.12-2.16-2.98-2.16-1.92 0-3.21 1.25-3.21 4.1.01 2.89 1.36 4.08 3.23 4.08z" />
                                                 </svg>
                                             </div>
                                             {/* Google Pay */}
-                                            <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center min-w-[50px] h-[32px]">
-                                                <svg className="h-4" viewBox="0 0 41 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M19.1 8.4V13.6H17.5V2.3H21.5C22.6 2.3 23.5 2.6 24.2 3.3C24.9 4 25.3 4.8 25.3 5.8C25.3 6.8 24.9 7.7 24.2 8.3C23.5 9 22.6 9.3 21.5 9.3H19.1V8.4ZM19.1 3.8V7.8H21.5C22.2 7.8 22.8 7.6 23.2 7.2C23.7 6.8 23.9 6.3 23.9 5.8C23.9 5.2 23.7 4.8 23.2 4.4C22.8 4 22.2 3.8 21.5 3.8H19.1Z" fill="#5F6368" />
-                                                    <text x="26" y="13" fontSize="9" fontWeight="500" fill="#5F6368">Pay</text>
-                                                    <circle cx="6" cy="8" r="5" fill="#4285F4" />
+                                            <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
+                                                <svg viewBox="0 0 42 17" className="h-4 w-auto">
+                                                    <path fill="#4285F4" d="M6.5 7.15c0-.4-.03-.8-.1-1.18H.5v2.24h3.37c-.15.78-.6 1.45-1.27 1.89v1.57h2.05c1.2-1.1 1.88-2.73 1.88-4.52z" />
+                                                    <path fill="#34A853" d="M.5 13.25c1.69 0 3.1-4.7 3.6-1.57h-2.05c-.53 1.6-2.03 2.75-3.8 2.75-1.08 0-2.05-.33-2.82-1.15l-1.7.53c.6 1.31 1.68 2.22 2.97 2.22z" />
+                                                    <path fill="#FBBC05" d="M-1.75 11.68c-.28-.35-.44-.78-.44-1.25s.16-.9.44-1.25l-.57-1.68c-1.18 1.15-1.18 3.03 0 4.18l.57-1.68z" />
+                                                    <path fill="#EA4335" d="M.5 7.6c1.08 0 2.05.37 2.82 1.09l1.63-1.63c-1.2-1.12-2.75-1.8-4.45-1.8-2.64 0-4.94 1.5-6.03 3.68l2.06 1.57c.53-1.6 2.03-2.91 3.97-2.91z" />
+                                                    <path fill="#5F6368" d="M11.6 8.5v6.5h-1.9v-6m4.8 6.5h-1.9V8.5h1.9v6.5m5.7-6.5h-2.9l-1.6 3.8-1.7-3.8h-2l2.6 5.8-1.5 3.3h2l4.8-10.6" />
                                                 </svg>
                                             </div>
                                             {/* Mastercard */}
-                                            <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center min-w-[36px] h-[32px]">
-                                                <svg className="h-5" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="11" cy="10" r="9" fill="#EB001B" />
-                                                    <circle cx="21" cy="10" r="9" fill="#F79E1B" />
-                                                    <path d="M16 3.8C17.9 5.3 19.1 7.5 19.1 10C19.1 12.5 17.9 14.7 16 16.2C14.1 14.7 12.9 12.5 12.9 10C12.9 7.5 14.1 5.3 16 3.8Z" fill="#FF5F00" />
-                                                </svg>
-                                            </div>
-                                            {/* Maestro */}
-                                            <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center min-w-[36px] h-[32px]">
-                                                <svg className="h-5" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <circle cx="11" cy="10" r="9" fill="#0099DF" />
-                                                    <circle cx="21" cy="10" r="9" fill="#EE0005" />
-                                                    <path d="M16 3.8C17.9 5.3 19.1 7.5 19.1 10C19.1 12.5 17.9 14.7 16 16.2C14.1 14.7 12.9 12.5 12.9 10C12.9 7.5 14.1 5.3 16 3.8Z" fill="#6C6BBD" />
+                                            <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
+                                                <svg viewBox="0 0 36 22" className="h-5 w-auto">
+                                                    <circle cx="11" cy="11" r="11" fill="#EB001B" />
+                                                    <circle cx="25" cy="11" r="11" fill="#F79E1B" />
+                                                    <path d="M18 11V11C18 12.33 18.25 13.59 18.71 14.73C19.34 16.29 20.31 17.65 21.52 18.73C20.5 19.53 19.29 20 18 20C16.71 20 15.5 19.53 14.48 18.73C15.69 17.65 16.66 16.29 17.29 14.73C17.75 13.59 18 12.33 18 11Z" fill="#FF5F00" />
                                                 </svg>
                                             </div>
                                             {/* Visa */}
-                                            <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center min-w-[36px] h-[32px]">
-                                                <svg className="h-3" viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <text x="0" y="13" fontSize="14" fontWeight="700" fill="#1A1F71">VISA</text>
+                                            <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
+                                                <svg viewBox="0 0 36 12" className="h-3 w-auto">
+                                                    <path fill="#142787" d="M13.6 11.2h2.2l3.4-10.4h-2.3c-1.4 0-1.7.5-2.2 1.7l-5.6 12.5h2.2l4.6-7 1.4 7zm11.4-12.5h-2.3c-.6 0-1.1.2-1.3.8l-4.5 10.8h2.4l.7-2h3l.3 2h2.1l-1.9-8.8c.1-.4 0-.8-1.5-.8zm-2.6 6.5l1.6-4.5.9 4.5h-2.5zm-8.8 3.9h2.3l1.4-8.8h-2.3l-1.4 8.8zm-3.6-8.8l-2.8 7.4-.3-1.6c-.5-1.8-2.2-3.8-4-4.8l2.6 9.6h2.4L9.9.8h-2.4z" />
                                                 </svg>
                                             </div>
                                             {/* BLIK */}
-                                            <div className="bg-black rounded px-2 py-1.5 flex items-center justify-center min-w-[40px] h-[32px]">
-                                                <svg className="h-3" viewBox="0 0 40 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <text x="0" y="11" fontSize="11" fontWeight="700" fill="white">blik</text>
-                                                </svg>
+                                            <div className="bg-black rounded px-2 py-1 flex items-center justify-center h-8 w-14">
+                                                <span className="text-white text-xs font-bold tracking-wide">blik</span>
                                             </div>
                                         </div>
                                     </div>
@@ -354,7 +386,33 @@ export default function BuyPage() {
                                             </p>
                                         </div>
 
-                                        {/* PayU Button */}
+                                        {/* Inputs */}
+                                        <div className="mb-6 space-y-4">
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">{t('nameLabel')}</label>
+                                                <input
+                                                    type="text"
+                                                    name="name"
+                                                    value={formData.name}
+                                                    onChange={handleInputChange}
+                                                    placeholder={t('namePlaceholder')}
+                                                    className="w-full p-3 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-black"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">{t('emailLabel')}</label>
+                                                <input
+                                                    type="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                    placeholder={t('emailPlaceholder')}
+                                                    className="w-full p-3 border border-gray-300 rounded focus:ring-orange-500 focus:border-orange-500 text-black"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        {/* Pay Button */}
                                         <button
                                             onClick={handlePayment}
                                             disabled={isLoading}
@@ -391,49 +449,40 @@ export default function BuyPage() {
                                         {/* Guaranteed Safe Checkout */}
                                         <div className="mt-6 pt-4 border-t border-gray-200">
                                             <p className="text-gray-400 text-xs uppercase tracking-wide mb-3 text-center">{t('guaranteedCheckout')}</p>
-                                            <div className="flex items-center justify-center gap-3">
+                                            <div className="flex items-center justify-center gap-3 flex-wrap">
                                                 {/* Apple Pay */}
-                                                <div className="bg-white border border-gray-200 rounded px-3 py-2 flex items-center justify-center min-w-[56px] h-[36px]">
-                                                    <svg className="h-5" viewBox="0 0 50 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M9.36 2.88C8.76 3.6 7.86 4.14 6.96 4.08C6.84 3.18 7.26 2.22 7.8 1.56C8.4 0.84 9.36 0.36 10.14 0.3C10.24 1.24 9.9 2.16 9.36 2.88ZM10.14 4.26C8.7 4.18 7.46 5.06 6.78 5.06C6.08 5.06 5.04 4.3 3.88 4.32C2.38 4.34 1.02 5.16 0.26 6.48C-1.28 9.12 -0.18 13.02 1.32 15.18C2.02 16.24 2.86 17.42 4.02 17.38C5.14 17.34 5.56 16.64 6.92 16.64C8.28 16.64 8.66 17.38 9.84 17.36C11.04 17.34 11.76 16.28 12.46 15.22C13.26 14.02 13.58 12.86 13.6 12.8C13.58 12.78 11.1 11.86 11.08 9.02C11.06 6.62 13.04 5.48 13.14 5.42C11.98 3.7 10.18 3.52 9.6 3.46C10.14 4.26 10.14 4.26 10.14 4.26Z" fill="black" />
-                                                        <text x="15" y="13" fontSize="10" fontWeight="600" fill="black">Pay</text>
+                                                <div className="bg-black rounded px-3 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <svg viewBox="0 0 38 16" className="h-5 w-auto fill-white">
+                                                        <path d="M5.895 12.876c-.722.012-1.396-.345-1.745-1.056-.25-.37-.367-.812-.338-1.26.004-1.294 1.109-2.096 3.655-2.083.003.774-.155 1.303-.503 1.954-.31.32-.705.46-1.07.445zm.308-5.32c-1.554.076-4.996.34-5.071 3.522-.05 2.147 2.016 3.013 3.56 3.013.9 0 1.905-.28 2.062-.28.158 0 .977.292 2.05.292 1.458 0 2.222-.843 3.109-2.059-.838-.456-1.381-1.3-1.427-2.27-.066-2.185 1.776-2.903 2.502-3.14-.52-2.316-2.29-2.52-2.92-2.535-1.125-.03-2.146.657-2.618.657-.52 0-1.751-.716-2.614-.716-.94-.038-2.611.584-3.413 2.128-.501.996-.703 2.766.19 4.312l4.588-2.924zm7.957 6.134h1.492v-8.73h-1.492v8.73zm2.583 0h1.492V8.583h.053c.27-.86.994-1.517 2.193-1.517.13 0 .26.01.39.03v-1.42a2.38 2.38 0 00-1.882.522c-.419.41-.663.97-.692 1.558h-.053V7.228H16.74v6.463zm5.636 0h1.493v-2.82c0-1.52.548-2.18 1.95-2.18.23 0 .42.02.58.05v-1.37a2.536 2.536 0 00-2.04.66 2.35 2.35 0 00-.63 1.35h-.05V7.227h-1.303v6.463zm5.419 0h1.492v-8.73h-1.492v8.73zm1.637-10.43a.87.87 0 101.74 0 .87.87 0 00-1.74 0zm6.183 10.603c1.78 0 2.802-.857 3.047-2.183l-1.354-.23c-.114.61-.482.97-1.46.97-1.07 0-1.86-.71-1.86-2.67 0-1.84.73-2.63 1.83-2.63 1.05 0 1.34.46 1.45.98l1.32-.26c-.22-1.22-1.12-2.16-2.98-2.16-1.92 0-3.21 1.25-3.21 4.1.01 2.89 1.36 4.08 3.23 4.08z" />
                                                     </svg>
                                                 </div>
                                                 {/* Google Pay */}
-                                                <div className="bg-white border border-gray-200 rounded px-3 py-2 flex items-center justify-center min-w-[56px] h-[36px]">
-                                                    <svg className="h-4" viewBox="0 0 41 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M19.1 8.4V13.6H17.5V2.3H21.5C22.6 2.3 23.5 2.6 24.2 3.3C24.9 4 25.3 4.8 25.3 5.8C25.3 6.8 24.9 7.7 24.2 8.3C23.5 9 22.6 9.3 21.5 9.3H19.1V8.4ZM19.1 3.8V7.8H21.5C22.2 7.8 22.8 7.6 23.2 7.2C23.7 6.8 23.9 6.3 23.9 5.8C23.9 5.2 23.7 4.8 23.2 4.4C22.8 4 22.2 3.8 21.5 3.8H19.1Z" fill="#5F6368" />
-                                                        <text x="26" y="13" fontSize="9" fontWeight="500" fill="#5F6368">Pay</text>
-                                                        <circle cx="6" cy="8" r="5" fill="#4285F4" />
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <svg viewBox="0 0 42 17" className="h-5 w-auto">
+                                                        <path fill="#4285F4" d="M6.5 7.15c0-.4-.03-.8-.1-1.18H.5v2.24h3.37c-.15.78-.6 1.45-1.27 1.89v1.57h2.05c1.2-1.1 1.88-2.73 1.88-4.52z" />
+                                                        <path fill="#34A853" d="M.5 13.25c1.69 0 3.1-4.7 3.6-1.57h-2.05c-.53 1.6-2.03 2.75-3.8 2.75-1.08 0-2.05-.33-2.82-1.15l-1.7.53c.6 1.31 1.68 2.22 2.97 2.22z" />
+                                                        <path fill="#FBBC05" d="M-1.75 11.68c-.28-.35-.44-.78-.44-1.25s.16-.9.44-1.25l-.57-1.68c-1.18 1.15-1.18 3.03 0 4.18l.57-1.68z" />
+                                                        <path fill="#EA4335" d="M.5 7.6c1.08 0 2.05.37 2.82 1.09l1.63-1.63c-1.2-1.12-2.75-1.8-4.45-1.8-2.64 0-4.94 1.5-6.03 3.68l2.06 1.57c.53-1.6 2.03-2.91 3.97-2.91z" />
+                                                        <path fill="#5F6368" d="M11.6 8.5v6.5h-1.9v-6m4.8 6.5h-1.9V8.5h1.9v6.5m5.7-6.5h-2.9l-1.6 3.8-1.7-3.8h-2l2.6 5.8-1.5 3.3h2l4.8-10.6" />
                                                     </svg>
                                                 </div>
                                                 {/* Mastercard */}
-                                                <div className="bg-white border border-gray-200 rounded px-3 py-2 flex items-center justify-center min-w-[40px] h-[36px]">
-                                                    <svg className="h-5" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="11" cy="10" r="9" fill="#EB001B" />
-                                                        <circle cx="21" cy="10" r="9" fill="#F79E1B" />
-                                                        <path d="M16 3.8C17.9 5.3 19.1 7.5 19.1 10C19.1 12.5 17.9 14.7 16 16.2C14.1 14.7 12.9 12.5 12.9 10C12.9 7.5 14.1 5.3 16 3.8Z" fill="#FF5F00" />
-                                                    </svg>
-                                                </div>
-                                                {/* Maestro */}
-                                                <div className="bg-white border border-gray-200 rounded px-3 py-2 flex items-center justify-center min-w-[40px] h-[36px]">
-                                                    <svg className="h-5" viewBox="0 0 32 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <circle cx="11" cy="10" r="9" fill="#0099DF" />
-                                                        <circle cx="21" cy="10" r="9" fill="#EE0005" />
-                                                        <path d="M16 3.8C17.9 5.3 19.1 7.5 19.1 10C19.1 12.5 17.9 14.7 16 16.2C14.1 14.7 12.9 12.5 12.9 10C12.9 7.5 14.1 5.3 16 3.8Z" fill="#6C6BBD" />
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <svg viewBox="0 0 36 22" className="h-6 w-auto">
+                                                        <circle cx="11" cy="11" r="11" fill="#EB001B" />
+                                                        <circle cx="25" cy="11" r="11" fill="#F79E1B" />
+                                                        <path d="M18 11V11C18 12.33 18.25 13.59 18.71 14.73C19.34 16.29 20.31 17.65 21.52 18.73C20.5 19.53 19.29 20 18 20C16.71 20 15.5 19.53 14.48 18.73C15.69 17.65 16.66 16.29 17.29 14.73C17.75 13.59 18 12.33 18 11Z" fill="#FF5F00" />
                                                     </svg>
                                                 </div>
                                                 {/* Visa */}
-                                                <div className="bg-white border border-gray-200 rounded px-3 py-2 flex items-center justify-center min-w-[40px] h-[36px]">
-                                                    <svg className="h-3" viewBox="0 0 50 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <text x="0" y="13" fontSize="14" fontWeight="700" fill="#1A1F71">VISA</text>
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <svg viewBox="0 0 36 12" className="h-3.5 w-auto">
+                                                        <path fill="#142787" d="M13.6 11.2h2.2l3.4-10.4h-2.3c-1.4 0-1.7.5-2.2 1.7l-5.6 12.5h2.2l4.6-7 1.4 7zm11.4-12.5h-2.3c-.6 0-1.1.2-1.3.8l-4.5 10.8h2.4l.7-2h3l.3 2h2.1l-1.9-8.8c.1-.4 0-.8-1.5-.8zm-2.6 6.5l1.6-4.5.9 4.5h-2.5zm-8.8 3.9h2.3l1.4-8.8h-2.3l-1.4 8.8zm-3.6-8.8l-2.8 7.4-.3-1.6c-.5-1.8-2.2-3.8-4-4.8l2.6 9.6h2.4L9.9.8h-2.4z" />
                                                     </svg>
                                                 </div>
                                                 {/* BLIK */}
-                                                <div className="bg-black rounded px-3 py-2 flex items-center justify-center min-w-[44px] h-[36px]">
-                                                    <svg className="h-3" viewBox="0 0 40 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <text x="0" y="11" fontSize="11" fontWeight="700" fill="white">blik</text>
-                                                    </svg>
+                                                <div className="bg-black rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <span className="text-white text-sm font-bold tracking-wide">blik</span>
                                                 </div>
                                             </div>
                                         </div>
