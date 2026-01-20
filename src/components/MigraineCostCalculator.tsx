@@ -43,6 +43,7 @@ interface CalculatorRowProps {
   placeholder?: string;
   displayValue?: string; // Can be cost, calculated rate, etc.
   note?: string;
+  subCategories?: boolean;
 }
 
 const CalculatorRow = ({
@@ -52,11 +53,12 @@ const CalculatorRow = ({
   onChange,
   placeholder,
   displayValue,
-  note
+  note,
+  subCategories,
 }: CalculatorRowProps) => {
   return (
     <div className="hidden lg:grid grid-cols-4 gap-4 py-1 h-[50px] items-center">
-      <div className="font-medium text-gray-900 text-[16px]">{label}</div>
+      <div className={`font-medium text-gray-900 text-[16px] ${subCategories ? 'ml-6' : ''}`}>{subCategories ? <><span className="mr-2">•</span>{label}</> : label}</div>
       <div className="text-gray-500 text-[16px]">{description}</div>
 
       {/* Column 3: Input or Primary Display Value */}
@@ -359,29 +361,38 @@ export default function MigraineCostCalculator() {
         },
         {
           label: t('foodDeliveryLabel'),
+          description: t('emergencyExpensesDesc'),
           value: foodDelivery,
           onChange: setFoodDelivery,
+          subCategories: true,
         },
         {
           label: t('coffeeLabel'),
+          description: t('emergencyExpensesDesc'),
           value: coffee,
           onChange: setCoffee,
+          subCategories: true,
         },
         {
           label: t('taxiLabel'),
+          description: t('emergencyExpensesDesc'),
           value: taxi,
           onChange: setTaxi,
+          subCategories: true,
         },
         {
           label: t('snacksLabel'),
+          description: t('emergencyExpensesDesc'),
           value: snacks,
           onChange: setSnacks,
+          subCategories: true,
         },
         {
           label: t('acuteMedicationLabel'),
           description: t('acuteMedicationDesc'),
           value: acuteMedicationCost,
           onChange: setAcuteMedicationCost,
+          subCategories: true,
         },
         {
           label: t('prophylacticMedicationLabel'),
@@ -495,6 +506,7 @@ export default function MigraineCostCalculator() {
                           placeholder={t('placeholder')}
                           displayValue={row.displayValue}
                           note={row.note}
+                          subCategories={row.subCategories}
                         />
                         {/* Mobile Row */}
                         <CalculatorRowMobile
