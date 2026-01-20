@@ -1,10 +1,92 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, useInView, Variants } from 'framer-motion';
+import { div } from 'framer-motion/client';
 
-// Row variants for animations
+// --- Reusable Components ---
+
+interface SectionHeaderProps {
+  title: string;
+  isOpen: boolean;
+  onToggle: () => void;
+  color?: string;
+}
+
+const SectionHeader = ({ title, isOpen, onToggle, color = '#F79155' }: SectionHeaderProps) => (
+  <motion.div
+    className="px-4 py-1 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
+    variants={{
+      hidden: { opacity: 0, y: -10 },
+      visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } }
+    }}
+    onClick={onToggle}
+  >
+    <h3 className="font-bold uppercase tracking-wide text-[20px]" style={{ color }}>{title}</h3>
+    <svg
+      className={`w-5 h-5 transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+      style={{ color }}
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+    </svg>
+  </motion.div>
+);
+
+interface CalculatorRowProps {
+  label: string;
+  description?: string;
+  value?: number;
+  onChange?: (val: number) => void;
+  placeholder?: string;
+  displayValue?: string; // Can be cost, calculated rate, etc.
+  note?: string;
+}
+
+const CalculatorRow = ({
+  label,
+  description,
+  value,
+  onChange,
+  placeholder,
+  displayValue,
+  note
+}: CalculatorRowProps) => {
+  return (
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-1 h-[50px] items-center">
+      <div className="font-medium text-gray-900 text-[16px]">{label}</div>
+      <div className="hidden lg:block text-gray-500 text-[16px]">{description}</div>
+
+      {/* Column 3: Input or Primary Display Value */}
+      <div>
+        {onChange ? (
+          <input
+            type="number"
+            min="0"
+            value={value || ''}
+            onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+            placeholder={placeholder}
+            className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
+          />
+        ) : (
+          <div className="font-medium text-gray-700">{displayValue}</div>
+        )}
+      </div>
+
+      {/* Column 4: Secondary Display (Cost) or Note */}
+      <div>
+        {onChange && displayValue && <div className="text-sm text-gray-600">{displayValue}</div>}
+        {note && <div className="text-[16px] text-gray-400 flex items-center">({note})</div>}
+      </div>
+    </div>
+  );
+};
+
+// --- Main Component ---
+
 const rowVariants: Variants = {
   hidden: { opacity: 0, x: -20 },
   visible: {
@@ -17,14 +99,13 @@ const rowVariants: Variants = {
   },
 };
 
-const sectionHeaderVariants: Variants = {
-  hidden: { opacity: 0, y: -10 },
+const containerVariants = {
+  hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    y: 0,
     transition: {
-      duration: 0.4,
-      ease: 'easeOut',
+      staggerChildren: 0.05,
+      delayChildren: 0.1,
     },
   },
 };
@@ -110,7 +191,6 @@ export default function MigraineCostCalculator() {
   }, [doctorVisitHours, travelTimeHours, hourlyRate]);
 
   const totalMonthlyCost = useMemo(() => {
-    // Note: Emotional costs (Section 5) are excluded from this total
     return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost +
       (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost +
       doctorTimeCost;
@@ -128,29 +208,184 @@ export default function MigraineCostCalculator() {
     return glassesPrice / costPerMigraineDay;
   }, [costPerMigraineDay]);
 
-  const handleInputChange = (setter: (value: number) => void) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value) || 0;
-    setter(value);
-  };
-
   const formatCurrency = (value: number) => {
     return `${value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} zł`;
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.1,
-      },
+  interface Section {
+    id: string;
+    title: string;
+    rows: CalculatorRowProps[];
+  }
+
+  const sections: Section[] = [
+    {
+      id: 'section1',
+      title: t('section1Title'),
+      rows: [
+        {
+          label: t('monthlyNetSalaryLabel'),
+          description: t('monthlyNetSalaryDesc'),
+          value: monthlyNetSalary,
+          onChange: setMonthlyNetSalary,
+        },
+        {
+          label: t('workDaysLabel'),
+          description: t('workDaysDesc'),
+          value: workDaysPerMonth,
+          onChange: setWorkDaysPerMonth,
+          note: t('workDaysNote'),
+        },
+        {
+          label: t('dailyRateLabel'),
+          displayValue: formatCurrency(dailyRate),
+          note: t('autoCalculated'),
+        },
+        {
+          label: t('hourlyRateLabel'),
+          displayValue: formatCurrency(hourlyRate),
+          note: t('autoCalculated'),
+        },
+      ],
     },
-  };
+    {
+      id: 'section2',
+      title: t('section2Title'),
+      rows: [
+        {
+          label: t('extraWorkRateLabel'),
+          description: t('extraWorkRateDesc'),
+          value: extraWorkHourlyRate,
+          onChange: setExtraWorkHourlyRate,
+        },
+        {
+          label: t('extraWorkHoursLabel'),
+          description: t('extraWorkHoursDesc'),
+          value: extraWorkHoursPerDay,
+          onChange: setExtraWorkHoursPerDay,
+        },
+        {
+          label: t('lostMonthlyHoursLabel'),
+          description: t('lostMonthlyHoursDesc'),
+          value: lostMonthlyHours,
+          onChange: setLostMonthlyHours,
+        },
+      ],
+    },
+    {
+      id: 'section3',
+      title: t('section3Title'),
+      rows: [
+        {
+          label: t('migraineDaysLabel'),
+          description: t('migraineDaysDesc'),
+          value: migraineDaysPerMonth,
+          onChange: setMigraineDaysPerMonth,
+        },
+        {
+          label: t('sickLeaveDaysLabel'),
+          description: t('sickLeaveDaysDesc'),
+          value: sickLeaveDays,
+          onChange: setSickLeaveDays,
+          displayValue: formatCurrency(sickLeaveIncomeLoss),
+        },
+        {
+          label: t('extraWorkLossLabel'),
+          displayValue: formatCurrency(extraWorkIncomeLoss),
+          note: t('extraWorkLossNote'),
+        },
+        {
+          label: t('catchUpHoursLabel'),
+          description: t('catchUpHoursDesc'),
+          value: catchUpHours,
+          onChange: setCatchUpHours,
+          displayValue: formatCurrency(catchUpTimeCost),
+        },
+      ],
+    },
+    {
+      id: 'section4',
+      title: t('section4Title'),
+      rows: [
+        {
+          label: t('emergencyExpensesLabel'),
+          description: t('emergencyExpensesDesc'),
+          value: emergencyExpenses,
+          onChange: setEmergencyExpenses,
+          displayValue: formatCurrency(totalEmergencyExpenses),
+        },
+        {
+          label: t('foodDeliveryLabel'),
+          value: foodDelivery,
+          onChange: setFoodDelivery,
+        },
+        {
+          label: t('coffeeLabel'),
+          value: coffee,
+          onChange: setCoffee,
+        },
+        {
+          label: t('taxiLabel'),
+          value: taxi,
+          onChange: setTaxi,
+        },
+        {
+          label: t('snacksLabel'),
+          value: snacks,
+          onChange: setSnacks,
+        },
+        {
+          label: t('acuteMedicationLabel'),
+          description: t('acuteMedicationDesc'),
+          value: acuteMedicationCost,
+          onChange: setAcuteMedicationCost,
+        },
+        {
+          label: t('prophylacticMedicationLabel'),
+          description: t('prophylacticMedicationDesc'),
+          value: prophylacticMedicationCost,
+          onChange: setProphylacticMedicationCost,
+        },
+        {
+          label: t('doctorVisitHoursLabel'),
+          description: t('doctorVisitHoursDesc'),
+          value: doctorVisitHours,
+          onChange: setDoctorVisitHours,
+          displayValue: formatCurrency(doctorTimeCost),
+        },
+        {
+          label: t('travelTimeLabel'),
+          description: t('travelTimeDesc'),
+          value: travelTimeHours,
+          onChange: setTravelTimeHours,
+        },
+      ],
+    },
+    {
+      id: 'section5',
+      title: t('section5Title'),
+      rows: [
+        {
+          label: t('lostOpportunitiesLabel'),
+          description: t('lostOpportunitiesDesc'),
+          value: lostOpportunitiesCost,
+          onChange: setLostOpportunitiesCost,
+          displayValue: formatCurrency(lostOpportunitiesCost),
+        },
+        {
+          label: t('affectedPeopleLabel'),
+          description: t('affectedPeopleDesc'),
+          value: affectedPeopleCount,
+          onChange: setAffectedPeopleCount,
+          note: t('infoOnly'),
+        },
+      ],
+    },
+  ];
 
   return (
-    <section className="py-12 lg:py-20 lg:mx-20 bg-[#f5f3f0]" ref={ref}>
-      <div className="max-w-6xl mx-auto px-4 lg:px-6">
+    <section className="py-20 bg-[#f5f3f0] font-sans lg:mx-20" ref={ref}>
+      <div className="max-w-[1480px] mx-auto px-4 lg:px-6">
         {/* Title */}
         <motion.h2
           className="text-2xl lg:text-5xl font-bold text-left lg:text-center text-gray-900 mb-8 lg:mb-16"
@@ -173,464 +408,39 @@ export default function MigraineCostCalculator() {
             className="hidden lg:grid grid-cols-4 gap-4 px-4 py-4"
             variants={rowVariants}
           >
-            <div className="text-sm font-semibold text-gray-700">{t('columnDescription')}</div>
-            <div className="text-sm font-semibold text-gray-700">{t('columnNotes')}</div>
-            <div className="text-sm font-semibold text-gray-700">{t('columnValue')}</div>
-            <div className="text-sm font-semibold text-gray-700">{t('columnCost')}</div>
+            <div className="text-sm font-semibold text-gray-700 text-[24px]">{t('columnDescription')}</div>
+            <div className="text-sm font-semibold text-gray-700 text-[24px]">{t('columnNotes')}</div>
+            <div className="text-sm font-semibold text-gray-700 text-[24px]">{t('columnValue')}</div>
+            <div className="text-sm font-semibold text-gray-700 text-[24px]">{t('columnCost')}</div>
           </motion.div>
 
           <div className="px-4">
-            {/* SECTION 1: BASE DATA */}
-            <motion.div
-              className="px-4 py-3 mt-0 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
-              variants={sectionHeaderVariants}
-              onClick={() => toggleSection('section1')}
-            >
-              <h3 className="font-bold text-[#F79155] uppercase text-sm tracking-wide">{t('section1Title')}</h3>
-              <svg
-                className={`w-5 h-5 text-[#F79155] transform transition-transform duration-300 ${openSections.section1 ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
+            {sections.map((section) => (
+              <div key={section.id} className='my-6'>
+                <SectionHeader
+                  title={section.title}
+                  isOpen={openSections[section.id]}
+                  onToggle={() => toggleSection(section.id)}
+                />
 
-            {openSections.section1 && (
-              <>
-                {/* Monthly Net Salary */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('monthlyNetSalaryLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('monthlyNetSalaryDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={monthlyNetSalary || ''}
-                      onChange={handleInputChange(setMonthlyNetSalary)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="hidden lg:block"></div>
-                </div>
-
-                {/* Work Days Per Month */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('workDaysLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('workDaysDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={workDaysPerMonth || ''}
-                      onChange={handleInputChange(setWorkDaysPerMonth)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-xs text-gray-400 flex items-center">({t('workDaysNote')})</div>
-                </div>
-
-                {/* Daily Rate (calculated) */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('dailyRateLabel')}</div>
-                  <div></div>
-                  <div className="font-medium text-gray-700">{formatCurrency(dailyRate)}</div>
-                  <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
-                </div>
-
-                {/* Hourly Rate (calculated) */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('hourlyRateLabel')}</div>
-                  <div></div>
-                  <div className="font-medium text-gray-700">{formatCurrency(hourlyRate)}</div>
-                  <div className="text-xs text-gray-400 flex items-center">({t('autoCalculated')})</div>
-                </div>
-              </>
-            )}
-
-            {/* SECTION 2: EXTRA WORK */}
-            <motion.div
-              className="px-4 py-3 mt-6 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
-              variants={sectionHeaderVariants}
-              onClick={() => toggleSection('section2')}
-            >
-              <h3 className="font-bold text-[#F79155] uppercase text-sm tracking-wide">{t('section2Title')}</h3>
-              <svg
-                className={`w-5 h-5 text-[#F79155] transform transition-transform duration-300 ${openSections.section2 ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-
-            {openSections.section2 && (
-              <>
-                {/* Extra Work Hourly Rate */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkRateLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('extraWorkRateDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={extraWorkHourlyRate || ''}
-                      onChange={handleInputChange(setExtraWorkHourlyRate)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Extra Work Hours Per Day */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkHoursLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('extraWorkHoursDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={extraWorkHoursPerDay || ''}
-                      onChange={handleInputChange(setExtraWorkHoursPerDay)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Lost Monthly Hours */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('lostMonthlyHoursLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('lostMonthlyHoursDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={lostMonthlyHours || ''}
-                      onChange={handleInputChange(setLostMonthlyHours)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-              </>
-            )}
-
-            {/* SECTION 3: TIME & WORK COSTS */}
-            <motion.div
-              className="px-4 py-3 mt-6 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
-              variants={sectionHeaderVariants}
-              onClick={() => toggleSection('section3')}
-            >
-              <h3 className="font-bold text-[#F79155] uppercase text-sm tracking-wide">{t('section3Title')}</h3>
-              <svg
-                className={`w-5 h-5 text-[#F79155] transform transition-transform duration-300 ${openSections.section3 ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-
-            {openSections.section3 && (
-              <>
-                {/* Migraine Days Per Month */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('migraineDaysLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('migraineDaysDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={migraineDaysPerMonth || ''}
-                      onChange={handleInputChange(setMigraineDaysPerMonth)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Sick Leave Days */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('sickLeaveDaysLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('sickLeaveDaysDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={sickLeaveDays || ''}
-                      onChange={handleInputChange(setSickLeaveDays)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">{formatCurrency(sickLeaveIncomeLoss)}</div>
-                </div>
-
-                {/* Extra Work Income Loss (calculated) */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('extraWorkLossLabel')}</div>
-                  <div></div>
-                  <div className="font-medium text-gray-700">{formatCurrency(extraWorkIncomeLoss)}</div>
-                  <div className="text-xs text-gray-400 flex items-center">({t('extraWorkLossNote')})</div>
-                </div>
-
-                {/* Catch Up Hours */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('catchUpHoursLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('catchUpHoursDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={catchUpHours || ''}
-                      onChange={handleInputChange(setCatchUpHours)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">{formatCurrency(catchUpTimeCost)}</div>
-                </div>
-              </>
-            )}
-
-            {/* SECTION 4: DIRECT EXPENSES */}
-            <motion.div
-              className="px-4 py-3 mt-6 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
-              variants={sectionHeaderVariants}
-              onClick={() => toggleSection('section4')}
-            >
-              <h3 className="font-bold text-[#F79155] uppercase text-sm tracking-wide">{t('section4Title')}</h3>
-              <svg
-                className={`w-5 h-5 text-[#F79155] transform transition-transform duration-300 ${openSections.section4 ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-
-            {openSections.section4 && (
-              <>
-                {/* Emergency Expenses */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('emergencyExpensesLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('emergencyExpensesDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={emergencyExpenses || ''}
-                      onChange={handleInputChange(setEmergencyExpenses)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">{formatCurrency(totalEmergencyExpenses)}</div>
-                </div>
-
-                {/* Food Delivery */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('foodDeliveryLabel')}</div>
-                  <div></div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={foodDelivery || ''}
-                      onChange={handleInputChange(setFoodDelivery)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Coffee */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('coffeeLabel')}</div>
-                  <div></div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={coffee || ''}
-                      onChange={handleInputChange(setCoffee)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Taxi */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('taxiLabel')}</div>
-                  <div></div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={taxi || ''}
-                      onChange={handleInputChange(setTaxi)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Snacks */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('snacksLabel')}</div>
-                  <div></div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={snacks || ''}
-                      onChange={handleInputChange(setSnacks)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Acute Medication */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('acuteMedicationLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('acuteMedicationDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={acuteMedicationCost || ''}
-                      onChange={handleInputChange(setAcuteMedicationCost)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Prophylactic Medication */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('prophylacticMedicationLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('prophylacticMedicationDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={prophylacticMedicationCost || ''}
-                      onChange={handleInputChange(setProphylacticMedicationCost)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-
-                {/* Doctor Visit Hours */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('doctorVisitHoursLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('doctorVisitHoursDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={doctorVisitHours || ''}
-                      onChange={handleInputChange(setDoctorVisitHours)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">{formatCurrency(doctorTimeCost)}</div>
-                </div>
-
-                {/* Travel Time Hours */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('travelTimeLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('travelTimeDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={travelTimeHours || ''}
-                      onChange={handleInputChange(setTravelTimeHours)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div></div>
-                </div>
-              </>
-            )}
-
-            {/* SECTION 5: EMOTIONAL COSTS */}
-            <motion.div
-              className="px-4 py-3 mt-6 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 transition-colors"
-              variants={sectionHeaderVariants}
-              onClick={() => toggleSection('section5')}
-            >
-              <h3 className="font-bold text-[#F79155] uppercase text-sm tracking-wide">{t('section5Title')}</h3>
-              <svg
-                className={`w-5 h-5 text-[#F79155] transform transition-transform duration-300 ${openSections.section5 ? 'rotate-180' : ''}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </motion.div>
-
-            {openSections.section5 && (
-              <>
-                {/* Lost Opportunities */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('lostOpportunitiesLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('lostOpportunitiesDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={lostOpportunitiesCost || ''}
-                      onChange={handleInputChange(setLostOpportunitiesCost)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-sm text-gray-600">{formatCurrency(lostOpportunitiesCost)}</div>
-                </div>
-
-                {/* Affected People Count */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-2 items-center">
-                  <div className="font-medium text-gray-900 text-xs lg:text-sm">{t('affectedPeopleLabel')}</div>
-                  <div className="hidden lg:block text-sm text-gray-500">{t('affectedPeopleDesc')}</div>
-                  <div>
-                    <input
-                      type="number"
-                      min="0"
-                      value={affectedPeopleCount || ''}
-                      onChange={handleInputChange(setAffectedPeopleCount)}
-                      placeholder={t('placeholder')}
-                      className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
-                    />
-                  </div>
-                  <div className="text-xs text-gray-400 flex items-center">({t('infoOnly')})</div>
-                </div>
-              </>
-            )}
+                {openSections[section.id] && (
+                  <>
+                    {section.rows.map((row, index) => (
+                      <CalculatorRow
+                        key={index}
+                        label={row.label}
+                        description={row.description}
+                        value={row.value}
+                        onChange={row.onChange}
+                        placeholder={t('placeholder')}
+                        displayValue={row.displayValue}
+                        note={row.note}
+                      />
+                    ))}
+                  </>
+                )}
+              </div>
+            ))}
 
             {/*  add a divider */}
             <div className="h-px bg-black my-6"></div>
@@ -638,10 +448,13 @@ export default function MigraineCostCalculator() {
             {/* MONTHLY SUMMARY - New Design */}
             <motion.div
               className="-mx-4 mt-8 bg-[#f5f3f0] py-10 lg:py-6 px-6 text-center"
-              variants={sectionHeaderVariants}
+              variants={{
+                hidden: { opacity: 0, y: -10 },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } }
+              }}
             >
               {/* Title */}
-              <h3 className="font-bold text-gray-900 uppercase text-[42px] tracking-wide mb-6">
+              <h3 className="font-bold text-gray-900 uppercase text-[42px] tracking-wide mb-3">
                 {t('summaryTitle')}
               </h3>
 
@@ -660,9 +473,9 @@ export default function MigraineCostCalculator() {
               </p>
 
               {/* Glasses Cost Line */}
-              <p className="text-gray-500 text-xs lg:text-sm mb-6">
+              <p className="text-gray-600 font-bold text-[24px] mb-3">
                 {t('glassesCostText')}{' '}
-                <span className="font-semibold text-gray-700">{glassesPrice} PLN</span>
+                <span className="font-bolder text-gray-900 text-[28px]">{glassesPrice} PLN</span>
               </p>
 
               {/* ROI Line */}
