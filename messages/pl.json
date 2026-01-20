@@ -183,6 +183,7 @@
   },
   "calculator": {
     "title": "Kalkulator kosztów migreny",
+    "description": "Migrena to nie tylko ból głowy.\n\nTo także poważne obciążenie finansowe i życiowe. Jeden dzień z pełną migreną może Cię kosztować nawet 400–600 zł (a czasem więcej) – utracone zarobki, leki, dojazd do lekarza, a nierzadko też konieczność odwoływania ważnych spotkań czy obowiązków.\n\nDo tego dochodzi coś trudniejszego do zmierzenia: izolacja od bliskich, odwołane plany, poczucie winy, stracone możliwości zawodowe i prywatne.\n\nStworzyłam ten kalkulator, żeby pomóc Ci realnie oszacować, ile rzeczywiście kosztuje Cię migrena w skali miesiąca / roku.\n\nWpisz dane dotyczące swojej pracy etatowej i dodatkowej (ew. zleceń, które tracisz) – a zobaczysz, jak szybko może się zwrócić inwestycja w okulary przeciwmigrenowe (lub inne skuteczne rozwiązanie, które rozważasz).\n\nSprawdź sama – liczby potrafią mocno zmotywować do działania. 💙",
     "columnDescription": "Opis",
     "columnNotes": "Uwagi / Formuła",
     "columnValue": "Wartość",

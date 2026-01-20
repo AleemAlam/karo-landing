@@ -3,7 +3,6 @@
 import React, { useState, useMemo, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import { motion, useInView, Variants } from 'framer-motion';
-import { div } from 'framer-motion/client';
 
 // --- Reusable Components ---
 
@@ -56,9 +55,9 @@ const CalculatorRow = ({
   note
 }: CalculatorRowProps) => {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4 py-1 h-[50px] items-center">
+    <div className="hidden lg:grid grid-cols-4 gap-4 py-1 h-[50px] items-center">
       <div className="font-medium text-gray-900 text-[16px]">{label}</div>
-      <div className="hidden lg:block text-gray-500 text-[16px]">{description}</div>
+      <div className="text-gray-500 text-[16px]">{description}</div>
 
       {/* Column 3: Input or Primary Display Value */}
       <div>
@@ -69,7 +68,7 @@ const CalculatorRow = ({
             value={value || ''}
             onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
             placeholder={placeholder}
-            className="w-full px-2 lg:px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-xs lg:text-sm text-gray-600 transition-all duration-200"
+            className="w-full px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-600 transition-all duration-200"
           />
         ) : (
           <div className="font-medium text-gray-700">{displayValue}</div>
@@ -80,6 +79,49 @@ const CalculatorRow = ({
       <div>
         {onChange && displayValue && <div className="text-sm text-gray-600">{displayValue}</div>}
         {note && <div className="text-[16px] text-gray-400 flex items-center">({note})</div>}
+      </div>
+    </div>
+  );
+};
+
+// Mobile-specific row component
+const CalculatorRowMobile = ({
+  label,
+  value,
+  onChange,
+  placeholder,
+  displayValue,
+  note
+}: CalculatorRowProps) => {
+  return (
+    <div className="lg:hidden flex flex-col py-3 border-b border-gray-200/50">
+      {/* Label */}
+      <div className="font-medium text-gray-900 text-sm mb-2">{label}</div>
+
+      {/* Input or Display */}
+      <div className="flex items-center justify-between gap-4">
+        {onChange ? (
+          <input
+            type="number"
+            min="0"
+            value={value || ''}
+            onChange={(e) => onChange(parseFloat(e.target.value) || 0)}
+            placeholder={placeholder}
+            className="flex-1 px-3 py-2.5 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-sm text-gray-700 transition-all duration-200"
+          />
+        ) : (
+          <div className="flex-1 px-3 py-2.5 bg-gray-100 rounded-lg text-sm font-medium text-gray-700">
+            {displayValue}
+          </div>
+        )}
+
+        {/* Cost display or note for mobile */}
+        {onChange && displayValue && (
+          <div className="text-sm font-medium text-orange-500 min-w-[80px] text-right">{displayValue}</div>
+        )}
+        {note && !onChange && (
+          <div className="text-xs text-gray-400 italic">({note})</div>
+        )}
       </div>
     </div>
   );
@@ -388,13 +430,23 @@ export default function MigraineCostCalculator() {
       <div className="max-w-[1480px] mx-auto px-4 lg:px-6">
         {/* Title */}
         <motion.h2
-          className="text-2xl lg:text-5xl font-bold text-left lg:text-center text-gray-900 mb-8 lg:mb-16"
+          className="text-2xl lg:text-5xl font-bold text-left lg:text-center text-gray-900 mb-4 lg:mb-8"
           initial={{ opacity: 0, y: -30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -30 }}
           transition={{ duration: 0.6 }}
         >
           {t('title')}
         </motion.h2>
+
+        {/* Description */}
+        <motion.p
+          className="text-[20px] font-light text-gray-700 text-left mb-4 lg:mb-8"
+          initial={{ opacity: 0, y: -20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        >
+          {t('description')}
+        </motion.p>
 
         {/* Table */}
         <motion.div
@@ -426,16 +478,28 @@ export default function MigraineCostCalculator() {
                 {openSections[section.id] && (
                   <>
                     {section.rows.map((row, index) => (
-                      <CalculatorRow
-                        key={index}
-                        label={row.label}
-                        description={row.description}
-                        value={row.value}
-                        onChange={row.onChange}
-                        placeholder={t('placeholder')}
-                        displayValue={row.displayValue}
-                        note={row.note}
-                      />
+                      <React.Fragment key={index}>
+                        {/* Desktop Row */}
+                        <CalculatorRow
+                          label={row.label}
+                          description={row.description}
+                          value={row.value}
+                          onChange={row.onChange}
+                          placeholder={t('placeholder')}
+                          displayValue={row.displayValue}
+                          note={row.note}
+                        />
+                        {/* Mobile Row */}
+                        <CalculatorRowMobile
+                          label={row.label}
+                          description={row.description}
+                          value={row.value}
+                          onChange={row.onChange}
+                          placeholder={t('placeholder')}
+                          displayValue={row.displayValue}
+                          note={row.note}
+                        />
+                      </React.Fragment>
                     ))}
                   </>
                 )}
@@ -445,9 +509,9 @@ export default function MigraineCostCalculator() {
             {/*  add a divider */}
             <div className="h-px bg-black my-6"></div>
 
-            {/* MONTHLY SUMMARY - New Design */}
+            {/* MONTHLY SUMMARY - Desktop */}
             <motion.div
-              className="-mx-4 mt-8 bg-[#f5f3f0] py-10 lg:py-6 px-6 text-center"
+              className="hidden lg:block -mx-4 mt-8 bg-[#f5f3f0] py-6 px-6 text-center"
               variants={{
                 hidden: { opacity: 0, y: -10 },
                 visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } }
@@ -492,6 +556,48 @@ export default function MigraineCostCalculator() {
                 </motion.span>
               </p>
             </motion.div>
+
+            {/* MONTHLY SUMMARY - Mobile */}
+            <div className="lg:hidden -mx-4 mt-6 bg-linear-to-b from-orange-50 to-white py-8 px-4 text-center rounded-t-3xl">
+              {/* Title */}
+              <h3 className="font-bold text-gray-900 uppercase text-xl tracking-wide mb-4">
+                {t('summaryTitle')}
+              </h3>
+
+              {/* Monthly Cost Card */}
+              <div className="bg-white rounded-2xl shadow-lg p-5 mb-4">
+                <p className="text-gray-600 text-sm mb-1">{t('monthlyCostText')}</p>
+                <motion.p
+                  className="text-orange-500 font-bold text-3xl"
+                  key={totalMonthlyCost}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {Math.round(totalMonthlyCost)} PLN
+                </motion.p>
+              </div>
+
+              {/* Glasses Cost */}
+              <div className="bg-gray-100 rounded-xl p-4 mb-4">
+                <p className="text-gray-600 text-sm">{t('glassesCostText')}</p>
+                <p className="font-bold text-gray-900 text-xl">{glassesPrice} PLN</p>
+              </div>
+
+              {/* ROI */}
+              <div className="bg-white rounded-2xl shadow-lg p-5">
+                <p className="text-gray-600 text-sm mb-1">{t('roiText')}</p>
+                <motion.p
+                  className="text-gray-900 font-bold text-2xl"
+                  key={breakEvenDays}
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {Math.round(breakEvenDays)} {t('days')}
+                </motion.p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

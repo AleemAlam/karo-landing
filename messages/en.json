@@ -187,6 +187,7 @@
   },
   "calculator": {
     "title": "Migraine Cost Calculator",
+    "description": "Migraine is not just a headache. It's also a serious financial and life burden. One full day with a migraine can cost you as much as 400–600 PLN (sometimes even more), lost income, medication, travel to the doctor, and often the need to cancel important meetings or responsibilities.\n\nAnd then there's the part that's harder to measure: isolation from loved ones, canceled plans, guilt, and missed professional and personal opportunities.\n\nI created this calculator to help you realistically estimate how much migraine truly costs you per month / per year.\n\nEnter details about your full-time work and any additional income (or freelance jobs you lose), and you'll see how quickly an investment in migraine glasses (or another effective solution you're considering) can pay for itself.\n\nTry it. Numbers can be a powerful motivator to take action. 💙",
     "columnDescription": "Description",
     "columnNotes": "Notes / Formula",
     "columnValue": "Value",
