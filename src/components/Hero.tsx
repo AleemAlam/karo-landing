@@ -5,9 +5,11 @@ import { useTranslations } from 'next-intl';
 import { motion } from 'framer-motion';
 import { FloatElement, HoverScale } from './MotionWrapper';
 import { Link } from '@/i18n/navigation';
+import { useLocale } from 'next-intl';
 
 export default function Hero() {
   const t = useTranslations('hero');
+  const locale = useLocale();
 
   const benefits = [
     t('benefit1'),
@@ -300,7 +302,7 @@ export default function Hero() {
 
               {/* Gift badge - Circular purple design */}
               <motion.div
-                className="absolute bottom-32 -left-16 lg:-right-12 w-[130px] h-[130px] bg-[#2B183D] rounded-full shadow-2xl flex flex-col items-center justify-center p-2 text-center z-20"
+                className={`absolute bottom-32 -left-16 lg:-right-12 ${locale === 'pl' ? 'w-[140px] h-[140px]' : 'w-[130px] h-[130px]'} bg-[#2B183D] rounded-full shadow-2xl flex flex-col items-center justify-center p-2 text-center z-20`}
                 initial={{ scale: 0, rotate: -180 }}
                 animate={{ scale: 1, rotate: 0 }}
                 transition={{ delay: 0.8, duration: 0.6, type: 'spring', stiffness: 200 }}

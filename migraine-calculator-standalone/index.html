@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator kosztów migreny</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: #f5f3f0;
+            color: #1a1a1a;
+            line-height: 1.5;
+        }
+
+        .calculator-section {
+            padding: 48px 16px;
+            max-width: 1152px;
+            margin: 0 auto;
+        }
+
+        .calculator-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: left;
+            color: #1a1a1a;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 1024px) {
+            .calculator-title {
+                font-size: 3rem;
+                text-align: center;
+                margin-bottom: 64px;
+            }
+        }
+
+        .calculator-table {
+            background-color: #f5f3f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table-header {
+            display: none;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            padding: 16px;
+        }
+
+        @media (min-width: 1024px) {
+            .table-header {
+                display: grid;
+            }
+        }
+
+        .table-header div {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .table-content {
+            padding: 0 16px;
+        }
+
+        .section-header {
+            padding: 12px 16px;
+            margin: 0 -16px;
+        }
+
+        .section-header h3 {
+            font-weight: 700;
+            color: #F79155;
+            text-transform: uppercase;
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+        }
+
+        .section-header.first {
+            margin-top: 0;
+        }
+
+        .section-header:not(.first) {
+            margin-top: 24px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            padding: 12px 0;
+        }
+
+        @media (min-width: 1024px) {
+            .row {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+                padding: 16px 0;
+            }
+        }
+
+        .row-label {
+            font-weight: 500;
+            color: #1a1a1a;
+            font-size: 0.75rem;
+        }
+
+        @media (min-width: 1024px) {
+            .row-label {
+                font-size: 0.875rem;
+            }
+        }
+
+        .row-desc {
+            display: none;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        @media (min-width: 1024px) {
+            .row-desc {
+                display: block;
+            }
+        }
+
+        .row-note {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px 12px;
+            background-color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #4b5563;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        @media (min-width: 1024px) {
+            input[type="number"] {
+                padding: 8px 12px;
+                font-size: 0.875rem;
+            }
+        }
+
+        input[type="number"]:focus {
+            box-shadow: 0 0 0 2px #fb923c;
+        }
+
+        .calculated-value {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .row-cost {
+            font-size: 0.875rem;
+            color: #4b5563;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background-color: #000;
+            margin: 24px 0;
+        }
+
+        /* Summary Section */
+        .summary-section {
+            margin: 32px -16px 0 -16px;
+            background-color: #f5f3f0;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        @media (min-width: 1024px) {
+            .summary-section {
+                padding: 24px;
+            }
+        }
+
+        .summary-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            font-size: 42px;
+            letter-spacing: 0.05em;
+            margin-bottom: 24px;
+        }
+
+        .summary-cost-line {
+            color: #1f2937;
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .summary-cost-value {
+            color: #f97316;
+            font-weight: 700;
+            font-size: 42px;
+        }
+
+        .summary-glasses-line {
+            color: #6b7280;
+            font-size: 0.75rem;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 1024px) {
+            .summary-glasses-line {
+                font-size: 1rem;
+            }
+        }
+
+        .summary-glasses-value {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .summary-roi-line {
+            color: #1f2937;
+            font-size: 42px;
+        }
+
+        .summary-roi-value {
+            color: #1a1a1a;
+            font-weight: 700;
+            font-size: 42px;
+        }
+
+        /* Desktop-only elements */
+        .desktop-only {
+            display: none;
+        }
+
+        @media (min-width: 1024px) {
+            .desktop-only {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="calculator-section">
+        <h2 class="calculator-title">Kalkulator kosztów migreny</h2>
+
+        <div class="calculator-table">
+            <!-- Header Row - Desktop Only -->
+            <div class="table-header">
+                <div>Opis</div>
+                <div>Uwagi / Formuła</div>
+                <div>Wartość</div>
+                <div>Koszt (PLN)</div>
+            </div>
+
+            <div class="table-content">
+                <!-- SECTION 1: DANE BAZOWE -->
+                <div class="section-header first">
+                    <h3>DANE BAZOWE</h3>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Miesięczne wynagrodzenie netto</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="monthlyNetSalary" value="5000" placeholder="Wpisz wartość"></div>
+                    <div class="desktop-only"></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Liczba dni roboczych w miesiącu</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="workDaysPerMonth" value="20" placeholder="Wpisz wartość"></div>
+                    <div class="row-note">(standardowo 20)</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Stawka dzienna</div>
+                    <div></div>
+                    <div class="calculated-value" id="dailyRateDisplay">250,00 zł</div>
+                    <div class="row-note">(wyliczana automatycznie)</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Stawka godzinowa</div>
+                    <div></div>
+                    <div class="calculated-value" id="hourlyRateDisplay">31,25 zł</div>
+                    <div class="row-note">(wyliczana automatycznie)</div>
+                </div>
+
+                <!-- SECTION 2: PRACA DODATKOWA -->
+                <div class="section-header">
+                    <h3>PRACA DODATKOWA</h3>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Stawka godzinowa (praca dodatkowa)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="extraWorkHourlyRate" value="50" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Liczba godzin dziennie</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="extraWorkHoursPerDay" value="4" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Utracone godziny miesięcznie z powodu migreny</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="lostMonthlyHours" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <!-- SECTION 3: KOSZTY CZASU I PRACY -->
+                <div class="section-header">
+                    <h3>KOSZTY CZASU I PRACY</h3>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Liczba dni migrenowych w miesiącu</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="migraineDaysPerMonth" value="4" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Liczba dni na zwolnieniu (L4)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="sickLeaveDays" value="1" placeholder="Wpisz wartość"></div>
+                    <div class="row-cost" id="sickLeaveIncomeLossDisplay">50,00 zł</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Utrata dochodu z pracy dodatkowej</div>
+                    <div></div>
+                    <div class="calculated-value" id="extraWorkIncomeLossDisplay">0,00 zł</div>
+                    <div class="row-note">(założenie: migrena w dzień pracy)</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Czas na nadrabianie zaległości w pracy (h)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="catchUpHours" value="0" placeholder="Wpisz wartość"></div>
+                    <div class="row-cost" id="catchUpTimeCostDisplay">0,00 zł</div>
+                </div>
+
+                <!-- SECTION 4: WYDATKI BEZPOŚREDNIE -->
+                <div class="section-header">
+                    <h3>WYDATKI BEZPOŚREDNIE</h3>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Wydatki "ratunkowe" na 1 atak (suma)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="emergencyExpenses" value="100" placeholder="Wpisz wartość"></div>
+                    <div class="row-cost" id="totalEmergencyExpensesDisplay">100,00 zł</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Dostawa jedzenia do domu</div>
+                    <div></div>
+                    <div><input type="number" id="foodDelivery" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Kawa</div>
+                    <div></div>
+                    <div><input type="number" id="coffee" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Taxi do domu</div>
+                    <div></div>
+                    <div><input type="number" id="taxi" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Przekąski</div>
+                    <div></div>
+                    <div><input type="number" id="snacks" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Leki doraźne (koszt na 1 atak)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="acuteMedicationCost" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Leki profilaktyczne (stały koszt mies.)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="prophylacticMedicationCost" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Wizyty lekarskie (suma w miesiącu w godz.)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="doctorVisitHours" value="2" placeholder="Wpisz wartość"></div>
+                    <div class="row-cost" id="doctorTimeCostDisplay">62,50 zł</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Czas na dojazdy/wizyty (h miesięcznie)</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="travelTimeHours" value="0" placeholder="Wpisz wartość"></div>
+                    <div></div>
+                </div>
+
+                <!-- SECTION 5: KOSZTY EMOCJONALNE -->
+                <div class="section-header">
+                    <h3>KOSZTY EMOCJONALNE</h3>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Wycena utraconych możliwości (PLN)</div>
+                    <div class="row-desc">wyjścia, relacje, hobby</div>
+                    <div><input type="number" id="lostOpportunitiesCost" value="0" placeholder="Wpisz wartość"></div>
+                    <div class="row-cost" id="lostOpportunitiesCostDisplay">0,00 zł</div>
+                </div>
+
+                <div class="row">
+                    <div class="row-label">Liczba osób, na które wpływa choroba</div>
+                    <div class="row-desc">wpisz wartość lub zostaw puste</div>
+                    <div><input type="number" id="affectedPeopleCount" value="0" placeholder="Wpisz wartość"></div>
+                    <div class="row-note">(wynik informacyjny)</div>
+                </div>
+
+                <!-- Divider -->
+                <div class="divider"></div>
+
+                <!-- Summary Section -->
+                <div class="summary-section">
+                    <h3 class="summary-title">PODSUMOWANIE MIESIĘCZNE</h3>
+                    
+                    <p class="summary-cost-line">
+                        Miesięcznie migreny kosztują Cię: 
+                        <span class="summary-cost-value" id="totalMonthlyCostDisplay">512</span> PLN
+                    </p>
+                    
+                    <p class="summary-glasses-line">
+                        Koszt okularów PacificEyes, które mogą pomóc Ci zapobiegać migrenom: 
+                        <span class="summary-glasses-value">450 PLN</span>
+                    </p>
+                    
+                    <p class="summary-roi-line">
+                        Osiągniesz zwrot inwestycji w: 
+                        <span class="summary-roi-value" id="breakEvenDaysDisplay">4</span> dni
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Get all input elements
+        const inputs = {
+            monthlyNetSalary: document.getElementById('monthlyNetSalary'),
+            workDaysPerMonth: document.getElementById('workDaysPerMonth'),
+            extraWorkHourlyRate: document.getElementById('extraWorkHourlyRate'),
+            extraWorkHoursPerDay: document.getElementById('extraWorkHoursPerDay'),
+            lostMonthlyHours: document.getElementById('lostMonthlyHours'),
+            migraineDaysPerMonth: document.getElementById('migraineDaysPerMonth'),
+            sickLeaveDays: document.getElementById('sickLeaveDays'),
+            catchUpHours: document.getElementById('catchUpHours'),
+            emergencyExpenses: document.getElementById('emergencyExpenses'),
+            foodDelivery: document.getElementById('foodDelivery'),
+            coffee: document.getElementById('coffee'),
+            taxi: document.getElementById('taxi'),
+            snacks: document.getElementById('snacks'),
+            acuteMedicationCost: document.getElementById('acuteMedicationCost'),
+            prophylacticMedicationCost: document.getElementById('prophylacticMedicationCost'),
+            doctorVisitHours: document.getElementById('doctorVisitHours'),
+            travelTimeHours: document.getElementById('travelTimeHours'),
+            lostOpportunitiesCost: document.getElementById('lostOpportunitiesCost'),
+            affectedPeopleCount: document.getElementById('affectedPeopleCount')
+        };
+
+        // Get all display elements
+        const displays = {
+            dailyRate: document.getElementById('dailyRateDisplay'),
+            hourlyRate: document.getElementById('hourlyRateDisplay'),
+            sickLeaveIncomeLoss: document.getElementById('sickLeaveIncomeLossDisplay'),
+            extraWorkIncomeLoss: document.getElementById('extraWorkIncomeLossDisplay'),
+            catchUpTimeCost: document.getElementById('catchUpTimeCostDisplay'),
+            totalEmergencyExpenses: document.getElementById('totalEmergencyExpensesDisplay'),
+            doctorTimeCost: document.getElementById('doctorTimeCostDisplay'),
+            lostOpportunitiesCostDisplay: document.getElementById('lostOpportunitiesCostDisplay'),
+            totalMonthlyCost: document.getElementById('totalMonthlyCostDisplay'),
+            breakEvenDays: document.getElementById('breakEvenDaysDisplay')
+        };
+
+        const glassesPrice = 450;
+
+        // Format currency
+        function formatCurrency(value) {
+            return value.toLocaleString('pl-PL', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' zł';
+        }
+
+        // Get value from input
+        function getValue(input) {
+            return parseFloat(input.value) || 0;
+        }
+
+        // Calculate all values
+        function calculate() {
+            const monthlyNetSalary = getValue(inputs.monthlyNetSalary);
+            const workDaysPerMonth = getValue(inputs.workDaysPerMonth);
+            const extraWorkHourlyRate = getValue(inputs.extraWorkHourlyRate);
+            const lostMonthlyHours = getValue(inputs.lostMonthlyHours);
+            const migraineDaysPerMonth = getValue(inputs.migraineDaysPerMonth);
+            const sickLeaveDays = getValue(inputs.sickLeaveDays);
+            const catchUpHours = getValue(inputs.catchUpHours);
+            const emergencyExpenses = getValue(inputs.emergencyExpenses);
+            const foodDelivery = getValue(inputs.foodDelivery);
+            const coffee = getValue(inputs.coffee);
+            const taxi = getValue(inputs.taxi);
+            const snacks = getValue(inputs.snacks);
+            const acuteMedicationCost = getValue(inputs.acuteMedicationCost);
+            const prophylacticMedicationCost = getValue(inputs.prophylacticMedicationCost);
+            const doctorVisitHours = getValue(inputs.doctorVisitHours);
+            const travelTimeHours = getValue(inputs.travelTimeHours);
+            const lostOpportunitiesCost = getValue(inputs.lostOpportunitiesCost);
+
+            // Calculations
+            const dailyRate = workDaysPerMonth === 0 ? 0 : monthlyNetSalary / workDaysPerMonth;
+            const hourlyRate = dailyRate / 8;
+            const sickLeaveIncomeLoss = dailyRate * 0.2 * sickLeaveDays;
+            const extraWorkIncomeLoss = extraWorkHourlyRate * lostMonthlyHours;
+            const catchUpTimeCost = catchUpHours * hourlyRate;
+            const totalEmergencyExpenses = emergencyExpenses + foodDelivery + coffee + taxi + snacks + acuteMedicationCost;
+            const doctorTimeCost = (doctorVisitHours + travelTimeHours) * hourlyRate;
+
+            const totalMonthlyCost = sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost +
+                (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost + doctorTimeCost;
+
+            const costPerMigraineDay = migraineDaysPerMonth === 0 ? 0 : totalMonthlyCost / migraineDaysPerMonth;
+            const breakEvenDays = costPerMigraineDay === 0 ? 0 : glassesPrice / costPerMigraineDay;
+
+            // Update displays
+            displays.dailyRate.textContent = formatCurrency(dailyRate);
+            displays.hourlyRate.textContent = formatCurrency(hourlyRate);
+            displays.sickLeaveIncomeLoss.textContent = formatCurrency(sickLeaveIncomeLoss);
+            displays.extraWorkIncomeLoss.textContent = formatCurrency(extraWorkIncomeLoss);
+            displays.catchUpTimeCost.textContent = formatCurrency(catchUpTimeCost);
+            displays.totalEmergencyExpenses.textContent = formatCurrency(totalEmergencyExpenses);
+            displays.doctorTimeCost.textContent = formatCurrency(doctorTimeCost);
+            displays.lostOpportunitiesCostDisplay.textContent = formatCurrency(lostOpportunitiesCost);
+            displays.totalMonthlyCost.textContent = Math.round(totalMonthlyCost);
+            displays.breakEvenDays.textContent = Math.round(breakEvenDays);
+        }
+
+        // Add event listeners to all inputs
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>

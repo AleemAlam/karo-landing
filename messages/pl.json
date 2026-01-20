@@ -294,6 +294,7 @@
     "title": "Dokończ rejestrację",
     "subtitle": "Dołącz do Edycji Założycielskiej i rozpocznij swoją drogę do życia bez migreny",
     "formTitle": "Formularz rejestracyjny",
+    "formSubtitle": "Wypełnij, aby zakończyć rejestrację",
     "paymentTitle": "Dokończ płatność",
     "priceNote": "Zawiera okulary Fovea Blue o wartości 497 zł",
     "payButton": "Zapłać przez PayU",
@@ -303,6 +304,8 @@
     "included1": "6-tygodniowy program z 7 modułami",
     "included2": "Okulary Fovea Blue z FotoChrōm",
     "included3": "Prywatna społeczność wsparcia",
-    "included4": "3x grupowe sesje z edukatorem"
+    "included4": "3x grupowe sesje z edukatorem",
+    "successTitle": "Płatność zakończona sukcesem!",
+    "successSubtitle": "Wypełnij poniższy formularz rejestracyjny, aby zakończyć zapis"
   }
 }
