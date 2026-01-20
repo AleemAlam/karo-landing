@@ -3,6 +3,8 @@
 import { useTranslations } from 'next-intl';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { HoverScale } from './MotionWrapper';
+import Link from 'next/link';
 
 export default function StatsSection() {
   const t = useTranslations('stats');
@@ -75,6 +77,32 @@ export default function StatsSection() {
               <p className="text-sm text-gray-500">{stat.label}</p>
             </motion.div>
           ))}
+        </motion.div>
+
+
+        {/* Mobile CTA Button */}
+        <motion.div variants={itemVariants} className="w-full px-4 mb-4">
+          <HoverScale scale={1.02}>
+            <Link href="/buy" className="w-full bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base group">
+              {heroT('ctaButton')}
+              <motion.svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </motion.svg>
+            </Link>
+          </HoverScale>
         </motion.div>
 
         {/* Benefits List */}

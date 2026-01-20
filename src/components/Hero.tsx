@@ -70,119 +70,86 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-linear-to-br from-white via-gray-50 to-orange-50/30 py-8 lg:py-10 xl:py-14 overflow-hidden">
+    <section className="bg-linear-to-br from-white via-gray-50 to-orange-50/30 py-1 lg:py-10 xl:py-14 overflow-hidden">
       {/* Mobile Layout */}
-      <div className="lg:hidden px-4 bg-white">
+      <div className="lg:hidden bg-white">
+        {/* Mobile Image Section - Full width hero image */}
         <motion.div
-          className="flex flex-col items-center"
+          className="relative w-full"
+          variants={mobileImageVariants}
+        >
+          {/* Main hero image - full width */}
+          <div className="relative z-10 h-[400px] overflow-hidden">
+            <Image
+              src="/hero/karo-hero.png"
+              alt="Happy customer"
+              width={400}
+              height={500}
+              className="object-cover w-full h-auto"
+              priority
+            />
+          </div>
+        </motion.div>
+        <motion.div
+          className="relative justify-between items-center w-full mb-0 px-4 rounded-t-3xl -mt-8 z-50 bg-white"
+          variants={itemVariants}
+        >
+          {/* Gift badge - positioned to the right of glasses */}
+          <motion.div
+            className="w-[150px] h-[150px] bg-[#2B183D] rounded-full shadow-xl flex flex-col items-center justify-center p-3 text-center mx-auto relative -top-[50px]"
+            initial={{ scale: 0, rotate: -10 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.6, duration: 0.6, type: 'spring', stiffness: 200 }}
+          >
+            {/* Gift icon */}
+            <Image
+              src="/Gift-box-with-a-bow.png"
+              alt="Gift icon"
+              width={20}
+              height={20}
+              className="mb-2"
+            />
+            {/* Text content */}
+            <p className="text-white text-[10px] leading-tight">{t('giftLabel')}</p>
+            <p className="text-white text-[10px] leading-tight">
+              {t('giftSubtext2')}
+            </p>
+            <p className="text-white text-sm font-bold">
+              {t('giftValue')} <span className="font-normal text-[10px]">{t('giftSubtext')}</span>
+            </p>
+          </motion.div>
+          {/* Glasses image */}
+          <div className="w-[350px] mx-auto -mt-[140px] -z-10">
+            <Image
+              src="/hero/spec.png"
+              alt="Migraine sunglasses"
+              width={350}
+              height={350}
+              className="object-contain w-"
+            />
+          </div>
+        </motion.div>
+        <motion.div
+          className="flex flex-col items-center -mt-[50px]"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Mobile Heading */}
           <motion.h1
-            className="text-[26px] md:text-3xl font-bold text-black leading-tight text-center mb-6"
+            className="text-[26px] md:text-3xl font-bold text-black leading-tight text-center mb-6 px-4 z-100"
             variants={itemVariants}
           >
             {t('heading1')}
             <span className="text-gray-800">{t('heading2')}</span>
           </motion.h1>
-
-          {/* Mobile Image Section - Full width hero image */}
-          <motion.div
-            className="relative w-full mb-6"
-            variants={mobileImageVariants}
-          >
-            {/* Decorative background */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[350px] bg-linear-to-br from-green-100/50 to-emerald-200/30 rounded-full blur-3xl" />
-
-            {/* Main hero image - full width */}
-            <div className="relative z-10 h-[300px] overflow-hidden">
-              <Image
-                src="/hero/karo-hero.png"
-                alt="Happy customer"
-                width={400}
-                height={500}
-                className="object-cover w-full h-auto"
-                priority
-              />
-            </div>
-          </motion.div>
-
           {/* Mobile Subheading */}
           <motion.p
-            className="text-[19px] text-[#565656] text-center font-normal leading-relaxed mb-6 px-2"
+            className="text-[19px] text-[#565656] text-center font-normal leading-relaxed mb-6 px-4"
             variants={itemVariants}
           >
             {t('subheading')}
           </motion.p>
-
-          {/* Mobile Glasses with Gift Badge Section */}
-          <motion.div
-            className="relative w-full mb-0"
-            variants={itemVariants}
-          >
-            {/* Glasses image */}
-            <div className="relative">
-              <Image
-                src="/hero/spec.png"
-                alt="Migraine sunglasses"
-                width={300}
-                height={300}
-                className="object-contain w-"
-              />
-            </div>
-
-            {/* Gift badge - positioned to the right of glasses */}
-            <motion.div
-              className="absolute top-[60px] right-0 w-[150px] h-[150px] bg-[#2B183D] rounded-full shadow-xl flex flex-col items-center justify-center p-3 text-center"
-              initial={{ scale: 0, rotate: -10 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ delay: 0.6, duration: 0.6, type: 'spring', stiffness: 200 }}
-            >
-              {/* Gift icon */}
-              <Image
-                src="/Gift-box-with-a-bow.png"
-                alt="Gift icon"
-                width={20}
-                height={20}
-                className="mb-2"
-              />
-              {/* Text content */}
-              <p className="text-white text-[10px] leading-tight">{t('giftLabel')}</p>
-              <p className="text-white text-[10px] leading-tight">
-                {t('giftSubtext2')}
-              </p>
-              <p className="text-white text-sm font-bold">
-                {t('giftValue')} <span className="font-normal text-[10px]">{t('giftSubtext')}</span>
-              </p>
-            </motion.div>
-          </motion.div>
-
-          {/* Mobile CTA Button */}
-          <motion.div variants={itemVariants} className="w-full px-4">
-            <HoverScale scale={1.02}>
-              <Link href="/buy" className="w-full bg-[#F79155] hover:bg-orange-500 cursor-pointer text-white font-semibold px-6 py-4 transition-colors duration-300 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl text-base group">
-                {t('ctaButton')}
-                <motion.svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </motion.svg>
-              </Link>
-            </HoverScale>
-          </motion.div>
         </motion.div>
       </div>
 
