@@ -229,6 +229,8 @@
     "acuteMedicationDesc": "enter value or leave empty",
     "prophylacticMedicationLabel": "Prophylactic medication (monthly cost)",
     "prophylacticMedicationDesc": "enter value or leave empty",
+    "doctorVisitCostLabel": "Doctor visit cost",
+    "doctorVisitCostDesc": "enter value or leave empty",
     "doctorVisitHoursLabel": "Doctor visits (hours per month)",
     "doctorVisitHoursDesc": "enter value or leave empty",
     "travelTimeLabel": "Travel time (hours per month)",

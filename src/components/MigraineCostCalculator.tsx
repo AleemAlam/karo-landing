@@ -195,6 +195,7 @@ export default function MigraineCostCalculator() {
   const [snacks, setSnacks] = useState<number>(0);
   const [acuteMedicationCost, setAcuteMedicationCost] = useState<number>(0);
   const [prophylacticMedicationCost, setProphylacticMedicationCost] = useState<number>(0);
+  const [doctorVisitCost, setDoctorVisitCost] = useState<number>(200);
   const [doctorVisitHours, setDoctorVisitHours] = useState<number>(2);
   const [travelTimeHours, setTravelTimeHours] = useState<number>(0);
 
@@ -229,8 +230,8 @@ export default function MigraineCostCalculator() {
   }, [emergencyExpenses, foodDelivery, coffee, taxi, snacks, acuteMedicationCost]);
 
   const doctorTimeCost = useMemo(() => {
-    return (doctorVisitHours + travelTimeHours) * hourlyRate;
-  }, [doctorVisitHours, travelTimeHours, hourlyRate]);
+    return (doctorVisitHours + travelTimeHours) * doctorVisitCost;
+  }, [doctorVisitCost, doctorVisitHours, travelTimeHours, hourlyRate]);
 
   const totalMonthlyCost = useMemo(() => {
     return sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost +
@@ -387,6 +388,12 @@ export default function MigraineCostCalculator() {
           description: t('prophylacticMedicationDesc'),
           value: prophylacticMedicationCost,
           onChange: setProphylacticMedicationCost,
+        },
+        {
+          label: t('doctorVisitCostLabel'),
+          description: t('doctorVisitCostDesc'),
+          value: doctorVisitCost,
+          onChange: setDoctorVisitCost,
         },
         {
           label: t('doctorVisitHoursLabel'),
