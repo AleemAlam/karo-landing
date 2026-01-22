@@ -247,7 +247,7 @@ export default function MigraineCostCalculator() {
     return totalMonthlyCost / migraineDaysPerMonth;
   }, [totalMonthlyCost, migraineDaysPerMonth]);
 
-  const glassesPrice = 450;
+  const glassesPrice = 1299;
   const breakEvenDays = useMemo(() => {
     if (costPerMigraineDay === 0) return 0;
     return glassesPrice / costPerMigraineDay;

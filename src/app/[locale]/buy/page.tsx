@@ -340,14 +340,14 @@ export default function BuyPage() {
                                                     </div>
                                                     <span className="text-gray-700">{t('included1')}</span>
                                                 </li>
-                                                <li className="flex items-center gap-3">
+                                                {/* <li className="flex items-center gap-3">
                                                     <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
                                                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
                                                         </svg>
                                                     </div>
                                                     <span className="text-gray-700">{t('included2')}</span>
-                                                </li>
+                                                </li> */}
                                                 <li className="flex items-center gap-3">
                                                     <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center shrink-0">
                                                         <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

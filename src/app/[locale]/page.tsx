@@ -27,8 +27,8 @@ export default function Home() {
       <ProgramDetailsSection />
       <PricingCTASection />
       <LimitedSpotsSection />
-      <FAQSection />
       <MigraineCostCalculator />
+      <FAQSection />
       <Footer />
     </div>
   );

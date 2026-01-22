@@ -25,11 +25,6 @@ export default function ProgramDetailsSection() {
     { title: t('coaching1Title'), description: t('coaching1Desc'), value: '600 zł' },
   ];
 
-  const tools = [
-    { title: t('tools1Title'), description: t('tools1Desc'), value: '500 zł' },
-    { title: t('tools2Title'), description: t('tools2Desc'), value: '200 zł' },
-  ];
-
   // Mobile card component for items
   const MobileCard = ({ title, description, value }: { title: string; description: string; value: string }) => (
     <div className="bg-white p-4 border-b border-gray-100">
@@ -136,32 +131,6 @@ export default function ProgramDetailsSection() {
               ))}
             </div>
           </div>
-
-          {/* Tools Section */}
-          <div className="bg-white rounded-lg p-4 mb-4">
-            <h3 className="text-2xl font-bold text-black mb-4">{t('toolsTitle')}</h3>
-            <div className="space-y-4">
-              {tools.map((item, index) => (
-                <div key={index} className={`pb-4 ${index !== tools.length - 1 ? 'border-b border-gray-200' : ''}`}>
-                  <div className="flex items-start gap-3">
-                    <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center shrink-0 mt-0.5">
-                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start mb-1">
-                        <span className="font-bold text-gray-800 text-sm">{item.title}</span>
-                        <span className="text-orange-500 font-bold text-sm ml-2 shrink-0">{item.value}</span>
-                      </div>
-                      <p className="text-gray-500 text-xs leading-relaxed">{item.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* Total */}
           <div className="bg-white rounded-lg p-4 border-2 border-gray-300">
             <div className="flex justify-center items-center gap-4">
@@ -263,31 +232,6 @@ export default function ProgramDetailsSection() {
               </div>
             </div>
 
-            {/* Tools Section */}
-            <div className="mb-5 px-8 py-6 bg-white">
-              <h3 className="text-2xl font-bold text-black mb-6">{t('toolsTitle')}</h3>
-              <div className="border-t border-gray-300">
-                <div className="grid grid-cols-12 py-3 text-sm text-black font-bold border-b border-gray-200">
-                  <div className="col-span-3">{t('labelElement')}</div>
-                  <div className="col-span-7">{t('labelDescription')}</div>
-                  <div className="col-span-2 text-right text-black font-bold">{t('labelValue')}</div>
-                </div>
-                {tools.map((item, index) => (
-                  <div key={index} className={`grid grid-cols-12 py-4 border-b border-gray-200 items-start ${index === tools.length - 1 ? 'border-b-0' : ''}`}>
-                    <div className="col-span-3 flex items-center gap-3">
-                      <div className="w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
-                        <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                        </svg>
-                      </div>
-                      <span className="font-medium text-[#565656] text-sm">{item.title}</span>
-                    </div>
-                    <div className="col-span-7 text-[#565656] text-sm">{item.description}</div>
-                    <div className="col-span-2 text-right text-black font-bold">{item.value}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
 
             {/* Total */}
             <div className="flex justify-between items-center py-6 px-8 bg-white">
