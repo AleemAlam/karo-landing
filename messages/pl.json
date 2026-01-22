@@ -222,6 +222,8 @@
     "acuteMedicationDesc": "wpisz wartość lub zostaw puste",
     "prophylacticMedicationLabel": "Leki profilaktyczne (stały koszt mies.)",
     "prophylacticMedicationDesc": "wpisz wartość lub zostaw puste",
+    "doctorVisitCostLabel": "Koszt wizyty lekarskiej",
+    "doctorVisitCostDesc": "wpisz wartość lub zostaw puste",
     "doctorVisitHoursLabel": "Wizyty lekarskie (suma w miesiącu w godz.)",
     "doctorVisitHoursDesc": "wpisz wartość lub zostaw puste",
     "travelTimeLabel": "Czas na dojazdy/wizyty (h miesięcznie)",
