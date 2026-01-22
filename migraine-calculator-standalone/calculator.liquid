@@ -1,0 +1,1321 @@
+{% comment %}
+  ============================================================
+  Migraine Cost Calculator - Shopify Liquid Section
+  Converted from MigraineCostCalculator.tsx
+  ============================================================
+{% endcomment %}
+
+{% comment %} --- TRANSLATIONS --- {% endcomment %}
+{% assign current_lang = request.locale.iso_code %}
+
+{% comment %} === ENGLISH DEFAULTS === {% endcomment %}
+{% assign t_currency = "EUR" %}
+{% assign v_glasses_price = 105 %}
+{% assign v_def_salary = 2500 %}
+{% assign v_def_emergency = 25 %}
+{% assign v_def_hourly = 15 %}
+{% assign v_def_doctor_cost = 50 %}
+
+{% assign t_title = "Migraine Cost Calculator" %}
+{% assign t_description = "Migraine is not just a headache. It's also a serious financial and life burden. One full day with a migraine can cost you as much as 400–600 PLN (sometimes even more), lost income, medication, travel to the doctor, and often the need to cancel important meetings or responsibilities. And then there's the part that's harder to measure: isolation from loved ones, canceled plans, guilt, and missed professional and personal opportunities. I created this calculator to help you realistically estimate how much migraine truly costs you per month / per year. Enter details about your full-time work and any additional income (or freelance jobs you lose), and you'll see how quickly an investment in migraine glasses (or another effective solution you're considering) can pay for itself. Try it. Numbers can be a powerful motivator to take action. 💙" %}
+
+{% comment %} Column Headers {% endcomment %}
+{% assign t_col_description = "Description" %}
+{% assign t_col_notes = "Notes / Formula" %}
+{% assign t_col_value = "Value" %}
+{% assign t_col_cost = "Cost" %}
+
+{% comment %} Section Titles {% endcomment %}
+{% assign t_section1 = "BASE DATA" %}
+{% assign t_section2 = "EXTRA WORK" %}
+{% assign t_section3 = "TIME & LABOR COSTS" %}
+{% assign t_section4 = "DIRECT EXPENSES" %}
+{% assign t_section5 = "EMOTIONAL COSTS" %}
+{% assign t_summary_title = "MONTHLY SUMMARY" %}
+
+{% comment %} Section 1 Labels {% endcomment %}
+{% assign t_monthly_salary = "Monthly Net Salary" %}
+{% assign t_monthly_salary_desc = "enter value" %}
+{% assign t_work_days = "Work days per month" %}
+{% assign t_work_days_desc = "enter value" %}
+{% assign t_work_days_note = "(standard 20)" %}
+{% assign t_daily_rate = "Daily Rate" %}
+{% assign t_hourly_rate = "Hourly Rate" %}
+{% assign t_auto_calculated = "(auto-calculated)" %}
+
+{% comment %} Section 2 Labels {% endcomment %}
+{% assign t_extra_rate = "Hourly Rate (Extra Work)" %}
+{% assign t_extra_rate_desc = "enter value" %}
+{% assign t_extra_hours = "Hours per day" %}
+{% assign t_extra_hours_desc = "enter value" %}
+{% assign t_lost_hours = "Lost hours/month due to migraine" %}
+{% assign t_lost_hours_desc = "enter value" %}
+
+{% comment %} Section 3 Labels {% endcomment %}
+{% assign t_migraine_days = "Migraine days per month" %}
+{% assign t_migraine_days_desc = "enter value" %}
+{% assign t_sick_leave = "Sick leave days" %}
+{% assign t_sick_leave_desc = "enter value" %}
+{% assign t_extra_work_loss = "Income loss (Extra work)" %}
+{% assign t_extra_work_loss_note = "(rate × lost hours)" %}
+{% assign t_catchup_hours = "Time to catch up on work (h)" %}
+{% assign t_catchup_hours_desc = "enter value" %}
+
+{% comment %} Section 4 Labels {% endcomment %}
+{% assign t_emergency = "Emergency expenses per attack" %}
+{% assign t_emergency_desc = "enter value" %}
+{% assign t_food_delivery = "Food delivery" %}
+{% assign t_coffee = "Coffee" %}
+{% assign t_taxi = "Taxi home" %}
+{% assign t_snacks = "Snacks" %}
+{% assign t_acute_meds = "Acute medication (cost per attack)" %}
+{% assign t_acute_meds_desc = "enter value" %}
+{% assign t_prophylactic_meds = "Prophylactic medication (monthly)" %}
+{% assign t_prophylactic_meds_desc = "enter value" %}
+{% assign t_doctor_cost = "Doctor visit cost" %}
+{% assign t_doctor_cost_desc = "enter value" %}
+{% assign t_doctor_hours = "Doctor visits (hours/month)" %}
+{% assign t_doctor_hours_desc = "enter value" %}
+{% assign t_travel_time = "Travel time (hours/month)" %}
+{% assign t_travel_time_desc = "enter value" %}
+
+{% comment %} Section 5 Labels {% endcomment %}
+{% assign t_lost_opportunities = "Value of lost opportunities" %}
+{% assign t_lost_opportunities_desc = "outings, relationships, hobbies" %}
+{% assign t_affected_people = "Number of people affected" %}
+{% assign t_affected_people_desc = "enter value" %}
+{% assign t_info_only = "(informational)" %}
+
+{% comment %} Summary Labels {% endcomment %}
+{% assign t_monthly_cost_text = "Monthly migraine costs:" %}
+{% assign t_glasses_cost_text = "Cost of PacificEyes glasses:" %}
+{% assign t_roi_text = "Return on Investment (ROI) in:" %}
+{% assign t_days = "days" %}
+
+{% comment %} === POLISH OVERRIDES === {% endcomment %}
+{% if current_lang == 'pl' %}
+  {% assign t_currency = "PLN" %}
+  {% assign v_glasses_price = 450 %}
+  {% assign v_def_salary = 5000 %}
+  {% assign v_def_emergency = 100 %}
+  {% assign v_def_hourly = 50 %}
+  {% assign v_def_doctor_cost = 200 %}
+
+  {% assign t_title = "Kalkulator kosztów migreny" %}
+  {% assign t_description = "Migrena to nie tylko ból głowy.
+
+To także poważne obciążenie finansowe i życiowe. Jeden dzień z pełną migreną może Cię kosztować nawet 400–600 zł (a czasem więcej) – utracone zarobki, leki, dojazd do lekarza, a nierzadko też konieczność odwoływania ważnych spotkań czy obowiązków.
+
+Do tego dochodzi coś trudniejszego do zmierzenia: izolacja od bliskich, odwołane plany, poczucie winy, stracone możliwości zawodowe i prywatne.
+
+Stworzyłam ten kalkulator, żeby pomóc Ci realnie oszacować, ile rzeczywiście kosztuje Cię migrena w skali miesiąca / roku.
+
+Wpisz dane dotyczące swojej pracy etatowej i dodatkowej (ew. zleceń, które tracisz) – a zobaczysz, jak szybko może się zwrócić inwestycja w okulary przeciwmigrenowe (lub inne skuteczne rozwiązanie, które rozważasz).
+
+Sprawdź sama – liczby potrafią mocno zmotywować do działania. 💙" %}
+
+  {% comment %} Column Headers {% endcomment %}
+  {% assign t_col_description = "Opis" %}
+  {% assign t_col_notes = "Uwagi / Formuła" %}
+  {% assign t_col_value = "Wartość" %}
+  {% assign t_col_cost = "Koszt" %}
+
+  {% comment %} Section Titles {% endcomment %}
+  {% assign t_section1 = "DANE BAZOWE" %}
+  {% assign t_section2 = "PRACA DODATKOWA" %}
+  {% assign t_section3 = "KOSZTY CZASU I PRACY" %}
+  {% assign t_section4 = "WYDATKI BEZPOŚREDNIE" %}
+  {% assign t_section5 = "KOSZTY EMOCJONALNE" %}
+  {% assign t_summary_title = "PODSUMOWANIE MIESIĘCZNE" %}
+
+  {% comment %} Section 1 Labels {% endcomment %}
+  {% assign t_monthly_salary = "Miesięczne wynagrodzenie netto" %}
+  {% assign t_monthly_salary_desc = "wpisz wartość" %}
+  {% assign t_work_days = "Liczba dni roboczych w miesiącu" %}
+  {% assign t_work_days_desc = "wpisz wartość" %}
+  {% assign t_work_days_note = "(standardowo 20)" %}
+  {% assign t_daily_rate = "Stawka dzienna" %}
+  {% assign t_hourly_rate = "Stawka godzinowa" %}
+  {% assign t_auto_calculated = "(wyliczana automatycznie)" %}
+
+  {% comment %} Section 2 Labels {% endcomment %}
+  {% assign t_extra_rate = "Stawka godzinowa (praca dodatkowa)" %}
+  {% assign t_extra_rate_desc = "wpisz wartość" %}
+  {% assign t_extra_hours = "Liczba godzin dziennie" %}
+  {% assign t_extra_hours_desc = "wpisz wartość" %}
+  {% assign t_lost_hours = "Utracone godziny miesięcznie z powodu migreny" %}
+  {% assign t_lost_hours_desc = "wpisz wartość" %}
+
+  {% comment %} Section 3 Labels {% endcomment %}
+  {% assign t_migraine_days = "Liczba dni migrenowych w miesiącu" %}
+  {% assign t_migraine_days_desc = "wpisz wartość" %}
+  {% assign t_sick_leave = "Liczba dni na zwolnieniu (L4)" %}
+  {% assign t_sick_leave_desc = "wpisz wartość" %}
+  {% assign t_extra_work_loss = "Utrata dochodu z pracy dodatkowej" %}
+  {% assign t_extra_work_loss_note = "(stawka × utracone godziny)" %}
+  {% assign t_catchup_hours = "Czas na nadrabianie zaległości w pracy (h)" %}
+  {% assign t_catchup_hours_desc = "wpisz wartość" %}
+
+  {% comment %} Section 4 Labels {% endcomment %}
+  {% assign t_emergency = "Wydatki 'ratunkowe' na 1 atak (suma)" %}
+  {% assign t_emergency_desc = "wpisz wartość" %}
+  {% assign t_food_delivery = "Dostawa jedzenia do domu" %}
+  {% assign t_coffee = "Kawa" %}
+  {% assign t_taxi = "Taxi do domu" %}
+  {% assign t_snacks = "Przekąski" %}
+  {% assign t_acute_meds = "Leki doraźne (koszt na 1 atak)" %}
+  {% assign t_acute_meds_desc = "wpisz wartość" %}
+  {% assign t_prophylactic_meds = "Leki profilaktyczne (stały koszt mies.)" %}
+  {% assign t_prophylactic_meds_desc = "wpisz wartość" %}
+  {% assign t_doctor_cost = "Koszt wizyty u lekarza" %}
+  {% assign t_doctor_cost_desc = "wpisz wartość" %}
+  {% assign t_doctor_hours = "Wizyty lekarskie (suma w miesiącu w godz.)" %}
+  {% assign t_doctor_hours_desc = "wpisz wartość" %}
+  {% assign t_travel_time = "Czas na dojazdy/wizyty (h miesięcznie)" %}
+  {% assign t_travel_time_desc = "wpisz wartość" %}
+
+  {% comment %} Section 5 Labels {% endcomment %}
+  {% assign t_lost_opportunities = "Wycena utraconych możliwości" %}
+  {% assign t_lost_opportunities_desc = "wyjścia, relacje, hobby" %}
+  {% assign t_affected_people = "Liczba osób, na które wpływa choroba" %}
+  {% assign t_affected_people_desc = "wpisz wartość" %}
+  {% assign t_info_only = "(wynik informacyjny)" %}
+
+  {% comment %} Summary Labels {% endcomment %}
+  {% assign t_monthly_cost_text = "Miesięcznie migreny kosztują Cię:" %}
+  {% assign t_glasses_cost_text = "Koszt okularów PacificEyes:" %}
+  {% assign t_roi_text = "Osiągniesz zwrot inwestycji w:" %}
+  {% assign t_days = "dni" %}
+{% endif %}
+
+
+{% comment %} ============================================================
+     STYLES - Matching MigraineCostCalculator.tsx exactly
+     ============================================================ {% endcomment %}
+
+{% style %}
+  /* === BASE STYLES === */
+
+  input{
+    padding: 8px 12px !important;
+  }
+
+  #migraine-container{
+    background-color: #f5f3f0;
+  }
+
+  #migraine-calculator {
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: #111827;
+    line-height: 1.5;
+    width: 100%;
+    max-width: 1640px;
+    margin: auto;
+    background-color: #f5f3f0;
+  }
+
+  #migraine-calculator * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* === SECTION 1: HEAD & HEADING === */
+  
+  /* Section Container: py-20 bg-[#f5f3f0] lg:mx-20 */
+  .mc-section {
+    padding: 80px 16px;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-section {
+      margin-left: 80px;
+      margin-right: 80px;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+  }
+
+  /* Inner Container: max-w-[1480px] mx-auto px-4 lg:px-6 */
+  .mc-container {
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-container {
+      padding: 0 24px;
+    }
+  }
+
+  /* Title: text-2xl lg:text-5xl font-bold text-left lg:text-center text-gray-900 mb-4 lg:mb-8 */
+  .mc-title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    text-align: left;
+    color: #111827;
+    margin-bottom: 16px;
+    padding-top: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-title {
+      font-size: 3rem;
+      line-height: 1.1;
+      text-align: center;
+      margin-bottom: 32px;
+    }
+  }
+
+  /* Description: text-[20px] font-light text-gray-700 text-left mb-4 lg:mb-8 */
+  .mc-description {
+    font-size: 20px;
+    font-weight: 300;
+    color: #374151;
+    text-align: left;
+    margin-bottom: 16px;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-description {
+      margin-bottom: 32px;
+    }
+  }
+
+  /* === SECTION 2: TABLE WRAPPER === */
+  
+  /* Table Container: bg-[#f5f3f0] rounded-lg overflow-hidden */
+  .mc-table {
+    background-color: #f5f3f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  /* Header Row: hidden lg:grid grid-cols-4 gap-4 px-4 py-4 */
+  .mc-table-header {
+    display: none;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 16px;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-table-header {
+      display: grid;
+    }
+  }
+
+  /* Header Text: text-sm font-semibold text-gray-700 text-[24px] */
+  .mc-table-header-cell {
+    font-size: 24px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  /* Table Content */
+  .mc-table-content {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  /* === SECTIONS WITH ACCORDION === */
+  
+  /* Section Wrapper: my-6 (24px margin) */
+  .mc-section-group {
+    margin: 24px 0;
+  }
+
+  /* Section Header: px-4 py-1 -mx-4 cursor-pointer flex items-center justify-between hover:bg-gray-100/50 */
+  .mc-section-header {
+    padding: 4px 16px; /* py-1 = 4px, px-4 = 16px */
+    margin-left: -16px; /* -mx-4 */
+    margin-right: -16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background-color 0.15s;
+  }
+
+  .mc-section-header:hover {
+    background-color: rgba(243, 244, 246, 0.5); /* hover:bg-gray-100/50 */
+  }
+
+  /* Section Title: font-bold uppercase tracking-wide text-[20px] color #F79155 */
+  .mc-section-title {
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em; /* tracking-wide */
+    font-size: 20px;
+    color: #F79155;
+    margin: 0;
+  }
+
+  /* Chevron Icon */
+  .mc-chevron {
+    width: 20px;
+    height: 20px;
+    color: #F79155;
+    transition: transform 0.3s;
+  }
+
+  .mc-chevron.open {
+    transform: rotate(180deg);
+  }
+
+  /* Section Content (hidden by default, shown when open) */
+  .mc-section-content {
+    display: none;
+  }
+
+  .mc-section-content.open {
+    display: block;
+  }
+
+  /* === CALCULATOR ROWS - DESKTOP === */
+  
+  /* Row: hidden lg:grid grid-cols-4 gap-4 py-1 h-[50px] items-center */
+  .mc-row {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr); /* grid-cols-4 */
+      gap: 16px; /* gap-4 */
+      padding: 4px 0; /* py-1 */
+      height: 50px; /* h-[50px] */
+      align-items: center;
+    }
+  }
+
+  /* Row Label: font-medium text-gray-900 text-[16px] */
+  .mc-row-label {
+    font-weight: 500; /* font-medium */
+    color: #111827; /* text-gray-900 */
+    font-size: 16px; /* text-[16px] */
+  }
+
+  /* Sub-category indent: ml-6 with bullet */
+  .mc-row-label.sub {
+    margin-left: 24px; /* ml-6 */
+  }
+
+  .mc-row-label.sub span.bullet {
+    margin-right: 8px; /* mr-2 */
+  }
+
+  /* Row Description: text-gray-500 text-[16px] */
+  .mc-row-desc {
+    color: #6b7280; /* text-gray-500 */
+    font-size: 16px; /* text-[16px] */
+  }
+
+  /* Input: w-full px-3 py-2 bg-white focus:ring-2 focus:ring-orange-400 text-sm text-gray-600 */
+  .mc-input {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #4b5563;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .mc-input:focus {
+    box-shadow: 0 0 0 2px #fb923c;
+  }
+
+  /* Calculated Value: font-medium text-gray-700 */
+  .mc-calculated {
+    font-weight: 500;
+    color: #374151;
+  }
+
+  /* Row Note: text-[16px] text-gray-400 */
+  .mc-row-note {
+    font-size: 16px;
+    color: #9ca3af;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Row Cost: text-sm text-gray-600 */
+  .mc-row-cost {
+    font-size: 14px;
+    color: #4b5563;
+  }
+
+  /* === CALCULATOR ROWS - MOBILE === */
+  
+  /* Mobile Row: lg:hidden flex flex-col py-3 border-b border-gray-200/50 */
+  .mc-row-mobile {
+    display: flex;
+    flex-direction: column;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  }
+
+  @media (min-width: 1024px) {
+    .mc-row-mobile {
+      display: none;
+    }
+  }
+
+  /* Mobile Label: font-medium text-gray-900 text-sm mb-2 */
+  .mc-row-mobile-label {
+    font-weight: 500;
+    color: #111827;
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  /* Mobile Input Wrapper: flex items-center justify-between gap-4 */
+  .mc-row-mobile-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  /* Mobile Input */
+  .mc-input-mobile {
+    flex: 1;
+    padding: 10px 12px;
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #374151;
+    outline: none;
+    transition: all 0.2s;
+  }
+
+  .mc-input-mobile:focus {
+    box-shadow: 0 0 0 2px #fb923c;
+    border-color: transparent;
+  }
+
+  /* Mobile Calculated Display */
+  .mc-calculated-mobile {
+    flex: 1;
+    padding: 10px 12px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  /* Mobile Cost Display: text-sm font-medium text-orange-500 */
+  .mc-cost-mobile {
+    font-size: 14px;
+    font-weight: 500;
+    color: #f97316;
+    min-width: 80px;
+    text-align: right;
+  }
+
+  /* Mobile Note */
+  .mc-note-mobile {
+    font-size: 12px;
+    color: #9ca3af;
+    font-style: italic;
+  }
+
+  /* === DIVIDER === */
+  
+  /* Divider: h-px bg-black my-6 */
+  .mc-divider {
+    height: 1px;
+    background-color: black;
+    margin: 24px 0;
+  }
+
+  /* === SUMMARY - DESKTOP === */
+  
+  /* Desktop Summary: hidden lg:block -mx-4 mt-8 bg-[#f5f3f0] py-6 px-6 text-center */
+  .mc-summary-desktop {
+    display: none;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-summary-desktop {
+      display: block;
+      margin: 32px -16px 0;
+      background-color: #f5f3f0;
+      padding: 24px;
+      text-align: center;
+    }
+  }
+
+  /* Summary Title: font-bold text-gray-900 uppercase text-[42px] tracking-wide mb-3 */
+  .mc-summary-title {
+    font-weight: 700;
+    color: #111827;
+    text-transform: uppercase;
+    font-size: 42px;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  /* Monthly Cost Line: text-gray-800 text-[42px] mb-3 */
+  .mc-summary-line {
+    color: #1f2937;
+    font-size: 42px;
+    margin-bottom: 12px;
+  }
+
+  /* Monthly Cost Value: text-orange-500 font-bold text-[42px] */
+  .mc-summary-value-orange {
+    color: #f97316;
+    font-weight: 700;
+    font-size: 42px;
+  }
+
+  /* Glasses Line: text-gray-600 font-bold text-[24px] mb-3 */
+  .mc-summary-glasses-line {
+    color: #4b5563;
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  /* Glasses Value: font-bolder text-gray-900 text-[28px] */
+  .mc-summary-glasses-value {
+    font-weight: 800;
+    color: #111827;
+    font-size: 28px;
+  }
+
+  /* ROI Value: text-gray-900 font-bold text-[42px] */
+  .mc-summary-roi-value {
+    color: #111827;
+    font-weight: 700;
+    font-size: 42px;
+  }
+
+  /* === SUMMARY - MOBILE === */
+  
+  /* Mobile Summary: lg:hidden -mx-4 mt-6 bg-gradient-to-b from-orange-50 to-white py-8 px-4 text-center rounded-t-3xl */
+  .mc-summary-mobile {
+    display: block;
+    margin: 24px -16px 0;
+    background: linear-gradient(to bottom, #fff7ed, white);
+    padding: 32px 16px;
+    text-align: center;
+    border-radius: 24px 24px 0 0;
+  }
+
+  @media (min-width: 1024px) {
+    .mc-summary-mobile {
+      display: none;
+    }
+  }
+
+  /* Mobile Summary Title: font-bold text-gray-900 uppercase text-xl tracking-wide mb-4 */
+  .mc-summary-title-mobile {
+    font-weight: 700;
+    color: #111827;
+    text-transform: uppercase;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 16px;
+  }
+
+  /* Summary Card: bg-white rounded-2xl shadow-lg p-5 mb-4 */
+  .mc-summary-card {
+    background-color: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  /* Gray Card: bg-gray-100 rounded-xl p-4 mb-4 */
+  .mc-summary-card-gray {
+    background-color: #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .mc-summary-card-label {
+    font-size: 14px;
+    color: #4b5563;
+    margin-bottom: 4px;
+  }
+
+  /* Orange Value: text-orange-500 font-bold text-3xl */
+  .mc-summary-card-value-orange {
+    font-size: 30px;
+    font-weight: 700;
+    color: #f97316;
+  }
+
+  /* Gray Card Value: font-bold text-gray-900 text-xl */
+  .mc-summary-card-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+  }
+
+  /* Dark Value: text-gray-900 font-bold text-2xl */
+  .mc-summary-card-value-dark {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+  }
+{% endstyle %}
+
+
+{% comment %} ============================================================
+     HTML STRUCTURE
+     ============================================================ {% endcomment %}
+<div id="migraine-container">
+  <div id="migraine-calculator">
+    <section class="mc-section">
+      <div class="mc-container">
+        
+        <!-- ========== SECTION 1: HEAD & HEADING ========== -->
+        <h2 class="mc-title" style="margin-top: 32px">{{ t_title }}</h2>
+        <p class="mc-description">{{ t_description }}</p>
+        
+        <!-- ========== TABLE ========== -->
+        <div class="mc-table">
+          
+          <!-- Table Header Row -->
+          <div class="mc-table-header" style="margin-bottom: 24px">
+            <div class="mc-table-header-cell">{{ t_col_description }}</div>
+            <div class="mc-table-header-cell">{{ t_col_notes }}</div>
+            <div class="mc-table-header-cell">{{ t_col_value }}</div>
+            <div class="mc-table-header-cell">{{ t_col_cost }}</div>
+          </div>
+          
+          <div class="mc-table-content">
+            
+            <!-- ========== SECTION 1: BASE DATA ========== -->
+            <div class="mc-section-group" data-section="section1">
+              <div class="mc-section-header" onclick="toggleSection('section1')">
+                <h3 class="mc-section-title">{{ t_section1 }}</h3>
+                <svg class="mc-chevron open" id="chevron-section1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              
+              <div class="mc-section-content open" id="content-section1">
+                <!-- Monthly Net Salary -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_monthly_salary }}</div>
+                  <div class="mc-row-desc">{{ t_monthly_salary_desc }}</div>
+                  <div><input type="number" class="mc-input" id="monthlyNetSalary" value="{{ v_def_salary }}" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_monthly_salary }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="monthlyNetSalaryMobile" value="{{ v_def_salary }}" min="0">
+                  </div>
+                </div>
+
+                <!-- Work Days Per Month -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_work_days }}</div>
+                  <div class="mc-row-desc">{{ t_work_days_desc }}</div>
+                  <div><input type="number" class="mc-input" id="workDaysPerMonth" value="20" min="0"></div>
+                  <div class="mc-row-note">{{ t_work_days_note }}</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_work_days }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="workDaysPerMonthMobile" value="20" min="0">
+                  </div>
+                </div>
+
+                <!-- Daily Rate (calculated) -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_daily_rate }}</div>
+                  <div></div>
+                  <div class="mc-calculated" id="dailyRateDisplay">--</div>
+                  <div class="mc-row-note">{{ t_auto_calculated }}</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_daily_rate }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <div class="mc-calculated-mobile" id="dailyRateDisplayMobile">--</div>
+                  </div>
+                </div>
+
+                <!-- Hourly Rate (calculated) -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_hourly_rate }}</div>
+                  <div></div>
+                  <div class="mc-calculated" id="hourlyRateDisplay">--</div>
+                  <div class="mc-row-note">{{ t_auto_calculated }}</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_hourly_rate }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <div class="mc-calculated-mobile" id="hourlyRateDisplayMobile">--</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ========== SECTION 2: EXTRA WORK ========== -->
+            <div class="mc-section-group" data-section="section2">
+              <div class="mc-section-header" onclick="toggleSection('section2')">
+                <h3 class="mc-section-title">{{ t_section2 }}</h3>
+                <svg class="mc-chevron" id="chevron-section2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              
+              <div class="mc-section-content" id="content-section2">
+                <!-- Extra Work Hourly Rate -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_extra_rate }}</div>
+                  <div class="mc-row-desc">{{ t_extra_rate_desc }}</div>
+                  <div><input type="number" class="mc-input" id="extraWorkHourlyRate" value="{{ v_def_hourly }}" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_extra_rate }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="extraWorkHourlyRateMobile" value="{{ v_def_hourly }}" min="0">
+                  </div>
+                </div>
+
+                <!-- Hours per day -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_extra_hours }}</div>
+                  <div class="mc-row-desc">{{ t_extra_hours_desc }}</div>
+                  <div><input type="number" class="mc-input" id="extraWorkHoursPerDay" value="4" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_extra_hours }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="extraWorkHoursPerDayMobile" value="4" min="0">
+                  </div>
+                </div>
+
+                <!-- Lost hours/month due to migraine -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_lost_hours }}</div>
+                  <div class="mc-row-desc">{{ t_lost_hours_desc }}</div>
+                  <div><input type="number" class="mc-input" id="lostMonthlyHours" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_lost_hours }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="lostMonthlyHoursMobile" value="0" min="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- ========== SECTION 3: TIME & LABOR COSTS ========== -->
+            <div class="mc-section-group" data-section="section3">
+              <div class="mc-section-header" onclick="toggleSection('section3')">
+                <h3 class="mc-section-title">{{ t_section3 }}</h3>
+                <svg class="mc-chevron" id="chevron-section3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              
+              <div class="mc-section-content" id="content-section3">
+                <!-- Migraine days per month -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_migraine_days }}</div>
+                  <div class="mc-row-desc">{{ t_migraine_days_desc }}</div>
+                  <div><input type="number" class="mc-input" id="migraineDaysPerMonth" value="4" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_migraine_days }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="migraineDaysPerMonthMobile" value="4" min="0">
+                  </div>
+                </div>
+
+                <!-- Sick leave days -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_sick_leave }}</div>
+                  <div class="mc-row-desc">{{ t_sick_leave_desc }}</div>
+                  <div><input type="number" class="mc-input" id="sickLeaveDays" value="1" min="0"></div>
+                  <div class="mc-row-cost" id="sickLeaveIncomeLossDisplay">--</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_sick_leave }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="sickLeaveDaysMobile" value="1" min="0">
+                    <div class="mc-cost-mobile" id="sickLeaveIncomeLossDisplayMobile">--</div>
+                  </div>
+                </div>
+
+                <!-- Income loss from extra work (calculated) -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_extra_work_loss }}</div>
+                  <div></div>
+                  <div class="mc-calculated" id="extraWorkIncomeLossDisplay">--</div>
+                  <div class="mc-row-note">{{ t_extra_work_loss_note }}</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_extra_work_loss }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <div class="mc-calculated-mobile" id="extraWorkIncomeLossDisplayMobile">--</div>
+                    <div class="mc-note-mobile">{{ t_extra_work_loss_note }}</div>
+                  </div>
+                </div>
+
+                <!-- Catch up hours -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_catchup_hours }}</div>
+                  <div class="mc-row-desc">{{ t_catchup_hours_desc }}</div>
+                  <div><input type="number" class="mc-input" id="catchUpHours" value="0" min="0"></div>
+                  <div class="mc-row-cost" id="catchUpTimeCostDisplay">--</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_catchup_hours }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="catchUpHoursMobile" value="0" min="0">
+                    <div class="mc-cost-mobile" id="catchUpTimeCostDisplayMobile">--</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+               <!-- ========== SECTION 4: DIRECT EXPENSES ========== -->
+            <div class="mc-section-group" data-section="section4">
+              <div class="mc-section-header" onclick="toggleSection('section4')">
+                <h3 class="mc-section-title">{{ t_section4 }}</h3>
+                <svg class="mc-chevron" id="chevron-section4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              
+              <div class="mc-section-content" id="content-section4">
+                <!-- Emergency expenses per attack -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_emergency }}</div>
+                  <div class="mc-row-desc">{{ t_emergency_desc }}</div>
+                  <div><input type="number" class="mc-input" id="emergencyExpenses" value="{{ v_def_emergency }}" min="0"></div>
+                  <div class="mc-row-cost" id="totalEmergencyExpensesDisplay">--</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_emergency }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="emergencyExpensesMobile" value="{{ v_def_emergency }}" min="0">
+                    <div class="mc-cost-mobile" id="totalEmergencyExpensesDisplayMobile">--</div>
+                  </div>
+                </div>
+
+                <!-- Food delivery (sub-category) -->
+                <div class="mc-row">
+                  <div class="mc-row-label sub"><span class="bullet">•</span>{{ t_food_delivery }}</div>
+                  <div class="mc-row-desc">{{ t_emergency_desc }}</div>
+                  <div><input type="number" class="mc-input" id="foodDelivery" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">• {{ t_food_delivery }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="foodDeliveryMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Coffee (sub-category) -->
+                <div class="mc-row">
+                  <div class="mc-row-label sub"><span class="bullet">•</span>{{ t_coffee }}</div>
+                  <div class="mc-row-desc">{{ t_emergency_desc }}</div>
+                  <div><input type="number" class="mc-input" id="coffee" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">• {{ t_coffee }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="coffeeMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Taxi (sub-category) -->
+                <div class="mc-row">
+                  <div class="mc-row-label sub"><span class="bullet">•</span>{{ t_taxi }}</div>
+                  <div class="mc-row-desc">{{ t_emergency_desc }}</div>
+                  <div><input type="number" class="mc-input" id="taxi" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">• {{ t_taxi }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="taxiMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Snacks (sub-category) -->
+                <div class="mc-row">
+                  <div class="mc-row-label sub"><span class="bullet">•</span>{{ t_snacks }}</div>
+                  <div class="mc-row-desc">{{ t_emergency_desc }}</div>
+                  <div><input type="number" class="mc-input" id="snacks" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">• {{ t_snacks }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="snacksMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Acute medication (sub-category) -->
+                <div class="mc-row">
+                  <div class="mc-row-label sub"><span class="bullet">•</span>{{ t_acute_meds }}</div>
+                  <div class="mc-row-desc">{{ t_acute_meds_desc }}</div>
+                  <div><input type="number" class="mc-input" id="acuteMedicationCost" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">• {{ t_acute_meds }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="acuteMedicationCostMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Prophylactic medication -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_prophylactic_meds }}</div>
+                  <div class="mc-row-desc">{{ t_prophylactic_meds_desc }}</div>
+                  <div><input type="number" class="mc-input" id="prophylacticMedicationCost" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_prophylactic_meds }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="prophylacticMedicationCostMobile" value="0" min="0">
+                  </div>
+                </div>
+
+                <!-- Doctor visit cost -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_doctor_cost }}</div>
+                  <div class="mc-row-desc">{{ t_doctor_cost_desc }}</div>
+                  <div><input type="number" class="mc-input" id="doctorVisitCost" value="{{ v_def_doctor_cost }}" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_doctor_cost }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="doctorVisitCostMobile" value="{{ v_def_doctor_cost }}" min="0">
+                  </div>
+                </div>
+
+                <!-- Doctor visit hours -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_doctor_hours }}</div>
+                  <div class="mc-row-desc">{{ t_doctor_hours_desc }}</div>
+                  <div><input type="number" class="mc-input" id="doctorVisitHours" value="2" min="0"></div>
+                  <div class="mc-row-cost" id="doctorTimeCostDisplay">--</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_doctor_hours }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="doctorVisitHoursMobile" value="2" min="0">
+                    <div class="mc-cost-mobile" id="doctorTimeCostDisplayMobile">--</div>
+                  </div>
+                </div>
+
+                <!-- Travel time -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_travel_time }}</div>
+                  <div class="mc-row-desc">{{ t_travel_time_desc }}</div>
+                  <div><input type="number" class="mc-input" id="travelTimeHours" value="0" min="0"></div>
+                  <div></div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_travel_time }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="travelTimeHoursMobile" value="0" min="0">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========== SECTION 5: EMOTIONAL COSTS ========== -->
+            <div class="mc-section-group" data-section="section5">
+              <div class="mc-section-header" onclick="toggleSection('section5')">
+                <h3 class="mc-section-title">{{ t_section5 }}</h3>
+                <svg class="mc-chevron" id="chevron-section5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+              
+              <div class="mc-section-content" id="content-section5">
+                <!-- Value of lost opportunities -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_lost_opportunities }}</div>
+                  <div class="mc-row-desc">{{ t_lost_opportunities_desc }}</div>
+                  <div><input type="number" class="mc-input" id="lostOpportunitiesCost" value="0" min="0"></div>
+                  <div class="mc-row-cost" id="lostOpportunitiesCostDisplay">--</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_lost_opportunities }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="lostOpportunitiesCostMobile" value="0" min="0">
+                    <div class="mc-cost-mobile" id="lostOpportunitiesCostDisplayMobile">--</div>
+                  </div>
+                </div>
+
+                <!-- Number of people affected -->
+                <div class="mc-row">
+                  <div class="mc-row-label">{{ t_affected_people }}</div>
+                  <div class="mc-row-desc">{{ t_affected_people_desc }}</div>
+                  <div><input type="number" class="mc-input" id="affectedPeopleCount" value="0" min="0"></div>
+                  <div class="mc-row-note">{{ t_info_only }}</div>
+                </div>
+                <div class="mc-row-mobile">
+                  <div class="mc-row-mobile-label">{{ t_affected_people }}</div>
+                  <div class="mc-row-mobile-input-wrapper">
+                    <input type="number" class="mc-input-mobile" id="affectedPeopleCountMobile" value="0" min="0">
+                    <div class="mc-note-mobile">{{ t_info_only }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            
+            <!-- Divider -->
+            <div class="mc-divider"></div>
+
+            <!-- ========== SUMMARY - DESKTOP ========== -->
+            <div class="mc-summary-desktop">
+              <h3 class="mc-summary-title">{{ t_summary_title }}</h3>
+              <p class="mc-summary-line">
+                {{ t_monthly_cost_text }} 
+                <span class="mc-summary-value-orange" id="totalMonthlyCostDisplay">0 {{ t_currency }}</span>
+              </p>
+              <p class="mc-summary-glasses-line">
+                {{ t_glasses_cost_text }} 
+                <span class="mc-summary-glasses-value" id="glassesPriceDisplay">{{ v_glasses_price }} {{ t_currency }}</span>
+              </p>
+              <p class="mc-summary-line">
+                {{ t_roi_text }} 
+                <span class="mc-summary-roi-value" id="breakEvenDaysDisplay">0</span> {{ t_days }}
+              </p>
+            </div>
+
+            <!-- ========== SUMMARY - MOBILE ========== -->
+            <div class="mc-summary-mobile">
+              <h3 class="mc-summary-title-mobile">{{ t_summary_title }}</h3>
+              
+              <div class="mc-summary-card">
+                <p class="mc-summary-card-label">{{ t_monthly_cost_text }}</p>
+                <p class="mc-summary-card-value-orange" id="totalMonthlyCostDisplayMobile">0 {{ t_currency }}</p>
+              </div>
+              
+              <div class="mc-summary-card-gray">
+                <p class="mc-summary-card-label">{{ t_glasses_cost_text }}</p>
+                <p class="mc-summary-card-value" id="glassesPriceDisplayMobile">{{ v_glasses_price }} {{ t_currency }}</p>
+              </div>
+              
+              <div class="mc-summary-card">
+                <p class="mc-summary-card-label">{{ t_roi_text }}</p>
+                <p class="mc-summary-card-value-dark" id="breakEvenDaysDisplayMobile">0 {{ t_days }}</p>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+      </div>
+    </section>
+  </div>
+</div>
+
+
+{% comment %} ============================================================
+     JAVASCRIPT - Calculator Logic
+     ============================================================ {% endcomment %}
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Configuration from Liquid
+  const currency = "{{ t_currency }}";
+  const glassesPrice = {{ v_glasses_price }};
+  const locale = "{{ current_lang | default: 'en' }}";
+  
+  // Section toggle functionality
+  window.toggleSection = function(sectionId) {
+    const content = document.getElementById('content-' + sectionId);
+    const chevron = document.getElementById('chevron-' + sectionId);
+    
+    if (content.classList.contains('open')) {
+      content.classList.remove('open');
+      chevron.classList.remove('open');
+    } else {
+      content.classList.add('open');
+      chevron.classList.add('open');
+    }
+  };
+  
+  // Sync desktop and mobile inputs
+  function syncInputs(desktopId, mobileId) {
+    const desktop = document.getElementById(desktopId);
+    const mobile = document.getElementById(mobileId);
+    
+    if (desktop && mobile) {
+      desktop.addEventListener('input', function() {
+        mobile.value = this.value;
+        recalculate();
+      });
+      mobile.addEventListener('input', function() {
+        desktop.value = this.value;
+        recalculate();
+      });
+    }
+  }
+  
+  // Initialize input sync
+  syncInputs('monthlyNetSalary', 'monthlyNetSalaryMobile');
+  syncInputs('workDaysPerMonth', 'workDaysPerMonthMobile');
+  syncInputs('extraWorkHourlyRate', 'extraWorkHourlyRateMobile');
+  syncInputs('extraWorkHoursPerDay', 'extraWorkHoursPerDayMobile');
+  syncInputs('lostMonthlyHours', 'lostMonthlyHoursMobile');
+  syncInputs('migraineDaysPerMonth', 'migraineDaysPerMonthMobile');
+  syncInputs('sickLeaveDays', 'sickLeaveDaysMobile');
+  syncInputs('catchUpHours', 'catchUpHoursMobile');
+  syncInputs('emergencyExpenses', 'emergencyExpensesMobile');
+  syncInputs('foodDelivery', 'foodDeliveryMobile');
+  syncInputs('coffee', 'coffeeMobile');
+  syncInputs('taxi', 'taxiMobile');
+  syncInputs('snacks', 'snacksMobile');
+  syncInputs('acuteMedicationCost', 'acuteMedicationCostMobile');
+  syncInputs('prophylacticMedicationCost', 'prophylacticMedicationCostMobile');
+  syncInputs('doctorVisitCost', 'doctorVisitCostMobile');
+  syncInputs('doctorVisitHours', 'doctorVisitHoursMobile');
+  syncInputs('travelTimeHours', 'travelTimeHoursMobile');
+  syncInputs('lostOpportunitiesCost', 'lostOpportunitiesCostMobile');
+  syncInputs('affectedPeopleCount', 'affectedPeopleCountMobile');
+  
+  // Format currency
+  function formatCurrency(value) {
+    const formatted = value.toLocaleString(locale === 'pl' ? 'pl-PL' : 'en-US', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+    return formatted + ' ' + currency;
+  }
+  
+  // Get input value
+  function getVal(id) {
+    const el = document.getElementById(id);
+    return el ? parseFloat(el.value) || 0 : 0;
+  }
+  
+  // Set display value
+  function setDisplay(id, value) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  }
+  
+  // Main calculation function
+  function recalculate() {
+    // Section 1: Base Data
+    const monthlyNetSalary = getVal('monthlyNetSalary');
+    const workDaysPerMonth = getVal('workDaysPerMonth');
+    
+    // Calculate base rates
+    const dailyRate = workDaysPerMonth > 0 ? monthlyNetSalary / workDaysPerMonth : 0;
+    const hourlyRate = dailyRate / 8;
+    
+    // Update Section 1 displays
+    setDisplay('dailyRateDisplay', formatCurrency(dailyRate));
+    setDisplay('dailyRateDisplayMobile', formatCurrency(dailyRate));
+    setDisplay('hourlyRateDisplay', formatCurrency(hourlyRate));
+    setDisplay('hourlyRateDisplayMobile', formatCurrency(hourlyRate));
+    
+    // Section 2: Extra Work
+    const extraWorkHourlyRate = getVal('extraWorkHourlyRate');
+    const lostMonthlyHours = getVal('lostMonthlyHours');
+    
+    // Section 3: Time & Labor Costs
+    const migraineDaysPerMonth = getVal('migraineDaysPerMonth');
+    const sickLeaveDays = getVal('sickLeaveDays');
+    const catchUpHours = getVal('catchUpHours');
+    
+    // Calculate Section 3 costs
+    const sickLeaveIncomeLoss = dailyRate * 0.2 * sickLeaveDays;
+    const extraWorkIncomeLoss = extraWorkHourlyRate * lostMonthlyHours;
+    const catchUpTimeCost = catchUpHours * hourlyRate;
+    
+    // Update Section 3 displays
+    setDisplay('sickLeaveIncomeLossDisplay', formatCurrency(sickLeaveIncomeLoss));
+    setDisplay('sickLeaveIncomeLossDisplayMobile', formatCurrency(sickLeaveIncomeLoss));
+    setDisplay('extraWorkIncomeLossDisplay', formatCurrency(extraWorkIncomeLoss));
+    setDisplay('extraWorkIncomeLossDisplayMobile', formatCurrency(extraWorkIncomeLoss));
+    setDisplay('catchUpTimeCostDisplay', formatCurrency(catchUpTimeCost));
+    setDisplay('catchUpTimeCostDisplayMobile', formatCurrency(catchUpTimeCost));
+    
+    // Section 4: Direct Expenses
+    const emergencyExpenses = getVal('emergencyExpenses');
+    const foodDelivery = getVal('foodDelivery');
+    const coffee = getVal('coffee');
+    const taxi = getVal('taxi');
+    const snacks = getVal('snacks');
+    const acuteMedicationCost = getVal('acuteMedicationCost');
+    const prophylacticMedicationCost = getVal('prophylacticMedicationCost');
+    const doctorVisitCost = getVal('doctorVisitCost');
+    const doctorVisitHours = getVal('doctorVisitHours');
+    const travelTimeHours = getVal('travelTimeHours');
+    
+    // Calculate Section 4 costs (matching index.liquid formula)
+    const totalEmergencyExpenses = emergencyExpenses + foodDelivery + coffee + taxi + snacks + acuteMedicationCost;
+    const doctorTimeCost = doctorVisitCost + (doctorVisitHours + travelTimeHours) * hourlyRate;
+    
+    // Update Section 4 displays
+    setDisplay('totalEmergencyExpensesDisplay', formatCurrency(totalEmergencyExpenses));
+    setDisplay('totalEmergencyExpensesDisplayMobile', formatCurrency(totalEmergencyExpenses));
+    setDisplay('doctorTimeCostDisplay', formatCurrency(doctorTimeCost));
+    setDisplay('doctorTimeCostDisplayMobile', formatCurrency(doctorTimeCost));
+    
+    // Section 5: Emotional Costs
+    const lostOpportunitiesCost = getVal('lostOpportunitiesCost');
+    
+    // Update Section 5 displays
+    setDisplay('lostOpportunitiesCostDisplay', formatCurrency(lostOpportunitiesCost));
+    setDisplay('lostOpportunitiesCostDisplayMobile', formatCurrency(lostOpportunitiesCost));
+    
+    // Calculate total monthly cost (matching index.liquid formula)
+    const totalMonthlyCost = sickLeaveIncomeLoss + extraWorkIncomeLoss + catchUpTimeCost +
+      (totalEmergencyExpenses * migraineDaysPerMonth) + prophylacticMedicationCost + doctorTimeCost;
+    
+    // Calculate ROI
+    const costPerMigraineDay = migraineDaysPerMonth > 0 ? totalMonthlyCost / migraineDaysPerMonth : 0;
+    const breakEvenDays = costPerMigraineDay > 0 ? Math.round(glassesPrice / costPerMigraineDay) : 0;
+    
+    // Update Summary displays
+    setDisplay('totalMonthlyCostDisplay', formatCurrency(totalMonthlyCost));
+    setDisplay('totalMonthlyCostDisplayMobile', formatCurrency(totalMonthlyCost));
+    setDisplay('breakEvenDaysDisplay', breakEvenDays);
+    setDisplay('breakEvenDaysDisplayMobile', breakEvenDays + ' {{ t_days }}');
+  }
+  
+  // Add event listeners to all inputs
+  document.querySelectorAll('#migraine-calculator input[type="number"]').forEach(function(input) {
+    input.addEventListener('input', recalculate);
+  });
+  
+  // Initial calculation
+  recalculate();
+});
+</script>
