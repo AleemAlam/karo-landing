@@ -217,31 +217,31 @@ export default function BuyPage() {
                                         <div className="flex items-center justify-center gap-2 flex-wrap">
                                             {/* Visa */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/visa" alt="Visa" className="h-4 w-auto" />
+                                                <img src="/icons/payment/visa.svg" alt="Visa" className="h-4 w-auto" />
                                             </div>
-                                            {/* Mastercard */}
+                                            {/* Master */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/mastercard" alt="Mastercard" className="h-5 w-auto" />
+                                                <img src="/icons/payment/master.svg" alt="Mastercard" className="h-5 w-auto" />
                                             </div>
-                                            {/* American Express */}
+                                            {/* Maestro */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/americanexpress" alt="American Express" className="h-5 w-auto" />
+                                                <img src="/icons/payment/maestro.svg" alt="Maestro" className="h-5 w-auto" />
                                             </div>
-                                            {/* Discover */}
+                                            {/* Przelewy24 */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/discover" alt="Discover" className="h-4 w-auto" />
+                                                <img src="/icons/payment/przelewy24.svg" alt="Przelewy24" className="h-4 w-auto" />
                                             </div>
-                                            {/* PayPal */}
+                                            {/* Blik */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/paypal" alt="PayPal" className="h-4 w-auto" />
-                                            </div>
-                                            {/* Apple Pay */}
-                                            <div className="bg-black rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/apple/white" alt="Apple Pay" className="h-4 w-auto" />
+                                                <img src="/icons/payment/blik.svg" alt="Blik" className="h-4 w-auto" />
                                             </div>
                                             {/* Google Pay */}
                                             <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
-                                                <img src="https://cdn.simpleicons.org/googlepay" alt="Google Pay" className="h-4 w-auto" />
+                                                <img src="/icons/payment/google_pay.svg" alt="Google Pay" className="h-4 w-auto" />
+                                            </div>
+                                            {/* Apple Pay */}
+                                            <div className="bg-white border border-gray-200 rounded px-2 py-1 flex items-center justify-center h-8 w-14">
+                                                <img src="/icons/payment/apple_pay.svg" alt="Apple Pay" className="h-4 w-auto" />
                                             </div>
                                         </div>
                                     </div>
@@ -446,27 +446,31 @@ export default function BuyPage() {
                                             <div className="flex items-center justify-center gap-3 flex-wrap">
                                                 {/* Visa */}
                                                 <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://cdn.simpleicons.org/visa" alt="Visa" className="h-5 w-auto" />
+                                                    <img src="/icons/payment/visa.svg" alt="Visa" className="h-5 w-auto" />
                                                 </div>
-                                                {/* Mastercard */}
+                                                {/* Master */}
                                                 <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://cdn.simpleicons.org/mastercard" alt="Mastercard" className="h-6 w-auto" />
+                                                    <img src="/icons/payment/master.svg" alt="Mastercard" className="h-6 w-auto" />
+                                                </div>
+                                                {/* Maestro */}
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <img src="/icons/payment/maestro.svg" alt="Maestro" className="h-6 w-auto" />
+                                                </div>
+                                                {/* Przelewy24 */}
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <img src="/icons/payment/przelewy24.svg" alt="Przelewy24" className="h-5 w-auto" />
                                                 </div>
                                                 {/* Blik */}
                                                 <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://raw.githubusercontent.com/datatrans/payment-logos/master/assets/apm/blik.svg" alt="Blik" className="h-5 w-auto" />
-                                                </div>
-                                                {/* PayPal */}
-                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://cdn.simpleicons.org/paypal" alt="PayPal" className="h-5 w-auto" />
-                                                </div>
-                                                {/* Apple Pay */}
-                                                <div className="bg-black rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://cdn.simpleicons.org/apple/white" alt="Apple Pay" className="h-5 w-auto" />
+                                                    <img src="/icons/payment/blik.svg" alt="Blik" className="h-5 w-auto" />
                                                 </div>
                                                 {/* Google Pay */}
                                                 <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
-                                                    <img src="https://cdn.simpleicons.org/googlepay" alt="Google Pay" className="h-5 w-auto" />
+                                                    <img src="/icons/payment/google_pay.svg" alt="Google Pay" className="h-5 w-auto" />
+                                                </div>
+                                                {/* Apple Pay */}
+                                                <div className="bg-white border border-gray-200 rounded px-2 py-1.5 flex items-center justify-center h-9 w-16">
+                                                    <img src="/icons/payment/apple_pay.svg" alt="Apple Pay" className="h-5 w-auto" />
                                                 </div>
                                             </div>
                                         </div>
