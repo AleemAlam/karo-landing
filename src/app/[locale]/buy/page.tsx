@@ -406,42 +406,8 @@ export default function BuyPage() {
                                             </div>
                                         </div>
 
-                                        {/* Pay Button */}
-                                        <button
-                                            onClick={handlePayment}
-                                            disabled={isLoading}
-                                            className="w-full bg-[#F79155] hover:bg-orange-500 disabled:bg-gray-400 text-white font-semibold px-8 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-lg"
-                                        >
-                                            {isLoading ? (
-                                                <span>{t('processing')}</span>
-                                            ) : (
-                                                <>
-                                                    {t('payButton')}
-                                                    <svg
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                        className="h-5 w-5"
-                                                        fill="none"
-                                                        viewBox="0 0 24 24"
-                                                        stroke="currentColor"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth={2}
-                                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
-                                                        />
-                                                    </svg>
-                                                </>
-                                            )}
-                                        </button>
-
-                                        {/* PayU Badge */}
-                                        <div className="mt-4 text-center">
-                                            <p className="text-gray-500 text-sm">{t('securePayment')}</p>
-                                        </div>
-
                                         {/* Guaranteed Safe Checkout */}
-                                        <div className="mt-6 pt-4 border-t border-gray-200">
+                                        <div className="mt-6 pt-4 border-t border-gray-200 mb-6">
                                             <p className="text-gray-400 text-xs uppercase tracking-wide mb-3 text-center">{t('guaranteedCheckout')}</p>
                                             <div className="flex items-center justify-center gap-3 flex-wrap">
                                                 {/* Visa */}
@@ -475,10 +441,46 @@ export default function BuyPage() {
                                             </div>
                                         </div>
 
+                                        {/* Pay Button */}
+                                        <button
+                                            onClick={handlePayment}
+                                            disabled={isLoading}
+                                            className="w-full bg-[#F79155] hover:bg-orange-500 disabled:bg-gray-400 text-white font-semibold px-8 py-4 transition-all duration-300 inline-flex items-center justify-center gap-3 shadow-lg hover:shadow-xl cursor-pointer text-lg"
+                                        >
+                                            {isLoading ? (
+                                                <span>{t('processing')}</span>
+                                            ) : (
+                                                <>
+                                                    {t('payButton')}
+                                                    <svg
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        className="h-5 w-5"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke="currentColor"
+                                                    >
+                                                        <path
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth={2}
+                                                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                                                        />
+                                                    </svg>
+                                                </>
+                                            )}
+                                        </button>
+
+
                                         {/* Money Back Guarantee */}
                                         <div className="mt-6 p-4 border-2 border-orange-500 text-center">
                                             <p className="text-black font-semibold">{t('guarantee')}</p>
                                         </div>
+
+                                        {/* PayU Badge */}
+                                        <div className="mt-4 text-center">
+                                            <p className="text-gray-500 text-sm">{t('securePayment')}</p>
+                                        </div>
+
                                     </div>
                                 </div>
                             </>
