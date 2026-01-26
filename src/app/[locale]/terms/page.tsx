@@ -17,6 +17,8 @@ export default function TermsPage() {
         { title: t('section7Title'), content: t.raw('section7Content') },
         { title: t('section8Title'), content: t.raw('section8Content') },
         { title: t('section9Title'), content: t.raw('section9Content') },
+        { title: t('section10Title'), content: t.raw('section10Content') },
+        { title: t('section11Title'), content: t.raw('section11Content') },
     ];
 
     return (
