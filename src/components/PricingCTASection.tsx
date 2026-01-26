@@ -110,7 +110,7 @@ export default function PricingCTASection() {
             </Link>
 
             {/* Disclaimer */}
-            <p className="text-gray-500 text-xs">{t('disclaimer')}</p>
+            <p className="text-gray-500 text-xs whitespace-pre-line">{t('disclaimer')}</p>
           </div>
         </div>
       </section>
@@ -194,7 +194,7 @@ export default function PricingCTASection() {
               </Link>
 
               {/* Disclaimer */}
-              <p className="text-gray-500 text-sm">{t('disclaimer')}</p>
+              <p className="text-gray-500 text-sm whitespace-pre-line">{t('disclaimer')}</p>
             </div>
           </div>
         </div>

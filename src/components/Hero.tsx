@@ -228,7 +228,7 @@ export default function Hero() {
 
             {/* Disclaimer */}
             <motion.p
-              className="text-sm text-gray-400 pt-4"
+              className="text-sm text-gray-400 pt-4 whitespace-pre-line"
               variants={itemVariants}
             >
               {t('disclaimer')}
