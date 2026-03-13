@@ -8,6 +8,7 @@ const TPAY_API_URL = 'https://api.tpay.com';
 interface OrderRequest {
     amount: number;
     description: string;
+    paymentType?: 'weekly' | 'onetime';
     payer: {
         email: string;
         name: string;
@@ -38,7 +39,7 @@ async function getAccessToken(): Promise<string> {
 export async function POST(request: Request) {
     try {
         const body: OrderRequest = await request.json();
-        const { amount, description, payer } = body;
+        const { amount, description, payer, paymentType } = body;
 
         // Get OAuth access token
         const accessToken = await getAccessToken();
@@ -47,8 +48,7 @@ export async function POST(request: Request) {
         const origin = request.headers.get('origin') || process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
 
         // Create transaction payload
-        // Tpay Open API structure
-        const transactionPayload = {
+        const transactionPayload: Record<string, unknown> = {
             amount: amount,
             description: description,
             hiddenDescription: `Order ${Date.now()}`,
@@ -67,6 +67,18 @@ export async function POST(request: Request) {
                 },
             },
         };
+
+        // For weekly payments, force card payment and request card tokenization
+        // so we can charge subsequent weekly installments automatically
+        if (paymentType === 'weekly') {
+            transactionPayload.pay = {
+                groupId: 103, // Card payments group
+                cardPaymentData: {
+                    save: true,  // Request payment token issuance
+                    cof: 'first_customer', // First Customer-Initiated Transaction for recurring
+                },
+            };
+        }
 
         // Create transaction
         const transactionUrl = `${TPAY_API_URL}/transactions`;

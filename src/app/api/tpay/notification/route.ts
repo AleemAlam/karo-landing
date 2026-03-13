@@ -32,6 +32,38 @@ export async function POST(request: Request) {
             // TODO: Update order status in your database
         }
 
+        // Check for payment token (card tokenization for recurring payments)
+        // Tpay returns the token as `cli_auth` or within the card data fields
+        const paymentToken = body.cli_auth || body.card_token;
+        if (paymentToken) {
+            console.log('=== RECURRING PAYMENT TOKEN RECEIVED ===');
+            console.log('Payment Token:', paymentToken);
+            console.log('Payer Email:', body.tr_email || body.email);
+            console.log('Transaction ID:', body.tr_id);
+            console.log('=========================================');
+
+            // TODO: Store this token in your database associated with the user/order.
+            // This token is needed to charge the customer for subsequent weekly payments (weeks 2-6).
+            //
+            // To charge subsequent payments, make a POST request to:
+            //   POST https://api.tpay.com/transactions
+            // with the payload:
+            //   {
+            //     amount: 239.00,
+            //     description: "Weekly payment - Week X of 6",
+            //     payer: { email: "...", name: "..." },
+            //     pay: {
+            //       groupId: 103,
+            //       cardPaymentData: {
+            //         token: "<paymentToken>",
+            //         cof: "recurring"
+            //       }
+            //     }
+            //   }
+            //
+            // You would set up a cron job / scheduled task to run weekly for 5 more weeks.
+        }
+
         // Tpay expects exactly "TRUE" as the response body with 200 OK
         return new NextResponse('TRUE', {
             status: 200,
