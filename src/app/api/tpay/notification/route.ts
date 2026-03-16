@@ -1,19 +1,11 @@
 import { NextResponse } from 'next/server';
+import { getDb } from '@/lib/firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 export async function POST(request: Request) {
     try {
-        // Tpay sends notification as form-data or JSON depending on configuration, 
-        // but typically it's POST data. The documentation mentions typical POST parameters.
-        // We should read the body.
-
-        // In a real production environment, you MUST verify the JWS signature here.
-        // The signature is in the 'X-JWS-Signature' header.
-        // You would fetch Tpay's certificate and verify the body.
-
-        // For now, we will log the notification and respond with TRUE to confirm receipt.
-
         const contentType = request.headers.get('content-type') || '';
-        let body;
+        let body: Record<string, any>;
 
         if (contentType.includes('application/json')) {
             body = await request.json();
@@ -22,54 +14,83 @@ export async function POST(request: Request) {
             body = Object.fromEntries(formData.entries());
         }
 
-        console.log('Tpay Notification Received:', body);
+        console.log('Tpay Notification Received:', JSON.stringify(body, null, 2));
 
-        // Here update your database status based on `tr_status` or similar fields
-        // tr_status: TRUE = transaction successful
+        const transactionId = body.tr_id;
+        const isSuccess = body.tr_status === 'TRUE';
+        const paymentToken = body.cli_auth || body.card_token;
 
-        if (body.tr_status === 'TRUE') {
-            console.log('Payment successful for Transaction ID:', body.tr_id);
-            // TODO: Update order status in your database
+        if (!transactionId) {
+            console.warn('Notification missing tr_id');
+            return new NextResponse('TRUE', { status: 200, headers: { 'Content-Type': 'text/plain' } });
         }
 
-        // Check for payment token (card tokenization for recurring payments)
-        // Tpay returns the token as `cli_auth` or within the card data fields
-        const paymentToken = body.cli_auth || body.card_token;
-        if (paymentToken) {
-            console.log('=== RECURRING PAYMENT TOKEN RECEIVED ===');
-            console.log('Payment Token:', paymentToken);
-            console.log('Payer Email:', body.tr_email || body.email);
-            console.log('Transaction ID:', body.tr_id);
-            console.log('=========================================');
+        if (isSuccess) {
+            console.log('Payment successful for Transaction ID:', transactionId);
 
-            // TODO: Store this token in your database associated with the user/order.
-            // This token is needed to charge the customer for subsequent weekly payments (weeks 2-6).
-            //
-            // To charge subsequent payments, make a POST request to:
-            //   POST https://api.tpay.com/transactions
-            // with the payload:
-            //   {
-            //     amount: 239.00,
-            //     description: "Weekly payment - Week X of 6",
-            //     payer: { email: "...", name: "..." },
-            //     pay: {
-            //       groupId: 103,
-            //       cardPaymentData: {
-            //         token: "<paymentToken>",
-            //         cof: "recurring"
-            //       }
-            //     }
-            //   }
-            //
-            // You would set up a cron job / scheduled task to run weekly for 5 more weeks.
+            try {
+                const db = getDb();
+
+                // Find the subscription by transactionId
+                const subsSnapshot = await db.collection('subscriptions')
+                    .where('transactionId', '==', transactionId)
+                    .limit(1)
+                    .get();
+
+                if (!subsSnapshot.empty) {
+                    const subDoc = subsSnapshot.docs[0];
+                    const subData = subDoc.data();
+
+                    if (subData.status === 'pending' && paymentToken) {
+                        // First payment confirmed — activate subscription with token
+                        const nextPayment = new Date();
+                        nextPayment.setHours(nextPayment.getHours() + 1);
+
+                        await subDoc.ref.update({
+                            status: 'active',
+                            paymentToken: paymentToken,
+                            weeksPaid: 1,
+                            nextPaymentDate: Timestamp.fromDate(nextPayment),
+                            lastPaymentAt: Timestamp.now(),
+                        });
+
+                        console.log(`Subscription ${subDoc.id} activated with token. Next payment: ${nextPayment.toISOString()}`);
+                    } else if (subData.status === 'active') {
+                        // Subsequent weekly payment confirmed — increment weeksPaid
+                        const newWeeksPaid = (subData.weeksPaid || 0) + 1;
+                        const isCompleted = newWeeksPaid >= subData.totalWeeks;
+
+                        const updateData: Record<string, any> = {
+                            weeksPaid: newWeeksPaid,
+                            lastPaymentAt: Timestamp.now(),
+                        };
+
+                        if (isCompleted) {
+                            updateData.status = 'completed';
+                            updateData.nextPaymentDate = null;
+                            console.log(`Subscription ${subDoc.id} completed! All ${subData.totalWeeks} weeks paid.`);
+                        } else {
+                            const nextPayment = new Date();
+                            nextPayment.setHours(nextPayment.getHours() + 1);
+                            updateData.nextPaymentDate = Timestamp.fromDate(nextPayment);
+                            console.log(`Subscription ${subDoc.id} week ${newWeeksPaid}/${subData.totalWeeks} paid. Next: ${nextPayment.toISOString()}`);
+                        }
+
+                        await subDoc.ref.update(updateData);
+                    }
+                } else {
+                    console.log('No subscription found for transaction:', transactionId, '(likely a one-time payment)');
+                }
+            } catch (dbError) {
+                console.error('Firestore update error:', dbError);
+                // Still return TRUE so Tpay doesn't retry
+            }
         }
 
         // Tpay expects exactly "TRUE" as the response body with 200 OK
         return new NextResponse('TRUE', {
             status: 200,
-            headers: {
-                'Content-Type': 'text/plain',
-            },
+            headers: { 'Content-Type': 'text/plain' },
         });
 
     } catch (error) {

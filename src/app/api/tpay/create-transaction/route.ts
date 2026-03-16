@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { getDb } from '@/lib/firebase-admin';
+import { Timestamp } from 'firebase-admin/firestore';
 
 const TPAY_CLIENT_ID = process.env.TPAY_CLIENT_ID || '';
 const TPAY_CLIENT_SECRET = process.env.TPAY_CLIENT_SECRET || '';
@@ -69,18 +71,16 @@ export async function POST(request: Request) {
         };
 
         // For weekly payments, force card payment and request card tokenization
-        // so we can charge subsequent weekly installments automatically
         if (paymentType === 'weekly') {
             transactionPayload.pay = {
-                groupId: 103, // Card payments group
+                groupId: 103,
                 cardPaymentData: {
-                    save: true,  // Request payment token issuance
-                    cof: 'first_customer', // First Customer-Initiated Transaction for recurring
+                    save: true,
                 },
             };
         }
 
-        // Create transaction
+        // Create transaction in Tpay
         const transactionUrl = `${TPAY_API_URL}/transactions`;
         const transactionResponse = await axios.post(transactionUrl, transactionPayload, {
             headers: {
@@ -90,9 +90,34 @@ export async function POST(request: Request) {
         });
 
         const paymentUrl = transactionResponse.data.transactionPaymentUrl;
+        const transactionId = transactionResponse.data.transactionId;
+
+        // For weekly plans, create a subscription record in Firestore
+        if (paymentType === 'weekly' && transactionId) {
+            try {
+                const db = getDb();
+                await db.collection('subscriptions').add({
+                    payerEmail: payer.email,
+                    payerName: payer.name,
+                    transactionId: transactionId,
+                    paymentType: 'weekly',
+                    amount: 5.00,
+                    totalWeeks: 3,
+                    weeksPaid: 0,
+                    paymentToken: null,
+                    status: 'pending', // Will become 'active' once first payment confirmed
+                    createdAt: Timestamp.now(),
+                    nextPaymentDate: null, // Set after first payment confirmation
+                });
+                console.log('Subscription created in Firestore for transaction:', transactionId);
+            } catch (dbError) {
+                console.error('Firestore error (non-blocking):', dbError);
+                // Don't block the payment flow if DB write fails
+            }
+        }
 
         if (paymentUrl) {
-            return NextResponse.json({ paymentUrl, transactionId: transactionResponse.data.transactionId });
+            return NextResponse.json({ paymentUrl, transactionId });
         }
 
         return NextResponse.json({ error: 'Failed to get payment URL' }, { status: 500 });
