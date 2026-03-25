@@ -47,7 +47,7 @@ export default function BuyPage() {
     }, [searchParams]);
 
     const getPaymentAmount = () => {
-        return selectedPlan === 'weekly' ? 5.00 : 1134.00;
+        return selectedPlan === 'weekly' ? 1.00 : 1134.00;
     };
 
     const getPaymentDescription = () => {
