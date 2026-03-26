@@ -69,7 +69,7 @@ export async function POST(request: Request) {
                         } else {
                             // First payment confirmed — activate subscription with token
                             const nextPayment = new Date();
-                            nextPayment.setHours(nextPayment.getHours() + 1);
+                            nextPayment.setDate(nextPayment.getDate() + 7);
 
                             await subDoc.ref.update({
                                 status: 'active',
@@ -97,7 +97,7 @@ export async function POST(request: Request) {
                             console.log(`Subscription ${subDoc.id} completed! All ${subData.totalWeeks} weeks paid.`);
                         } else {
                             const nextPayment = new Date();
-                            nextPayment.setHours(nextPayment.getHours() + 1);
+                            nextPayment.setDate(nextPayment.getDate() + 7);
                             updateData.nextPaymentDate = Timestamp.fromDate(nextPayment);
                             console.log(`Subscription ${subDoc.id} week ${newWeeksPaid}/${subData.totalWeeks} paid. Next: ${nextPayment.toISOString()}`);
                         }

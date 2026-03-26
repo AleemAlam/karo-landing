@@ -102,7 +102,7 @@ export async function POST(request: Request) {
                     payerName: payer.name,
                     transactionId: transactionId,
                     paymentType: 'weekly',
-                    amount: 1.00,
+                    amount: 239.00,
                     totalWeeks: 3,
                     weeksPaid: 0,
                     paymentToken: null,
