@@ -103,7 +103,7 @@ export async function GET(request: Request) {
                     },
                 });
 
-                const newTransactionId = response.data.transactionId;
+                const newTransactionId = response.data.title; // webhook tr_id matches title, not transactionId
 
                 // Update the subscription's transactionId so the notification handler
                 // can find it when Tpay confirms this payment

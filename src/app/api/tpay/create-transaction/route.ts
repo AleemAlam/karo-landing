@@ -90,8 +90,8 @@ export async function POST(request: Request) {
         });
 
         const paymentUrl = transactionResponse.data.transactionPaymentUrl;
-        const transactionId = transactionResponse.data.transactionId;
-        console.log(transactionResponse.data)
+        const transactionId = transactionResponse.data.title; // Use title — webhook tr_id matches this field, not transactionId
+        console.log('Tpay transaction created:', JSON.stringify({ transactionId: transactionResponse.data.transactionId, title: transactionResponse.data.title }));
 
         // For weekly plans, create a subscription record in Firestore
         if (paymentType === 'weekly' && transactionId) {
