@@ -32,30 +32,55 @@ export async function POST(request: Request) {
             try {
                 const db = getDb();
 
-                // Find the subscription by transactionId
-                const subsSnapshot = await db.collection('subscriptions')
-                    .where('transactionId', '==', transactionId)
+                // Try exact match first, then try with/without "TR-" prefix
+                // TPay API returns transactionId in one format, webhook sends tr_id in another
+                const possibleIds = [transactionId];
+                if (transactionId.startsWith('TR-')) {
+                    possibleIds.push(transactionId.slice(3)); // Without "TR-" prefix
+                } else {
+                    possibleIds.push(`TR-${transactionId}`); // With "TR-" prefix
+                }
+
+                let subsSnapshot = await db.collection('subscriptions')
+                    .where('transactionId', '==', possibleIds[0])
                     .limit(1)
                     .get();
+
+                if (subsSnapshot.empty && possibleIds.length > 1) {
+                    console.log(`No match for "${possibleIds[0]}", trying "${possibleIds[1]}"...`);
+                    subsSnapshot = await db.collection('subscriptions')
+                        .where('transactionId', '==', possibleIds[1])
+                        .limit(1)
+                        .get();
+                }
 
                 if (!subsSnapshot.empty) {
                     const subDoc = subsSnapshot.docs[0];
                     const subData = subDoc.data();
 
-                    if (subData.status === 'pending' && paymentToken) {
-                        // First payment confirmed — activate subscription with token
-                        const nextPayment = new Date();
-                        nextPayment.setHours(nextPayment.getHours() + 1);
+                    if (subData.status === 'pending') {
+                        if (!paymentToken) {
+                            console.error(`Subscription ${subDoc.id}: first payment succeeded but NO card_token received. Check TPay dashboard — tokenization may not be enabled.`);
+                            // Still mark as paid but without token, recurring won't work
+                            await subDoc.ref.update({
+                                weeksPaid: 1,
+                                lastPaymentAt: Timestamp.now(),
+                            });
+                        } else {
+                            // First payment confirmed — activate subscription with token
+                            const nextPayment = new Date();
+                            nextPayment.setHours(nextPayment.getHours() + 1);
 
-                        await subDoc.ref.update({
-                            status: 'active',
-                            paymentToken: paymentToken,
-                            weeksPaid: 1,
-                            nextPaymentDate: Timestamp.fromDate(nextPayment),
-                            lastPaymentAt: Timestamp.now(),
-                        });
+                            await subDoc.ref.update({
+                                status: 'active',
+                                paymentToken: paymentToken,
+                                weeksPaid: 1,
+                                nextPaymentDate: Timestamp.fromDate(nextPayment),
+                                lastPaymentAt: Timestamp.now(),
+                            });
 
-                        console.log(`Subscription ${subDoc.id} activated with token. Next payment: ${nextPayment.toISOString()}`);
+                            console.log(`Subscription ${subDoc.id} activated with token. Next payment: ${nextPayment.toISOString()}`);
+                        }
                     } else if (subData.status === 'active') {
                         // Subsequent weekly payment confirmed — increment weeksPaid
                         const newWeeksPaid = (subData.weeksPaid || 0) + 1;
