@@ -17,7 +17,8 @@ export async function POST(request: Request) {
         console.log('Tpay Notification Received:', JSON.stringify(body, null, 2));
 
         const transactionId = body.tr_id;
-        const isSuccess = body.tr_status === 'TRUE';
+        const trStatus = typeof body.tr_status === 'string' ? body.tr_status.toUpperCase() : '';
+        const isSuccess = trStatus === 'TRUE';
         const paymentToken = body.cli_auth || body.card_token;
 
         if (!transactionId) {

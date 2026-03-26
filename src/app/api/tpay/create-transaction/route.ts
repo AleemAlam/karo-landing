@@ -75,7 +75,7 @@ export async function POST(request: Request) {
             transactionPayload.pay = {
                 groupId: 103,
                 cardPaymentData: {
-                    save: true,
+                    save: 1,
                 },
             };
         }
@@ -91,6 +91,7 @@ export async function POST(request: Request) {
 
         const paymentUrl = transactionResponse.data.transactionPaymentUrl;
         const transactionId = transactionResponse.data.transactionId;
+        console.log(transactionResponse.data)
 
         // For weekly plans, create a subscription record in Firestore
         if (paymentType === 'weekly' && transactionId) {

@@ -86,7 +86,6 @@ export async function GET(request: Request) {
                         groupId: 103,
                         cardPaymentData: {
                             token: sub.paymentToken,
-                            cof: 'recurring', // Merchant-initiated recurring
                         },
                     },
                     callbacks: {
